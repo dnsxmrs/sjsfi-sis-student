@@ -1,8 +1,24 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Getting Started
 
-## Getting Started
+Pre-requisite (make sure that you have the following installed in your device)
 
-First, run the development server:
+- node.js
+
+First, isntall the dependencies:
+
+```bash
+npm install
+```
+
+Second, ask for the copy of .env to developers
+
+Third, the following in the terminal:
+
+```bash
+npx prisma generate
+```
+
+Lastly, run the development server
 
 ```bash
 npm run dev
