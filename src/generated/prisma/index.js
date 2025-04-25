@@ -135,7 +135,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\Lenovo Gaming\\OneDrive - Polytechnic University of the Philippines\\BSIT 3-2\\All Programming\\capstone\\sjsfi-auth\\src\\generated\\prisma",
+      "value": "D:\\school crap\\College Hell\\3rd year\\2nd sem\\Capstone\\SIS\\sjsfi-auth\\src\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -149,7 +149,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\Lenovo Gaming\\OneDrive - Polytechnic University of the Philippines\\BSIT 3-2\\All Programming\\capstone\\sjsfi-auth\\prisma\\schema.prisma",
+    "sourceFilePath": "D:\\school crap\\College Hell\\3rd year\\2nd sem\\Capstone\\SIS\\sjsfi-auth\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -163,12 +163,11 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
-  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": null
+        "value": "postgresql://postgres.nargbsgtlentyobcoede:CapstoneBSIT3-2SIS@aws-0-ap-southeast-1.pooler.supabase.com:6543/postgres?pgbouncer=true"
       }
     }
   },
