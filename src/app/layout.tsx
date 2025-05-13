@@ -14,7 +14,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: 'SJSFI-SIS',
+  title: 'SJSFI - SIS',
   description: 'SJSFI Student Information System',
 }
 
