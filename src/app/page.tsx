@@ -1,20 +1,8 @@
-'use client';
-
 import Image from 'next/image';
-import { useState } from 'react';
-import InputField from '@/components/atoms/InputField'; // adjust path if needed
+import RoleButton from '@/components/atoms/RoleButton'; // adjust path if needed
+import LoginFooter from '@/components/atoms/LoginFooter';
 
 export default function Home() {
-  const [studentNumber, setStudentNumber] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // You now have all the values
-    console.log({ studentNumber, email, password });
-    // TODO: handle form submission
-  };
 
   return (
     <div className="flex h-screen w-screen bg-white min-width-[360px]">
@@ -40,68 +28,35 @@ export default function Home() {
                   className="mb-2"
                 />
                 <h1 className="text-3xl text-center text-[#800000] w-full">
-                  <span className='font-bold'>SJSFI-SIS </span>Student Module
+                  Welcome to <span className='font-bold'>SJSFI-SIS Portal</span>
                 </h1>
               </div>
 
               {/* BODY */}
               <div className="flex flex-col items-center justify-center w-full">
                 <p className='text-center text-black text-sm mb-4'>
-                  Sign in to start your session
+                  Please click or tap your role to sign in
                 </p>
 
-                {/* FORM */}
-                <form className="w-full px-4" autoComplete="off" onSubmit={handleSubmit}>
+                <div className="w-full px-4" >
                   <div className="mb-4 w-full">
-                    <InputField
-                      name="student_number"
-                      type="text"
-                      placeholder="Student Number"
-                      value={studentNumber}
-                      onChange={(e) => setStudentNumber(e.target.value)}
+                    <RoleButton
+                      label="Student"
+                      color="bg-[#800000]"
+                      href="/student"
                     />
                   </div>
                   <div className="mb-4 w-full">
-                    <InputField
-                      name="email"
-                      type="email"
-                      placeholder="Email Address"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                    <RoleButton
+                      label="Faculty"
+                      color="bg-[#ffd700]"
+                      hoverClass="hover:bg-[#DAA520]"
+                      textColor="text-white"
+                      href="/faculty"
                     />
                   </div>
-                  <div className="mb-4 w-full">
-                    <InputField
-                      name="password"
-                      type="password"
-                      placeholder="Password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                    />
-                  </div>
-                  <div className="mb-4 w-full">
-                    <button
-                      type="submit"
-                      className="bg-[#800000] text-white text-sm rounded-sm px-4 py-2 w-full hover:bg-[#800000]/80 transition duration-200 ease-in-out"
-                    >
-                      Sign In
-                    </button>
-                  </div>
-                  <div className="flex items-center justify-center mb-4 w-full">
-                    <a href="#" className="font-medium text-sm text-[#800000] hover:underline hover:text-[#800000]/80 transition duration-200 ease-in-out">
-                      I forgot my password
-                    </a>
-                  </div>
-                  <div className="flex items-center justify-center mb-4 w-full">
-                    <p className="text-sm text-black text-center">
-                      By using this service, you understood and agree to the
-                      <span className='font-medium'> SJSFI Online Services </span>
-                      <a href='' className='text-[#800000] hover:text-[#800000]/80 transition duration-200 ease-in-out'> Terms of Use </a>
-                      and
-                      <a href='' className='text-[#800000] hover:text-[#800000]/80 transition duration-200 ease-in-out'> Privacy Statement.</a>
-                    </p>
-                  </div>
-                </form>
+                  <LoginFooter />
+                </div>
               </div>
             </div>
           </div>
