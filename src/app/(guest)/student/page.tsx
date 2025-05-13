@@ -20,7 +20,7 @@ export default function Student() {
     };
 
     return (
-        <div className="flex h-screen w-screen bg-white min-width-[360px]">
+        <div className="flex h-screen w-screen bg-white min-w-[360px]">
             <div className="container">
                 {/* Main Screen - BG IMAGE */}
                 <div
