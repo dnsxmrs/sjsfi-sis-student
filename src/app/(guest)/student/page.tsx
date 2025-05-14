@@ -4,8 +4,8 @@ import Image from 'next/image';
 import { useState } from 'react';
 import InputField from '@/components/atoms/InputField';
 import LoginFooter from '@/components/atoms/LoginFooter';
-import ForgotPassword from '@/components/atoms/ForgotPassword';
 import ActionButton from '@/components/atoms/ActionButton';
+import Link from 'next/link';
 
 export default function Student() {
     const [studentNumber, setStudentNumber] = useState('');
@@ -42,8 +42,8 @@ export default function Student() {
                                     height={90}
                                     className="mb-2"
                                 />
-                                <h1 className="text-3xl text-center text-[#800000] w-full">
-                                    <span className='font-bold'>SJSFI-SIS </span>Student Module
+                                <h1 className="text-3xl text-center text-[#000] w-full mx-1">
+                                    <span className='font-bold text-[#800000]'>SJSFI-SIS </span>Student Module
                                 </h1>
                             </div>
 
@@ -85,7 +85,14 @@ export default function Student() {
                                     <div className="mb-4 w-full">
                                         <ActionButton label='Sign In' />
                                     </div>
-                                    <ForgotPassword />
+                                    <div className="flex items-center justify-center mb-4 w-full">
+                                        <Link
+                                            href="/student/forgot-password"
+                                            className="font-medium text-sm text-[#800000] hover:underline hover:text-[#800000]/80 transition duration-200 ease-in-out"
+                                        >
+                                            I forgot my password
+                                        </Link>
+                                    </div>
                                     <LoginFooter />
                                 </form>
                             </div>
