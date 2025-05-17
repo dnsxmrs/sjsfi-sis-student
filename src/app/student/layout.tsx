@@ -30,7 +30,7 @@ export default async function StudentLayout({ children }: { children: ReactNode 
                 <main className="flex-1 container mx-auto px-2 sm:px-4 py-4 sm:py-6 max-w-5xl">
                     <DynamicTitle />
                     <div className="bg-white rounded-lg shadow-sm mb-4 sm:mb-6">
-                        <div className="p-3 sm:p-4 border-b">
+                        <div className="p-3 sm:p-4">
                             <h2 className="text-base sm:text-lg font-medium text-red-800">
                                 {name} <span className="text-gray-700">({id})</span>
                             </h2>

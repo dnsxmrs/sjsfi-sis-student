@@ -26,6 +26,10 @@ const Header = () => {
         }
     }
 
+    const handleNavClick = () => {
+        setIsMenuOpen(false)
+    }
+
     const navItems = [
         { label: 'Home', href: '/student/home' },
         { label: 'Schedule', href: '/student/schedule' },
@@ -99,6 +103,7 @@ const Header = () => {
                             <li key={label}>
                                 <Link
                                     href={href}
+                                    onClick={handleNavClick}
                                     className={`block py-3 px-4 w-full text-left transition-colors ${isActivePath(href)
                                         ? 'text-red-800 font-medium'
                                         : 'text-gray-600 hover:text-red-800'
@@ -111,6 +116,7 @@ const Header = () => {
                         <li className="border-t">
                             <Link
                                 href="/user-profile"
+                                onClick={handleNavClick}
                                 className="block py-3 px-4 w-full text-left text-gray-600 hover:text-red-800 transition-colors"
                             >
                                 Manage Account

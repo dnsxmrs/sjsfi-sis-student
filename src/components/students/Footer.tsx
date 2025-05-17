@@ -9,7 +9,7 @@ export default function Footer() {
     const currentYear = new Date().getFullYear()
 
     return (
-        <footer className="bg-white border-t">
+        <footer className="bg-white">
             <div className="container mx-auto max-w-5xl px-4 py-8">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {/* School Info */}

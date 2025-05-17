@@ -28,7 +28,7 @@ export default function RequestPage() {
     };
 
     return (
-        <div className="bg-white border rounded-lg p-4">
+        <div className="bg-white rounded-lg p-4">
             {/* make the div below have border radius and shadow */}
             <div className="flex flex-col items-center justify-center bg-white rounded-lg shadow">
                 <div className="w-full mb-6">
