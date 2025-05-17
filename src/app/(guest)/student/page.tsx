@@ -48,9 +48,13 @@ export default function Student() {
                 console.log('Unexpected sign-in state:', result);
                 setError('Sign-in not complete. Additional steps required.');
             }
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error(err);
-            setError(err.errors?.[0]?.message || 'Login failed');
+            if (err && typeof err === 'object' && 'message' in err) {
+                setError((err as Error).message || 'Login failed');
+            } else {
+                setError('Login failed');
+            }
         }
     };
 

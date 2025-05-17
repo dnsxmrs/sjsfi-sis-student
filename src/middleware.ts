@@ -16,7 +16,7 @@ const isPublicRoute = createRouteMatcher([
 
 export default clerkMiddleware(async (auth, req) => {
     // Get the current authentication state
-    const { userId, sessionId } = await auth();
+    const { userId } = await auth();
     const isAuthenticated = !!userId;
     const url = new URL(req.url);
 
