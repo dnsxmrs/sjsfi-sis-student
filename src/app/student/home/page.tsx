@@ -33,13 +33,13 @@ export default function HomePage() {
             {isLoading ? (
                 <PolicySkeleton />
             ) : policy ? (
-                <div className="bg-white rounded-lg shadow-sm mb-6">
-                    <div className="p-4 border-b">
-                        <h2 className="text-xl font-medium text-[#000]">{policy.title}</h2>
+                <div className="bg-white rounded-lg shadow-sm mb-4 sm:mb-6">
+                    <div className="p-3 sm:p-4 border-b">
+                        <h2 className="text-lg sm:text-xl font-medium text-[#000]">{policy.title}</h2>
                     </div>
-                    <div className="p-4 text-[#000]">
-                        <p className="text-sm text-gray-500 text-justify mb-2">Last updated: {policy.lastUpdated}</p>
-                        <p className="text-base text-black text-justify whitespace-pre-line">
+                    <div className="p-3 sm:p-4 text-[#000]">
+                        <p className="text-xs sm:text-sm text-gray-500 text-justify mb-2">Last updated: {policy.lastUpdated}</p>
+                        <p className="text-sm sm:text-base text-black text-justify whitespace-pre-line">
                             {policy.description}
                         </p>
                     </div>

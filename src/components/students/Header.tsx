@@ -6,13 +6,25 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { toast } from 'react-hot-toast'
+import { UserButton, useClerk, useUser } from '@clerk/nextjs'
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const pathname = usePathname()
+    const { signOut } = useClerk()
+    const { user } = useUser()
 
     const handleNavClick = (item: string) => {
         toast.success(`Navigated to ${item}`)
+    }
+
+    const handleSignOut = async () => {
+        try {
+            await signOut()
+            toast.success('Signed out successfully')
+        } catch (error) {
+            toast.error('Failed to sign out')
+        }
     }
 
     const navItems = [
@@ -29,8 +41,9 @@ const Header = () => {
 
     return (
         <header className="bg-white shadow-sm">
-            <div className="container mx-auto flex md:justify-start justify-between items-center px-4 py-2 max-w-5xl">
-                <div className="flex items-center space-x-3 mr-10">
+            <div className="container mx-auto flex justify-between items-center px-4 py-2 max-w-5xl">
+                {/* Logo Section */}
+                <div className="flex items-center space-x-3">
                     <Image
                         src="/assets/sjsfi_logo.svg"
                         alt="SJSFI-SIS Logo"
@@ -40,18 +53,18 @@ const Header = () => {
                     />
                     <h1 className="text-xl font-bold text-red-800">SJSFI-SIS</h1>
                 </div>
+
+                {/* Navigation Section */}
                 <nav className="hidden md:flex">
                     <ul className="flex space-x-8">
                         {navItems.map(({ label, href }) => (
                             <li key={label}>
                                 <Link
                                     href={href}
-                                    className={`py-4 px-1 transition-colors ${
-                                        isActivePath(href)
-                                            ? 'text-red-800 border-b-2 border-red-800'
-                                            : 'text-gray-600 hover:text-red-800'
-                                    }`}
-                                    onClick={() => handleNavClick(label)}
+                                    className={`py-4 px-1 transition-colors ${isActivePath(href)
+                                        ? 'text-red-800 border-b-2 border-red-800'
+                                        : 'text-gray-600 hover:text-red-800'
+                                        }`}
                                 >
                                     {label}
                                 </Link>
@@ -59,11 +72,20 @@ const Header = () => {
                         ))}
                     </ul>
                 </nav>
+
+                {/* User Button Section */}
+                <div className="hidden md:block">
+                    <UserButton />
+                </div>
+
+                {/* Mobile Menu Button */}
+                <li className="py-3 px-4 flex justify-end md:hidden">
+                    <UserButton />
+                </li>
                 <button
                     className="md:hidden"
                     onClick={() => {
                         setIsMenuOpen(!isMenuOpen)
-                        toast.success(isMenuOpen ? 'Menu closed' : 'Menu opened')
                     }}
                     aria-label="Toggle menu"
                 >
@@ -73,21 +95,36 @@ const Header = () => {
             {isMenuOpen && (
                 <div className="md:hidden bg-white border-t">
                     <ul className="flex flex-col">
+
                         {navItems.map(({ label, href }) => (
                             <li key={label}>
                                 <Link
                                     href={href}
-                                    className={`block py-3 px-4 w-full text-left transition-colors ${
-                                        isActivePath(href)
-                                            ? 'text-red-800 font-medium'
-                                            : 'text-gray-600 hover:text-red-800'
-                                    }`}
-                                    onClick={() => handleNavClick(label)}
+                                    className={`block py-3 px-4 w-full text-left transition-colors ${isActivePath(href)
+                                        ? 'text-red-800 font-medium'
+                                        : 'text-gray-600 hover:text-red-800'
+                                        }`}
                                 >
                                     {label}
                                 </Link>
                             </li>
                         ))}
+                        <li className="border-t">
+                            <Link
+                                href="/user-profile"
+                                className="block py-3 px-4 w-full text-left text-gray-600 hover:text-red-800 transition-colors"
+                            >
+                                Manage Account
+                            </Link>
+                        </li>
+                        <li>
+                            <button
+                                onClick={handleSignOut}
+                                className="block py-3 px-4 w-full text-left text-gray-600 hover:text-red-800 transition-colors"
+                            >
+                                Sign Out
+                            </button>
+                        </li>
                     </ul>
                 </div>
             )}

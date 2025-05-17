@@ -12,6 +12,6 @@ export default function DynamicTitle() {
     const capitalizedPath = currentPath.charAt(0).toUpperCase() + currentPath.slice(1)
 
     return (
-        <h1 className="text-2xl text-[#000] font-bold mb-6">{capitalizedPath}</h1>
+        <h1 className="text-xl sm:text-2xl text-[#000] font-semibold mb-4 sm:mb-6">{capitalizedPath}</h1>
     )
 }

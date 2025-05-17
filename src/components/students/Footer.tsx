@@ -55,6 +55,16 @@ export default function Footer() {
                                     Request
                                 </Link>
                             </li>
+                            <li>
+                                <Link href="/privacy-statement" className="text-gray-600 hover:text-red-800 text-sm">
+                                    Privacy Statement
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/terms-of-use" className="text-gray-600 hover:text-red-800 text-sm">
+                                    Terms of Use
+                                </Link>
+                            </li>
                         </ul>
                     </div>
 
