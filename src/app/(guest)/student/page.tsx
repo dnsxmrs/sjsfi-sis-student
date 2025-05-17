@@ -6,17 +6,52 @@ import InputField from '@/components/atoms/InputField';
 import LoginFooter from '@/components/atoms/LoginFooter';
 import ActionButton from '@/components/atoms/ActionButton';
 import Link from 'next/link';
+import { useSignIn } from '@clerk/nextjs';
 
 export default function Student() {
+    const { signIn, setActive, isLoaded } = useSignIn();
     const [studentNumber, setStudentNumber] = useState('');
-    const [email, setEmail] = useState('');
+    const [email_address, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // You now have all the values
-        console.log({ studentNumber, email, password });
-        // TODO: handle form submission
+        setError('');
+
+        // console log the student number, email, and password
+        console.log('Student Number:', studentNumber);
+        console.log('Email:', email_address);
+        console.log('Password:', password);
+
+        if (!isLoaded) return;
+
+        try {
+            // STEP 1: Start sign-in by identifying the user
+            const signInAttempt = await signIn.create({
+                identifier: email_address, // just the email
+            });
+            console.log('Sign In:', signIn);
+
+            // STEP 2: Now try to complete with password
+            const result = await signInAttempt.attemptFirstFactor({
+                strategy: 'password',
+                password,
+            });
+            console.log('Sign In Attempt:', signInAttempt);
+
+            // STEP 3: If complete, activate session
+            if (result.status === 'complete') {
+                await setActive({ session: result.createdSessionId });
+                window.location.href = '/student/home';
+            } else {
+                console.log('Unexpected sign-in state:', result);
+                setError('Sign-in not complete. Additional steps required.');
+            }
+        } catch (err: any) {
+            console.error(err);
+            setError(err.errors?.[0]?.message || 'Login failed');
+        }
     };
 
     return (
@@ -42,7 +77,7 @@ export default function Student() {
                                     height={90}
                                     className="mb-2"
                                 />
-                                <h1 className="text-3xl text-center text-[#000] w-full mx-1">
+                                <h1 className="text-3xl text-center text-[#000] w-full mb-2 mx-1">
                                     <span className='font-bold text-[#800000]'>SJSFI-SIS </span>Student Module
                                 </h1>
                             </div>
@@ -69,7 +104,7 @@ export default function Student() {
                                             name="email"
                                             type="email"
                                             placeholder="Email Address"
-                                            value={email}
+                                            value={email_address}
                                             onChange={(e) => setEmail(e.target.value)}
                                         />
                                     </div>
@@ -82,6 +117,9 @@ export default function Student() {
                                             onChange={(e) => setPassword(e.target.value)}
                                         />
                                     </div>
+                                    {error && (
+                                        <p className="text-red-600 text-sm mb-2 text-center">{error}</p>
+                                    )}
                                     <div className="mb-4 w-full">
                                         <ActionButton label='Sign In' />
                                     </div>

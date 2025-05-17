@@ -7,7 +7,7 @@ import LoginFooter from '@/components/atoms/LoginFooter';
 import Link from 'next/link';
 import ActionButton from '@/components/atoms/ActionButton';
 
-export default function StudentForgotPassword() {
+export default function FacultyForgotPassword() {
     const [email, setEmail] = useState('');
 
     const handleSubmit = (e: React.FormEvent) => {
