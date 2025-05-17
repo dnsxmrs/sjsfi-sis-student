@@ -1,0 +1,45 @@
+// app/student/layout.tsx
+
+import '@/app/globals.css'
+import Header from '@/components/students/Header'
+import Footer from '@/components/students/Footer'
+import { ReactNode } from 'react'
+import ErrorBoundaryWrapper from './ErrorBoundaryWrapper'
+import { getCurrentUser } from '../_actions/getCurrentUser'
+import DynamicTitle from '@/components/students/DynamicTitle'
+
+
+export const metadata = {
+    title: 'Student | SJSFI - SIS',
+    description: 'SJSFI Student Information System',
+}
+
+export default async function StudentLayout({ children }: { children: ReactNode }) {
+    // delay to test the loading screen
+    // await new Promise(resolve => setTimeout(resolve, 3000));
+
+    // get current user name and student number
+    const { name, id } = await getCurrentUser();
+
+    return (
+        <div className="flex flex-col min-h-screen bg-gray-100">
+            <ErrorBoundaryWrapper>
+                <Header />
+            </ErrorBoundaryWrapper>
+            <ErrorBoundaryWrapper>
+                <main className="flex-1 container mx-auto px-4 py-6 max-w-5xl">
+                    <DynamicTitle />
+                    <div className="bg-white rounded-lg shadow-sm mb-6">
+                        <div className="p-4 border-b">
+                            <h2 className="text-lg font-medium text-red-800">
+                                {name} <span className="text-gray-700">({id})</span>
+                            </h2>
+                        </div>
+                    </div>
+                    {children}
+                </main>
+            </ErrorBoundaryWrapper>
+            <Footer />
+        </div>
+    )
+}
