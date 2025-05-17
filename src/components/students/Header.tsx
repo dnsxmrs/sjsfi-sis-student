@@ -6,24 +6,23 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { toast } from 'react-hot-toast'
-import { UserButton, useClerk, useUser } from '@clerk/nextjs'
+import { UserButton, useClerk } from '@clerk/nextjs'
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const pathname = usePathname()
     const { signOut } = useClerk()
-    const { user } = useUser()
 
-    const handleNavClick = (item: string) => {
-        toast.success(`Navigated to ${item}`)
-    }
+    // const handleNavClick = (item: string) => {
+    //     toast.success(`Navigated to ${item}`)
+    // }
 
     const handleSignOut = async () => {
         try {
             await signOut()
             toast.success('Signed out successfully')
         } catch (error) {
-            toast.error('Failed to sign out')
+            toast.error('Failed to sign out: ' + error)
         }
     }
 

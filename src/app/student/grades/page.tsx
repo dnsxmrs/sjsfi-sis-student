@@ -1,5 +1,18 @@
 'use client'
 
+interface Subject {
+    number: number;
+    code: string;
+    desc: string;
+    faculty: string;
+    g1: number;
+    g2: number;
+    g3: number;
+    g4: number;
+    final: number;
+    status: string;
+}
+
 const gradesData = [
     {
         schoolYear: '2023-2024',
@@ -22,7 +35,7 @@ const gradesData = [
     },
 ];
 
-function GradesTable({ year, grade, subjects }: { year: string; grade: string; subjects: any[] }) {
+function GradesTable({ year, grade, subjects }: { year: string; grade: string; subjects: Subject[] }) {
     return (
         <div className="mb-8">
             <div className="bg-[#800000] text-white px-4 py-2 rounded-t-md font-medium text-lg">

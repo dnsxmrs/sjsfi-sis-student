@@ -36,7 +36,7 @@ export default function TermsOfUse() {
                         <section>
                             <h2 className="text-2xl font-semibold mb-4 text-red-800">Limitation of Liability</h2>
                             <p className="text-gray-600 leading-relaxed">
-                                We are not liable for any damages or losses resulting from your use of our services. Our services are provided "as is" without warranties of any kind.
+                                We are not liable for any damages or losses resulting from your use of our services. Our services are provided &quot;as is&quot; without warranties of any kind.
                             </p>
                         </section>
 
@@ -46,7 +46,7 @@ export default function TermsOfUse() {
                                 We reserve the right to update or modify these Terms of Use at any time. Changes will be effective upon posting to this page.
                             </p>
                         </section>
-
+                        
                         <section>
                             <h2 className="text-2xl font-semibold mb-4 text-red-800">Contact Us</h2>
                             <p className="text-gray-600 leading-relaxed">
