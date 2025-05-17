@@ -5,6 +5,7 @@ import {
 import { Poppins } from 'next/font/google'
 import './globals.css'
 import { Toaster } from 'react-hot-toast'
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -29,6 +30,7 @@ export default function RootLayout({
         <body className={`${poppins.variable} antialiased`}>
           {children}
           <Toaster position="top-right" />
+          <SpeedInsights/>
         </body>
       </html>
     </ClerkProvider>

@@ -35,6 +35,11 @@ export default clerkMiddleware(async (auth, req) => {
 
     // If trying to access a public route while authenticated
     if (isPublicRoute(req) && isAuthenticated) {
+        // Allow access to terms and privacy pages even when authenticated
+        if (url.pathname === '/terms-of-use' || url.pathname === '/privacy-statement') {
+            return NextResponse.next();
+        }
+
         console.log('⚠️ Authenticated user attempting to access public route');
 
         // TODO: Replace logic with real fetching of user roles
