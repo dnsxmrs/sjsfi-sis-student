@@ -23,7 +23,7 @@ export default function SchedulePage() {
             try {
                 const data = await getSchedule()
                 setScheduleData(data)
-            } catch (error) {
+            } catch {
                 toast.error('Failed to load schedule')
                 // console.error('Error fetching schedule:', error)
             } finally {

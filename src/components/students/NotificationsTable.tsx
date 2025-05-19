@@ -18,7 +18,7 @@ export default function NotificationsTable() {
             try {
                 const data = await getNotifications()
                 setNotifications(data)
-            } catch (error) {
+            } catch {
                 toast.error('Failed to load notifications')
                 // console.error('Error fetching notifications:', error)
             } finally {

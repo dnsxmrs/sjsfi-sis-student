@@ -16,7 +16,7 @@ export default function HomePage() {
             try {
                 const data = await getGeneralPolicy()
                 setPolicy(data)
-            } catch (error) {
+            } catch {
                 // console.error('Error fetching policy:', error)
             } finally {
                 setIsLoading(false)

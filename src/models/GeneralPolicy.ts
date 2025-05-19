@@ -82,7 +82,7 @@ export function formatPolicyDate(date: string): string {
             month: 'long',
             day: 'numeric'
         })
-    } catch (error) {
+    } catch {
         // console.error('Invalid date format:', error)
         return date
     }
