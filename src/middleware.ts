@@ -43,7 +43,7 @@ export default clerkMiddleware(async (auth, req) => {
         console.log('⚠️ Authenticated user attempting to access public route');
 
         // TODO: Replace logic with real fetching of user roles
-        let redirectUrl = '/student/home'; // Default redirect
+        let redirectUrl = '/admin/home'; // Default redirect
 
         // Check URL to determine if they're a faculty member
         if (url.pathname.startsWith('/faculty') || url.pathname === '/') {
