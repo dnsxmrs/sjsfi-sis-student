@@ -20,9 +20,9 @@ export default function Student() {
         setError('');
 
         // console log the student number, email, and password
-        console.log('Student Number:', studentNumber);
-        console.log('Email:', email_address);
-        console.log('Password:', password);
+        // console.log('Student Number:', studentNumber);
+        // console.log('Email:', email_address);
+        // console.log('Password:', password);
 
         if (!isLoaded) return;
 
@@ -31,25 +31,25 @@ export default function Student() {
             const signInAttempt = await signIn.create({
                 identifier: email_address, // just the email
             });
-            console.log('Sign In:', signIn);
+            // console.log('Sign In:', signIn);
 
             // STEP 2: Now try to complete with password
             const result = await signInAttempt.attemptFirstFactor({
                 strategy: 'password',
                 password,
             });
-            console.log('Sign In Attempt:', signInAttempt);
+            // console.log('Sign In Attempt:', signInAttempt);
 
             // STEP 3: If complete, activate session
             if (result.status === 'complete') {
                 await setActive({ session: result.createdSessionId });
                 window.location.href = '/student/home';
             } else {
-                console.log('Unexpected sign-in state:', result);
+                // console.log('Unexpected sign-in state:', result);
                 setError('Sign-in not complete. Additional steps required.');
             }
         } catch (err: unknown) {
-            console.error(err);
+            // console.error(err);
             if (err && typeof err === 'object' && 'message' in err) {
                 setError((err as Error).message || 'Login failed');
             } else {

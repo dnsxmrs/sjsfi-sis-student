@@ -29,7 +29,7 @@ export default clerkMiddleware(async (auth, req) => {
 
     // If trying to access a protected route while not authenticated
     if (!isPublicRoute(req) && !isAuthenticated) {
-        console.log('🚫 Unauthorized access to protected route');
+        // console.log('🚫 Unauthorized access to protected route');
         await auth.protect();
     }
 
@@ -40,7 +40,7 @@ export default clerkMiddleware(async (auth, req) => {
             return NextResponse.next();
         }
 
-        console.log('⚠️ Authenticated user attempting to access public route');
+        // console.log('⚠️ Authenticated user attempting to access public route');
 
         // TODO: Replace logic with real fetching of user roles
         let redirectUrl = '/student/home'; // Default redirect
@@ -48,7 +48,7 @@ export default clerkMiddleware(async (auth, req) => {
         // Check URL to determine if they're a faculty member
         if (url.pathname.startsWith('/faculty') || url.pathname === '/') {
             const user = await clerkClient.users.getUser(userId);
-            console.log('User Role:', user?.publicMetadata?.role || 'No role defined');
+            // console.log('User Role:', user?.publicMetadata?.role || 'No role defined');
 
             // If user is faculty, redirect to faculty home
             // You can adjust this logic based on how you store roles
@@ -58,7 +58,7 @@ export default clerkMiddleware(async (auth, req) => {
         }
 
         // Redirect to appropriate home page
-        console.log('🔄 Redirecting to:', redirectUrl);
+        // console.log('🔄 Redirecting to:', redirectUrl);
         return NextResponse.redirect(new URL(redirectUrl, req.url));
     }
 }, { debug: false });// change before pushing to production

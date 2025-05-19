@@ -13,7 +13,7 @@ export default function StudentForgotPassword() {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         // You now have all the values
-        console.log({ email });
+        // console.log({ email });
         // TODO: handle form submission
     };
 

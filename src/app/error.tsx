@@ -8,7 +8,7 @@ export default function Error({ error, reset }: { error: Error; reset: () => voi
     const router = useRouter();
 
     useEffect(() => {
-        console.error('Error caught by error.tsx:', error);
+        // console.error('Error caught by error.tsx:', error);
     }, [error]);
 
     return (

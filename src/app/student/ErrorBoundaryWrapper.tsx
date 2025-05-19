@@ -7,7 +7,7 @@ import ErrorDisplay from '@/components/molecules/ErrorBubble';
 
 function ErrorFallback({ error, resetErrorBoundary }: { error: Error; resetErrorBoundary: () => void }) {
     useEffect(() => {
-        console.error('Error caught by error.tsx:', error);
+        // console.error('Error caught by error.tsx:', error);
     }, [error]);
 
     return (

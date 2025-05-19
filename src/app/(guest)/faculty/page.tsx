@@ -15,7 +15,7 @@ export default function Faculty() {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         // You now have all the values
-        console.log({ username, email, password });
+        // console.log({ username, email, password });
         // TODO: handle form submission
     };
 

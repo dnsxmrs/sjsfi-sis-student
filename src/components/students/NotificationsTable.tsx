@@ -20,7 +20,7 @@ export default function NotificationsTable() {
                 setNotifications(data)
             } catch (error) {
                 toast.error('Failed to load notifications')
-                console.error('Error fetching notifications:', error)
+                // console.error('Error fetching notifications:', error)
             } finally {
                 setIsLoading(false)
             }
