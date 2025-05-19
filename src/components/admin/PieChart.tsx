@@ -17,7 +17,7 @@ const COLORS = [
 
 const GradePieChart: React.FC = () => {
   return (
-    <div className="flex flex-col md:flex-row items-center md:items-start justify-center gap-4">
+    <div className="flex flex-col md:flex-row items-center md:items-start md:justify-start justify-center gap-4">
       <ResponsiveContainer width={280} height={280}>
         <PieChart>
           <Pie
@@ -36,7 +36,7 @@ const GradePieChart: React.FC = () => {
         </PieChart>
       </ResponsiveContainer>
 
-      {/* Legend block styled separately */}
+      {/* Legend block*/}
       <div className="flex flex-wrap justify-center md:flex-col md:justify-start text-sm text-gray-600">
         {data.map((entry, index) => (
           <div key={entry.name} className="flex items-center mr-4 mb-2 md:mb-1">

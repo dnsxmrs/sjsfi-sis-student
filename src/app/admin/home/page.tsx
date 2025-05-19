@@ -4,6 +4,7 @@ import React from 'react';
 import MetricCard from '@/components/admin/MetricCard';
 import GradePieChart from '@/components/admin/PieChart';
 import SystemLogsTable from '@/components/admin/SystemLogsTable';
+import UserIDModal from '@/components/admin/UserIDModal';
 
 const DashboardPage = () => {
   return (
