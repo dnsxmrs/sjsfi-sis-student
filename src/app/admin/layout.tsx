@@ -2,8 +2,11 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Bell, UserCircle, Menu, X } from 'lucide-react';
+import { Bell, UserCircle, Menu, X , SquareStack, List, Scale, Settings} from 'lucide-react';
 import UserIDModal from '@/components/admin/UserIDModal';
+import LogoutModal from '@/components/admin/LogoutModal';
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 export default function AdminHomeLayout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -28,10 +31,14 @@ export default function AdminHomeLayout({ children }: { children: React.ReactNod
     hour12: true,
   })}`;
 
+  const [logoutModalOpen, setLogoutModalOpen] = useState(false);
+  const router = useRouter();
+
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col md:flex-row">
       {/* Mobile Top Bar */}
       <div className="md:hidden flex justify-between items-center bg-red-900 text-white px-4 py-3">
+        <Image src="/assets/sjsfi_logo.svg" alt="SJSFI Logo"  width={40} height={40} className="mb-2" />
         <div className="text-lg font-bold">SJSFI-SIS</div>
         <button onClick={() => setSidebarOpen(!sidebarOpen)} aria-label="Toggle Menu">
           {sidebarOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -44,14 +51,35 @@ export default function AdminHomeLayout({ children }: { children: React.ReactNod
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         } transition-transform duration-300 ease-in-out md:static md:translate-x-0 md:flex md:flex-col md:w-64 md:h-auto`}
       >
-        <div className="hidden md:flex items-center justify-center py-6 text-xl font-bold">SJSFI-SIS</div>
-        <nav className="space-y-4 text-sm px-6 pt-4 md:pt-0">
-          <Link href="/admin/home" className="block py-2 hover:bg-red-700 rounded">Dashboard</Link>
-          <Link href="/admin/system-logs" className="block py-2 hover:bg-red-700 rounded">System Logs</Link>
-          <Link href="/admin/policies" className="block py-2 hover:bg-red-700 rounded">School Policies</Link>
-          <Link href="/admin/settings" className="block py-2 hover:bg-red-700 rounded">Settings</Link>
-        </nav>
+        <div className="flex flex-col h-full justify-between">
+          {/* Navigation */}
+          <div>
+            <div className="flex flex-col items-center justify-center py-6 text-xl font-bold">
+              <Image src="/assets/sjsfi_logo.svg" alt="SJSFI Logo" width={90} height={90} />
+              <span>SJSFI-SIS</span>
+            </div>
+            <nav className="space-y-4 text-sm px-6 pt-4 md:pt-0">
+              <Link href="/admin/home" className="flex items-center space-x-5 py-2 hover:bg-red-700 rounded text-yellow-400">
+                <SquareStack className="w-8 h-8 text-yellow-400" />
+                <span>Dashboard</span>
+              </Link>
+              <Link href="/admin/system-logs" className="flex items-center space-x-5 py-2 hover:bg-red-700 rounded">
+                <List className="w-8 h-8" />
+                <span>System Logs</span>
+              </Link>
+              <Link href="/admin/policies" className="flex items-center space-x-5 py-2 hover:bg-red-700 rounded">
+                <Scale className="w-8 h-8" />
+                <span>School Policies</span>
+              </Link>
+              <Link href="/admin/settings" className="flex items-center space-x-5 py-2 hover:bg-red-700 rounded">
+                <Settings className="w-8 h-8" />
+                <span>Settings</span>
+              </Link>
+            </nav>
+          </div>
+        </div>
       </aside>
+
 
       {/* Overlay for mobile menu */}
       {sidebarOpen && (
@@ -104,6 +132,18 @@ export default function AdminHomeLayout({ children }: { children: React.ReactNod
           </div>
         </div>
       </UserIDModal>
+
+      <LogoutModal
+        isOpen={logoutModalOpen}
+        onCancel={() => setLogoutModalOpen(false)}
+        onConfirm={() => {
+          // Example logout logic
+          setLogoutModalOpen(false);
+          // Clear local/session storage or cookies if needed
+          router.push('/'); // Redirect to login/home
+        }}
+      />
+
     </div>
   );
 }
