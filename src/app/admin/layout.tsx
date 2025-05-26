@@ -2,43 +2,70 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Bell, UserCircle, Menu, X , SquareStack, List, Scale, Settings} from 'lucide-react';
+import { usePathname, useRouter } from 'next/navigation';
+import { Bell, UserCircle, Menu, X, SquareStack, List, Scale, Settings, MenuIcon } from 'lucide-react';
+import Image from 'next/image';
 import UserIDModal from '@/components/admin/UserIDModal';
 import LogoutModal from '@/components/admin/LogoutModal';
-import { useRouter } from 'next/navigation';
-import Image from 'next/image';
 
 export default function AdminHomeLayout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const [profilePopupOpen, setProfilePopupOpen] = useState(false);
+  const [logoutModalOpen, setLogoutModalOpen] = useState(false);
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
+
+  const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentDateTime(new Date());
     }, 1000);
-
     return () => clearInterval(interval);
   }, []);
 
   const formattedDateTime = `${currentDateTime.toLocaleDateString('en-US', {
     month: 'long',
     day: 'numeric',
-    year: 'numeric',
+    year: 'numeric'
   }).replace(',', '')} - ${currentDateTime.toLocaleTimeString('en-US', {
     hour: 'numeric',
     minute: '2-digit',
-    hour12: true,
+    hour12: true
   })}`;
 
-  const [logoutModalOpen, setLogoutModalOpen] = useState(false);
-  const router = useRouter();
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (!(event.target as HTMLElement).closest('.relative')) {
+        setProfileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const getPageTitle = (path: string) => {
+    switch (path) {
+      case '/admin/home':
+        return 'Dashboard';
+      case '/admin/system-logs':
+        return 'System Logs';
+      case '/admin/policies':
+        return 'School Policies';
+      case '/admin/settings':
+        return 'Settings';
+      default:
+        return '';
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col md:flex-row">
       {/* Mobile Top Bar */}
       <div className="md:hidden flex justify-between items-center bg-red-900 text-white px-4 py-3">
-        <Image src="/assets/sjsfi_logo.svg" alt="SJSFI Logo"  width={40} height={40} className="mb-2" />
+        <Image src="/assets/sjsfi_logo.svg" alt="SJSFI Logo" width={40} height={40} className="mb-2" />
         <div className="text-lg font-bold">SJSFI-SIS</div>
         <button onClick={() => setSidebarOpen(!sidebarOpen)} aria-label="Toggle Menu">
           {sidebarOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -46,11 +73,7 @@ export default function AdminHomeLayout({ children }: { children: React.ReactNod
       </div>
 
       {/* Sidebar */}
-      <aside
-        className={`fixed z-20 top-0 left-0 h-full w-64 bg-red-900 text-white transform ${
-          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        } transition-transform duration-300 ease-in-out md:static md:translate-x-0 md:flex md:flex-col md:w-64 md:h-auto`}
-      >
+      <aside className={`fixed z-20 top-0 left-0 h-full w-64 bg-red-900 text-white transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out md:static md:translate-x-0 md:flex md:flex-col md:w-64 md:h-auto`}>
         <div className="flex flex-col h-full justify-between">
           {/* Navigation */}
           <div>
@@ -59,19 +82,19 @@ export default function AdminHomeLayout({ children }: { children: React.ReactNod
               <span>SJSFI-SIS</span>
             </div>
             <nav className="space-y-4 text-sm px-6 pt-4 md:pt-0">
-              <Link href="/admin/home" className="flex items-center space-x-5 py-2 hover:bg-red-700 rounded text-yellow-400">
-                <SquareStack className="w-8 h-8 text-yellow-400" />
+              <Link href="/admin/home" className={`flex items-center space-x-5 py-2 rounded hover:bg-red-700 ${pathname === '/admin/home' ? 'text-yellow-400' : ''}`}>
+                <SquareStack className="w-8 h-8" />
                 <span>Dashboard</span>
               </Link>
-              <Link href="/admin/system-logs" className="flex items-center space-x-5 py-2 hover:bg-red-700 rounded">
+              <Link href="/admin/system-logs" className={`flex items-center space-x-5 py-2 rounded hover:bg-red-700 ${pathname === '/admin/system-logs' ? 'text-yellow-400' : ''}`}>
                 <List className="w-8 h-8" />
                 <span>System Logs</span>
               </Link>
-              <Link href="/admin/policies" className="flex items-center space-x-5 py-2 hover:bg-red-700 rounded">
+              <Link href="/admin/policies" className={`flex items-center space-x-5 py-2 rounded hover:bg-red-700 ${pathname === '/admin/policies' ? 'text-yellow-400' : ''}`}>
                 <Scale className="w-8 h-8" />
                 <span>School Policies</span>
               </Link>
-              <Link href="/admin/settings" className="flex items-center space-x-5 py-2 hover:bg-red-700 rounded">
+              <Link href="/admin/settings" className={`flex items-center space-x-5 py-2 rounded hover:bg-red-700 ${pathname === '/admin/settings' ? 'text-yellow-400' : ''}`}>
                 <Settings className="w-8 h-8" />
                 <span>Settings</span>
               </Link>
@@ -80,21 +103,15 @@ export default function AdminHomeLayout({ children }: { children: React.ReactNod
         </div>
       </aside>
 
-
       {/* Overlay for mobile menu */}
-      {sidebarOpen && (
-        <div
-          onClick={() => setSidebarOpen(false)}
-          className="fixed inset-0 z-10 bg-black opacity-30 md:hidden"
-        />
-      )}
+      {sidebarOpen && <div onClick={() => setSidebarOpen(false)} className="fixed inset-0 z-10 bg-black opacity-30 md:hidden" />}
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
         {/* Top Bar */}
         <header className="flex items-center justify-between bg-white shadow px-4 py-3 md:px-6">
           <div>
-            <h1 className="text-xl font-semibold text-red-700">Dashboard</h1>
+            <h1 className="text-xl font-semibold text-red-700">{getPageTitle(pathname)}</h1>
             <p className="text-sm text-gray-500">{formattedDateTime}</p>
           </div>
           <div className="flex items-center space-x-4">
@@ -106,6 +123,39 @@ export default function AdminHomeLayout({ children }: { children: React.ReactNod
                 <div className="text-xs text-gray-500">2022-00000-11</div>
               </div>
             </div>
+
+            {/* Menu Button (View Profile, Change Pass, LogOut) */}
+            <div className="relative">
+              <MenuIcon 
+                className="text-gray-600 cursor-pointer" 
+                onClick={() => setProfileMenuOpen(prev => !prev)} 
+              />
+
+              {profileMenuOpen && (
+                <div className="absolute right-0 mt-2 w-52 bg-white rounded-xl shadow-lg z-50 p-4 space-y-4 text-gray-800">
+                  <div className="flex items-center gap-2 hover:text-red-700 cursor-pointer">
+                    <UserCircle className="w-5 h-5" />
+                    <span>View Profile</span>
+                  </div>
+                  <div className="flex items-center gap-2 hover:text-red-700 cursor-pointer">
+                    <Settings className="w-5 h-5 shrink-0" />
+                    <span className="whitespace-nowrap">Change Password</span>
+                  </div>
+                  <div 
+                    className="flex items-center gap-2 hover:text-red-700 cursor-pointer"
+                    onClick={() => {
+                      setProfileMenuOpen(false);
+                      setLogoutModalOpen(true);
+                    }}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 16l4-4m0 0l-4-4m4 4H3m13 4v1a2 2 0 002 2h1a2 2 0 002-2V7a2 2 0 00-2-2h-1a2 2 0 00-2 2v1" />
+                    </svg>
+                    <span>Log Out</span>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </header>
 
@@ -113,7 +163,7 @@ export default function AdminHomeLayout({ children }: { children: React.ReactNod
         <main className="p-4 md:p-6">{children}</main>
       </div>
 
-      {/* Reusable Profile Modal */}
+      {/* Profile Modal */}
       <UserIDModal isOpen={profilePopupOpen} onClose={() => setProfilePopupOpen(false)}>
         <div className="bg-red-800 h-20 rounded-t-xl flex items-center justify-center">
           <div className="bg-white rounded-full p-2">
@@ -137,13 +187,10 @@ export default function AdminHomeLayout({ children }: { children: React.ReactNod
         isOpen={logoutModalOpen}
         onCancel={() => setLogoutModalOpen(false)}
         onConfirm={() => {
-          // Example logout logic
           setLogoutModalOpen(false);
-          // Clear local/session storage or cookies if needed
-          router.push('/'); // Redirect to login/home
+          router.push('/');
         }}
       />
-
     </div>
   );
 }
