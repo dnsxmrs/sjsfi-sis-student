@@ -1,12 +1,12 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
+import { useSignIn } from '@clerk/nextjs';
 import { useState } from 'react';
 import InputField from '@/components/atoms/InputField';
 import LoginFooter from '@/components/atoms/LoginFooter';
 import ActionButton from '@/components/atoms/ActionButton';
-import Link from 'next/link';
-import { useSignIn } from '@clerk/nextjs';
 
 export default function Student() {
     const { signIn, setActive, isLoaded } = useSignIn();

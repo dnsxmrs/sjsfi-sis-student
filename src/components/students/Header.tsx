@@ -81,19 +81,22 @@ const Header = () => {
                     <UserButton />
                 </div>
 
-                {/* Mobile Menu Button */}
-                <li className="py-3 px-4 flex justify-end md:hidden">
-                    <UserButton />
-                </li>
-                <button
-                    className="md:hidden"
-                    onClick={() => {
-                        setIsMenuOpen(!isMenuOpen)
-                    }}
-                    aria-label="Toggle menu"
-                >
-                    <MenuIcon />
-                </button>
+                {/* make the div flex */}
+                <div className="flex justify-end">
+                    {/* Mobile Menu Button */}
+                    <div className="py-3 px-4 flex justify-end md:hidden">
+                        <UserButton />
+                    </div>
+                    <button
+                        // if button is clicked, it will turn to #800000
+                        className="md:hidden text-black hover:text-red-800 "
+                        onClick={() => {
+                            setIsMenuOpen(!isMenuOpen)
+                        }}
+                    >
+                        <MenuIcon />
+                    </button>
+                </div>
             </div>
             {isMenuOpen && (
                 <div className="md:hidden bg-white border-t">

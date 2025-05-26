@@ -5,7 +5,7 @@ import Header from '@/components/students/Header'
 import Footer from '@/components/students/Footer'
 import { ReactNode } from 'react'
 import ErrorBoundaryWrapper from './ErrorBoundaryWrapper'
-import { getCurrentUser } from '../_actions/getCurrentUser'
+import { getCurrentUser } from '../../_actions/getCurrentUser'
 import DynamicTitle from '@/components/students/DynamicTitle'
 
 
@@ -19,7 +19,7 @@ export default async function StudentLayout({ children }: { children: ReactNode 
     // await new Promise(resolve => setTimeout(resolve, 3000));
 
     // get current user name and student number
-    const { name, id } = await getCurrentUser();
+    const { name, studentNo } = await getCurrentUser();
 
     return (
         <div className="flex flex-col min-h-screen bg-gray-100">
@@ -27,17 +27,17 @@ export default async function StudentLayout({ children }: { children: ReactNode 
                 <Header />
             </ErrorBoundaryWrapper>
             <ErrorBoundaryWrapper>
-                <main className="flex-1 container mx-auto px-2 sm:px-4 py-4 sm:py-6 max-w-5xl">
+                <div className="flex-1 container mx-auto px-2 sm:px-4 py-4 sm:py-6 max-w-5xl">
                     <DynamicTitle />
                     <div className="bg-white rounded-lg shadow-sm mb-4 sm:mb-6">
                         <div className="p-3 sm:p-4">
                             <h2 className="text-base sm:text-lg font-medium text-red-800">
-                                {name} <span className="text-gray-700">({id})</span>
+                                {name} <span className="text-gray-700">({studentNo})</span>
                             </h2>
                         </div>
                     </div>
                     {children}
-                </main>
+                </div>
             </ErrorBoundaryWrapper>
             <Footer />
         </div>

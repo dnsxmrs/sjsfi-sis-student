@@ -29,7 +29,7 @@ export default function HomePage() {
     return (
         <>
             <NotificationsTable />
-            
+
             {isLoading ? (
                 <PolicySkeleton />
             ) : policy ? (

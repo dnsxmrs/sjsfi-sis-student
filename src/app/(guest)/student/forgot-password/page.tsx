@@ -1,10 +1,10 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { useState } from 'react';
 import InputField from '@/components/atoms/InputField';
 import LoginFooter from '@/components/atoms/LoginFooter';
-import Link from 'next/link';
 import ActionButton from '@/components/atoms/ActionButton';
 
 export default function StudentForgotPassword() {
