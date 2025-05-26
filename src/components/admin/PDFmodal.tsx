@@ -13,7 +13,7 @@ const PDFmodal: React.FC<PDFmodalProps> = ({ isOpen, onCancel, onConfirm }) => {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-600/50 backdrop-blur-sm">
       <div className="bg-white rounded-lg shadow-lg w-[90%] max-w-sm p-6 text-center ">
         <h2 className="text-xl font-semibold mb-2 text-gray-600">Export as PDF</h2>
-        <p className="mb-4 text-gray-600">Are you sure you want to export this as '.pdf'?</p>
+        <p className="mb-4 text-gray-600">Are you sure you want to export this as &apos;.pdf&apos;?</p>
         <div className="flex justify-center gap-4">
           <button
             onClick={onCancel}
