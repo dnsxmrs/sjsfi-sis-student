@@ -1,11 +1,11 @@
 import Image from 'next/image';
-import RoleButton from '@/components/atoms/RoleButton'; // adjust path if needed
+import RoleButton from '@/components/atoms/RoleButton';
 import LoginFooter from '@/components/atoms/LoginFooter';
 
 
 export default async function Home() {
   // delay to test the loading screen
-  await new Promise(resolve => setTimeout(resolve, 1000));
+  // await new Promise(resolve => setTimeout(resolve, 1000));
 
   return (
     <div className="flex h-screen w-screen bg-white min-width-[360px]">
