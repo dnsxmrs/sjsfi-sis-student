@@ -43,7 +43,7 @@ export default function Student() {
             // STEP 3: If complete, activate session
             if (result.status === 'complete') {
                 await setActive({ session: result.createdSessionId });
-                window.location.href = '/student/home';
+                window.location.href = '/admin/home'; //TEMPORARY PLEASE CHANGE BACK TO /student/home
             } else {
                 console.log('Unexpected sign-in state:', result);
                 setError('Sign-in not complete. Additional steps required.');

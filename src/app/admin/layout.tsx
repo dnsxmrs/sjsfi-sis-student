@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Bell, UserCircle, Menu, X, SquareStack, List, Scale, Settings, MenuIcon } from 'lucide-react';
+import { Bell, UserCircle, Menu, X, SquareStack, List, Scale, Settings, Ellipsis } from 'lucide-react';
 import Image from 'next/image';
 import UserIDModal from '@/components/admin/UserIDModal';
 import LogoutModal from '@/components/admin/LogoutModal';
@@ -14,6 +14,7 @@ export default function AdminHomeLayout({ children }: { children: React.ReactNod
   const [profilePopupOpen, setProfilePopupOpen] = useState(false);
   const [logoutModalOpen, setLogoutModalOpen] = useState(false);
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
+  
 
   const pathname = usePathname();
   const router = useRouter();
@@ -96,7 +97,7 @@ export default function AdminHomeLayout({ children }: { children: React.ReactNod
               </Link>
               <Link href="/admin/settings" className={`flex items-center space-x-5 py-2 rounded hover:bg-red-700 ${pathname === '/admin/settings' ? 'text-yellow-400' : ''}`}>
                 <Settings className="w-8 h-8" />
-                <span>Settings</span>
+                <span>System Config</span>
               </Link>
             </nav>
           </div>
@@ -126,7 +127,7 @@ export default function AdminHomeLayout({ children }: { children: React.ReactNod
 
             {/* Menu Button (View Profile, Change Pass, LogOut) */}
             <div className="relative">
-              <MenuIcon 
+              <Ellipsis
                 className="text-gray-600 cursor-pointer" 
                 onClick={() => setProfileMenuOpen(prev => !prev)} 
               />
