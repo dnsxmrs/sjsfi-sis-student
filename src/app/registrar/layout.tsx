@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Bell, UserCircle, Menu, X, SquareStack, List, Scale, Settings, Ellipsis } from 'lucide-react';
+import { Bell, UserCircle, Menu, X, SquareStack, PencilLine, BookMarked, Newspaper, ScrollText, Ellipsis, Settings } from 'lucide-react';
 import Image from 'next/image';
 import UserIDModal from '@/components/admin/UserIDModal';
 import LogoutModal from '@/components/admin/LogoutModal';
@@ -49,14 +49,16 @@ export default function AdminHomeLayout({ children }: { children: React.ReactNod
 
   const getPageTitle = (path: string) => {
     switch (path) {
-      case '/admin/home':
+      case '/registrar/home':
         return 'Dashboard';
-      case '/admin/system-logs':
-        return 'System Logs';
-      case '/admin/policies':
-        return 'School Policies';
-      case '/admin/settings':
-        return 'Settings';
+      case '/registrar/register-student':
+        return 'Register in Courses'; 
+      case '/registrar/student-info':
+        return 'Student Information';
+      case '/registrar/generate-reports':
+        return 'Generate Reports';
+      case '/registrar/withdraw-request':
+        return 'Withdraw Requests';
       default:
         return '';
     }
@@ -83,21 +85,25 @@ export default function AdminHomeLayout({ children }: { children: React.ReactNod
               <span>SJSFI-SIS</span>
             </div>
             <nav className="space-y-4 text-sm px-6 pt-4 md:pt-0">
-              <Link href="/admin/home" className={`flex items-center space-x-5 py-2 rounded hover:bg-red-700 ${pathname === '/admin/home' ? 'text-yellow-400' : ''}`}>
+              <Link href="/register/home" className={`flex items-center space-x-5 py-2 rounded hover:bg-red-700 ${pathname === '/admin/home' ? 'text-yellow-400' : ''}`}>
                 <SquareStack className="w-8 h-8" />
                 <span>Dashboard</span>
               </Link>
-              <Link href="/admin/system-logs" className={`flex items-center space-x-5 py-2 rounded hover:bg-red-700 ${pathname === '/admin/system-logs' ? 'text-yellow-400' : ''}`}>
-                <List className="w-8 h-8" />
-                <span>System Logs</span>
+              <Link href="/register/register-student" className={`flex items-center space-x-5 py-2 rounded hover:bg-red-700 ${pathname === '/admin/system-logs' ? 'text-yellow-400' : ''}`}>
+                <PencilLine className="w-8 h-8" />
+                <span>Register in Courses</span>
               </Link>
-              <Link href="/admin/policies" className={`flex items-center space-x-5 py-2 rounded hover:bg-red-700 ${pathname === '/admin/policies' ? 'text-yellow-400' : ''}`}>
-                <Scale className="w-8 h-8" />
-                <span>School Policies</span>
+              <Link href="/register/student-info" className={`flex items-center space-x-5 py-2 rounded hover:bg-red-700 ${pathname === '/admin/policies' ? 'text-yellow-400' : ''}`}>
+                <BookMarked className="w-8 h-8" />
+                <span>Student Information</span>
               </Link>
-              <Link href="/admin/system-config" className={`flex items-center space-x-5 py-2 rounded hover:bg-red-700 ${pathname === '/admin/settings' ? 'text-yellow-400' : ''}`}>
-                <Settings className="w-8 h-8" />
-                <span>System Config</span>
+              <Link href="/register/generate-reports" className={`flex items-center space-x-5 py-2 rounded hover:bg-red-700 ${pathname === '/admin/settings' ? 'text-yellow-400' : ''}`}>
+                <Newspaper className="w-8 h-8" />
+                <span>Generate Reports</span>
+              </Link>
+              <Link href="/register/withdraw-requests" className={`flex items-center space-x-5 py-2 rounded hover:bg-red-700 ${pathname === '/admin/settings' ? 'text-yellow-400' : ''}`}>
+                <ScrollText className="w-8 h-8" />
+                <span>Withdraw Requests</span>
               </Link>
             </nav>
           </div>
