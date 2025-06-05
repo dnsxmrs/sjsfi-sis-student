@@ -8,7 +8,6 @@ import ErrorBoundaryWrapper from './ErrorBoundaryWrapper'
 import { getCurrentUser } from '../../_actions/getCurrentUser'
 import DynamicTitle from '@/components/students/DynamicTitle'
 
-
 export const metadata = {
     title: 'Student | SJSFI - SIS',
     description: 'SJSFI Student Information System',

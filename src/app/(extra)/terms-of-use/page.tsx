@@ -8,7 +8,7 @@ export default function TermsOfUse() {
                     <h1 className="text-3xl font-bold mb-8 text-center text-red-800">
                         Terms of Use
                     </h1>
-                    
+
                     <div className="space-y-8">
                         <section>
                             <h2 className="text-2xl font-semibold mb-4 text-red-800">Acceptance of Terms</h2>
@@ -46,13 +46,13 @@ export default function TermsOfUse() {
                                 We reserve the right to update or modify these Terms of Use at any time. Changes will be effective upon posting to this page.
                             </p>
                         </section>
-                        
+
                         <section>
                             <h2 className="text-2xl font-semibold mb-4 text-red-800">Contact Us</h2>
                             <p className="text-gray-600 leading-relaxed">
                                 If you have any questions about these Terms of Use, please contact us at{' '}
-                                <a 
-                                    href="mailto:sjsfi96@gmail.com" 
+                                <a
+                                    href="mailto:sjsfi96@gmail.com"
                                     className="text-red-800 hover:text-red-600 underline"
                                 >
                                     sjsfi96@gmail.com
