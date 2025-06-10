@@ -9,7 +9,7 @@
     "lint": "next lint",
     "prisma": "prisma",
     "postinstall": "prisma generate",
-    "vercel-build": "prisma generate && prisma migrate deploy && next build"
+    "vercel-build": "prisma generate && next build"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
@@ -34,6 +34,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@prisma/nextjs-monorepo-workaround-plugin": "^6.9.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20.17.48",
     "@types/react": "^19",
