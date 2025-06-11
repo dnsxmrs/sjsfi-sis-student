@@ -16,8 +16,10 @@ model User {
   first_name      String    @db.VarChar(100)
   last_name       String    @db.VarChar(100)
   email           String    @unique @db.VarChar(255)
-  status          String    @default("active") @db.VarChar(50)
+  status          String    @default("active") @db.VarChar(50) // System status (e.g., active/inactive)
   role            String    @default("student") @db.VarChar(50)
+  grade_level     String?   @db.VarChar(50) // e.g., "Grade 11", "1st Year", "Senior"
+  enrollment_status String? @db.VarChar(50) // e.g., "enrolled", "not enrolled"
   photo           String?   @db.VarChar(255)
   created_at      DateTime  @default(now())
   modified_at     DateTime  @default(now())
