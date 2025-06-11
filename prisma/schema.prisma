@@ -16,9 +16,8 @@ model User {
   first_name      String    @db.VarChar(100)
   last_name       String    @db.VarChar(100)
   email           String    @unique @db.VarChar(255)
-  hashed_password String
   status          String    @default("active") @db.VarChar(50)
-  role            String    @default("faculty") @db.VarChar(50)
+  role            String    @default("student") @db.VarChar(50)
   photo           String?   @db.VarChar(255)
   created_at      DateTime  @default(now())
   modified_at     DateTime  @default(now())

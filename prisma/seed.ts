@@ -3,72 +3,33 @@ import { prisma } from '@/lib/prisma'
 
 const userData: Prisma.UserCreateInput[] = [
     {
-        clerk_id: "clerk_123",
-        first_name: "Alice",
-        last_name: "Smith",
-        email: "alice@prisma.io",
-        hashed_password: "hashed_password_here",
-        status: "active",
-        role: "Faculty",
-        photo: null
-    },
-    {
-        clerk_id: "clerk_456",
-        first_name: "Bob",
-        last_name: "Johnson",
-        email: "faculty@faculty.com",
-        hashed_password: "hashed_password_here",
-        status: "active",
-        role: "Faculty",
-        photo: null
-    },
-    {
-        clerk_id: "test1",
-        first_name: "Student",
-        last_name: "User",
-        email: "student@student.com",
-        hashed_password: "idk doesnt matter",
+        clerk_id: "test12",
+        first_name: "Student1",
+        last_name: "User1",
+        email: "student2@student.com",
         status: "active",
         role: "Student",
         photo: null
     },
     {
-        clerk_id: "admin_001",
-        first_name: "Anna",
-        last_name: "Admin",
-        email: "admin@admin.com",
-        hashed_password: "hashed_password_here",
+        clerk_id: "test2",
+        first_name: "Students",
+        last_name: "Users",
+        email: "student1@student.com",
         status: "active",
-        role: "Admin",
+        role: "Student",
         photo: null
     },
-    {
-        clerk_id: "cashier_001",
-        first_name: "Carl",
-        last_name: "Cashier",
-        email: "cashier@cashier.com",
-        hashed_password: "hashed_password_here",
-        status: "active",
-        role: "Cashier",
-        photo: null
-    },
-    {
-        clerk_id: "registrar_001",
-        first_name: "Rina",
-        last_name: "Registrar",
-        email: "registrar@registrar.com",
-        hashed_password: "hashed_password_here",
-        status: "active",
-        role: "Registrar",
-        photo: null
-    }
 ];
 
 async function main() {
-    await prisma.user.createMany({
+    console.log('Seeding database...');
+    // use the hash lib to hash the passwords
+    const result = await prisma.user.createMany({
         data: userData,
         skipDuplicates: true
     });
+    console.log(`Inserted ${result} users`);
 }
 
 
