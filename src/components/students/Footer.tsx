@@ -56,13 +56,18 @@ export default function Footer() {
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/privacy-statement" className="text-gray-600 hover:text-red-800 text-sm">
-                                    Privacy Statement
+                                <Link href="https://sjsfi.vercel.app/privacy-policy" target='_blank' className="text-gray-600 hover:text-red-800 text-sm">
+                                    Privacy Policy
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/terms-of-use" className="text-gray-600 hover:text-red-800 text-sm">
-                                    Terms of Use
+                                <Link href="https://sjsfi.vercel.app/terms-of-service" target='_blank' className="text-gray-600 hover:text-red-800 text-sm">
+                                    Terms of Service
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="https://sjsfi.vercel.app/data-privacy" target='_blank' className="text-gray-600 hover:text-red-800 text-sm">
+                                    Data Privacy Notice
                                 </Link>
                             </li>
                         </ul>
@@ -78,8 +83,8 @@ export default function Footer() {
                             </li>
                             <li className="flex items-center space-x-2 text-gray-600 text-sm">
                                 <Mail className="h-4 w-4" />
-                                <a 
-                                    href="mailto:sjsfi96@gmail.com" 
+                                <a
+                                    href="mailto:sjsfi96@gmail.com"
                                     rel="noopener noreferrer"
                                     className="hover:text-red-800"
                                 >
@@ -95,9 +100,9 @@ export default function Footer() {
                                 >
                                     <path d={siFacebook.path} />
                                 </svg>
-                                <a 
-                                    href="https://www.facebook.com/sjsfi96" 
-                                    target="_blank" 
+                                <a
+                                    href="https://www.facebook.com/sjsfi96"
+                                    target="_blank"
                                     rel="noopener noreferrer"
                                     className="hover:text-red-800"
                                 >
