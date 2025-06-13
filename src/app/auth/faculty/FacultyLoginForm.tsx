@@ -71,11 +71,11 @@ export default function FacultyLoginForm() {
             });
 
             console.log("Role from faculty check:", role);
-            console.log("Role type:", typeof role);
-
-            // STEP 4: If complete, activate session
+            console.log("Role type:", typeof role);            // STEP 4: If complete, activate session
             if (signInAttempt.status === "complete") {
-                await setActive({ session: result.createdSessionId }); // Wait for session to be fully established with retry mechanism
+                await setActive({ session: result.createdSessionId });
+
+                // Wait for session to be fully established with retry mechanism
                 const setRoleWithRetry = async (retries = 3) => {
                     for (let i = 0; i < retries; i++) {
                         try {
@@ -91,7 +91,9 @@ export default function FacultyLoginForm() {
 
                             // If it failed due to "No user ID found", wait and retry
                             if (
-                                isSetRole.error?.includes("No user ID found") &&
+                                isSetRole &&
+                                isSetRole.error &&
+                                isSetRole.error.includes("No user ID found") &&
                                 i < retries - 1
                             ) {
                                 console.log(
@@ -106,6 +108,7 @@ export default function FacultyLoginForm() {
 
                             return isSetRole;
                         } catch (error) {
+                            console.error(`Retry ${i + 1} failed:`, error);
                             if (i === retries - 1) throw error;
                             await new Promise((resolve) =>
                                 setTimeout(resolve, 500)

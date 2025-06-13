@@ -3,38 +3,81 @@ import { prisma } from '@/lib/prisma'
 
 const userData: Prisma.UserCreateInput[] = [
     {
-        clerk_id: "test1",
-        first_name: "Student",
-        last_name: "User",
-        email: "student@student.com",
-        status: "active",
-        role: "Student",
-        grade_level: "1st Year",
-        enrollment_status: "enrolled",
-        photo: null,
+        email: 'parent.juarez@example.com',
+        passwordHashed: 'hashedpassword123',
+        name: 'Maria Juarez',
+        role: 'parent',
+        parent: {
+            create: {
+                contactNumber: '09171234567'
+            }
+        }
     },
     {
-        clerk_id: "test12",
-        first_name: "Student1",
-        last_name: "User1",
-        email: "student2@student.com",
-        status: "active",
-        role: "Student",
-        grade_level: "2nd Year",
-        enrollment_status: "enrolled",
-        photo: null,
+        email: 'jose.reyes@example.com',
+        passwordHashed: 'hashedpassword1',
+        name: 'Jose Miguel Reyes',
+        role: 'student',
+        student: {
+            create: {
+                studentNumber: 'STU2025001',
+                dateOfBirth: new Date('2007-03-15'),
+                gender: 'Male',
+                guardianName: 'Maria Juarez',
+                guardianContact: '09171234567',
+                address: '123 Mabini Street, Quezon City',
+                gradeLevel: 'Grade 10',
+                status: 'active',
+                // You need to set the correct parent id or userId here.
+                // For demonstration, assuming parent userId is 1 (update as needed).
+                parent: {
+                    connect: { userId: 1 }
+                }
+            }
+        }
     },
     {
-        clerk_id: "test2",
-        first_name: "Students",
-        last_name: "Users",
-        email: "student1@student.com",
-        status: "active",
-        role: "Student",
-        grade_level: "1st Year",
-        enrollment_status: "not enrolled",
-        photo: null,
+        email: 'angelica.tan@example.com',
+        passwordHashed: 'hashedpassword2',
+        name: 'Angelica Tan',
+        role: 'student',
+        student: {
+            create: {
+                studentNumber: 'STU2025002',
+                dateOfBirth: new Date('2008-06-21'),
+                gender: 'Female',
+                guardianName: 'Maria Juarez',
+                guardianContact: '09171234567',
+                address: '45 Mahogany Avenue, Pasig City',
+                gradeLevel: 'Grade 9',
+                status: 'active',
+                parent: {
+                    connect: { userId: 1 }
+                }
+            }
+        }
     },
+    {
+        email: 'daniel.santos@example.com',
+        passwordHashed: 'hashedpassword3',
+        name: 'Daniel Santos',
+        role: 'student',
+        student: {
+            create: {
+                studentNumber: 'STU2025003',
+                dateOfBirth: new Date('2006-12-03'),
+                gender: 'Male',
+                guardianName: 'Maria Juarez',
+                guardianContact: '09171234567',
+                address: '89 Jacinto Road, Manila',
+                gradeLevel: 'Grade 11',
+                status: 'active',
+                parent: {
+                    connect: { userId: 1 }
+                }
+            }
+        }
+    }
 ];
 
 async function main() {
