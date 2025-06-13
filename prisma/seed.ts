@@ -84,7 +84,7 @@ async function main() {
     console.log('Seeding database...');
     for (const user of userData) {
         await prisma.user.create({ data: user });
-        await prisma.$disconnect(); // force connection close
+        // Connection remains open during all insertions
     }
 
     console.log('Inserted users');
