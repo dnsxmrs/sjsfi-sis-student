@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# exclude prisma generated files in the commit
+/src/generated
+# clerk configuration (can include secrets)
+/.clerk/

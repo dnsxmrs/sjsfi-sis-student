@@ -1,8 +1,9 @@
 // components/RoleButton.tsx
-'use client';
+"use client";
 
-import { useRouter } from 'next/navigation';
-import clsx from 'clsx';
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import clsx from "clsx";
 
 interface RoleButtonProps {
     label: string;
@@ -12,26 +13,48 @@ interface RoleButtonProps {
     href: string;
 }
 
+// Loading spinner component
+function LoadingSpinner() {
+    return (
+        <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
+    );
+}
+
 export default function RoleButton({
     label,
     color,
     hoverClass,
-    textColor = 'text-white',
+    textColor = "text-white",
     href,
 }: RoleButtonProps) {
     const router = useRouter();
+    const [isLoading, setIsLoading] = useState(false);    const handleClick = async () => {
+        setIsLoading(true);
+        try {
+            // await to test loading spinner
+            // await new Promise(resolve => setTimeout(resolve, 1000));
+            await router.push(href);
+        } finally {
+            // Reset loading state after navigation
+            // Note: This might not execute if navigation is successful
+            setIsLoading(false);
+        }
+    };
 
     return (
         <button
             type="button"
-            onClick={() => router.push(href)}
-            className={clsx(
+            onClick={handleClick}
+            disabled={isLoading}            className={clsx(
                 color,
                 textColor,
-                'text-base font-medium rounded-sm px-4 py-3 w-full transition duration-200 ease-in-out',
-                hoverClass || 'hover:opacity-80'
+                "text-base font-medium rounded-sm px-4 py-3 w-full transition duration-200 ease-in-out flex items-center justify-center",
+                hoverClass || "hover:opacity-80",
+                isLoading && "opacity-70 cursor-not-allowed",
+                "gap-2"
             )}
         >
+            {isLoading && <LoadingSpinner />}
             {label}
         </button>
     );

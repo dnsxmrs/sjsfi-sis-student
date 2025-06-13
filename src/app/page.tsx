@@ -1,8 +1,11 @@
 import Image from 'next/image';
-import RoleButton from '@/components/atoms/RoleButton'; // adjust path if needed
+import RoleButton from '@/components/atoms/RoleButton';
 import LoginFooter from '@/components/atoms/LoginFooter';
 
-export default function Home() {
+
+export default async function Home() {
+  // delay to test the loading screen
+  // await new Promise(resolve => setTimeout(resolve, 1000));
 
   return (
     <div className="flex h-screen w-screen bg-white min-width-[360px]">
@@ -43,7 +46,7 @@ export default function Home() {
                     <RoleButton
                       label="Student"
                       color="bg-[#800000]"
-                      href="/student"
+                      href="/auth/student"
                     />
                   </div>
                   <div className="mb-4 w-full">
@@ -52,7 +55,7 @@ export default function Home() {
                       color="bg-[#ffd700]"
                       hoverClass="hover:bg-[#DAA520]"
                       textColor="text-white"
-                      href="/faculty"
+                      href="/auth/faculty"
                     />
                   </div>
                   <LoginFooter />
