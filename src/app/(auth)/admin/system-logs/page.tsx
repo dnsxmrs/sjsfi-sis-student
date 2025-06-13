@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { FileDown, Search } from "lucide-react";
 import PDFmodal from "@/components/admin/PDFmodal";
+import toast from "react-hot-toast";
 
 const mockLogs = [
   { logNumber: "0015", timestamp: "2025-04-06 14:46:20", user: "Baron Aloveros", action: "Updated personal profile", status: "Success", role: "Admin" },
@@ -29,10 +30,12 @@ export default function SystemLogsPage() {
   const handleHeaderCheckbox = () => {
     if (isAllSelected) {
       setSelectedRows([]);
-      alert(`0 logs selected`);
+      // alert(`0 logs selected`);
+      toast.error(`0 logs selected`);
     } else {
       setSelectedRows(allRowIds);
-      alert(`${allRowIds.length} log(s) selected`);
+      // alert(`${allRowIds.length} log(s) selected`);
+      toast.success(`${allRowIds.length} log(s) selected`);
     }
   };
 
