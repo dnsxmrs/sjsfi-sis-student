@@ -13,9 +13,7 @@ interface AdminHeaderProps {
     setLogoutModalOpen: (open: boolean) => void;
 }
 
-export default function AdminHeader({
-    currentDateTime,
-}: AdminHeaderProps) {
+export default function AdminHeader({ currentDateTime }: AdminHeaderProps) {
     const pathname = usePathname();
 
     const formattedDateTime = `${currentDateTime
@@ -52,11 +50,41 @@ export default function AdminHeader({
                 <p className="text-xs sm:text-sm lg:text-base text-gray-500 truncate">
                     {formattedDateTime}
                 </p>
-            </div>
+            </div>{" "}
             <div className="flex items-center justify-center space-x-2 sm:space-x-3 lg:space-x-4 flex-shrink-0">
-                <Bell className="text-gray-600 w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 pr-6" />
-                <div className="items-center">
-                    <UserButton />
+                <Bell className="text-gray-600 w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6" />
+                <div className="flex items-center">
+                    <UserButton
+                        appearance={{
+                            elements: {
+                                userPreview: {
+                                    display: "none",
+                                },
+                            },
+                        }}
+                        userProfileProps={{
+                            appearance: {
+                                elements: {
+                                    profileSectionPrimaryButton__profile: {
+                                        display: "none",
+                                    },
+                                    profileSection__connectedAccounts: {
+                                        display: "none",
+                                    },
+                                    profileSectionPrimaryButton__emailAddresses:
+                                    {
+                                        display: "none",
+                                    },
+                                    profileSection__danger: {
+                                        display: "none",
+                                    },
+                                    menuButtonEllipsis: {
+                                        display: "none",
+                                    },
+                                },
+                            },
+                        }}
+                    />
                 </div>
             </div>
         </header>

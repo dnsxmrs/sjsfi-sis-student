@@ -20,7 +20,7 @@ export default function AcademicSettingsPage() {
       <div className="flex flex-col md:flex-row gap-6">
         <div className="md:w-2/3 flex flex-col gap-6">
           {/* Academic Term Section */}
-          <div className="border border-red-800 rounded-md p-4">
+          <div className="bg-white border border-red-800 rounded-md p-4">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-semibold text-gray-800">Academic Term</h2>
               <button
@@ -41,24 +41,24 @@ export default function AcademicSettingsPage() {
               </thead>
               <tbody>
                 <tr className="text-gray-700 hover:bg-gray-50">
-                  <td className="px-3 py-2">4</td>
-                  <td className="px-3 py-2">SY 2024–2025</td>
-                  <td className="px-3 py-2">
-                    <span className="bg-yellow-300 text-black px-2 py-1 text-xs rounded-full">Ongoing</span>
+                  <td className="px-3 py-2 border-t">4</td>
+                  <td className="px-3 py-2 border-t">SY 2024–2025</td>
+                  <td className="px-3 py-2 border-t">
+                    <span className="bg-yellow-300 text-black px-2 py-1 text-xs rounded-full border-t">Ongoing</span>
                   </td>
-                  <td className="px-3 py-2 text-sm text-red-600">
+                  <td className="px-3 py-2 text-sm  border-t">
                     <button className="mr-2 text-green-600 hover:underline">Finish</button>
-                    <button className="hover:underline">Delete</button>
+                    <button className="hover:underline text-red-600">Delete</button>
                   </td>
                 </tr>
                 {[3, 2, 1].map((id) => (
                   <tr key={id} className="text-gray-700 hover:bg-gray-50">
-                    <td className="px-3 py-2">{id}</td>
-                    <td className="px-3 py-2">SY 202{5 - id}–202{4 - id}</td>
-                    <td className="px-3 py-2">
-                      <span className="bg-green-500 text-white px-2 py-1 text-xs rounded-full">Done</span>
+                    <td className="px-3 py-2 border-t">{id}</td>
+                    <td className="px-3 py-2 border-t">SY 202{5 - id}–202{4 - id}</td>
+                    <td className="px-3 py-2 border-t">
+                      <span className="bg-green-500 text-white px-2 py-1 text-xs rounded-full border-t">Done</span>
                     </td>
-                    <td className="px-3 py-2 text-center text-gray-500">N/A</td>
+                    <td className="px-3 py-2 text-center text-gray-500 border-t">N/A</td>
                   </tr>
                 ))}
               </tbody>
@@ -66,7 +66,7 @@ export default function AcademicSettingsPage() {
           </div>
 
           {/* General Policy Section */}
-          <div className="border border-red-800 rounded-md p-4">
+          <div className="bg-white border border-red-800 rounded-md p-4">
             <div className="flex justify-between items-center mb-3">
               <h2 className="text-xl font-semibold text-gray-800">General Policy</h2>
               <button
@@ -83,7 +83,7 @@ export default function AcademicSettingsPage() {
         </div>
 
         {/* Right Column: Grading Scale */}
-        <div className="md:w-1/3 flex flex-col gap-6">
+        <div className="bg-white md:w-1/3 flex flex-col gap-6">
           <div className="border border-red-800 rounded-md p-4 h-full">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-semibold text-gray-800">Grading Scale</h2>

@@ -61,7 +61,7 @@ export default function SystemLogsPage() {
           <input
             type="text"
             placeholder="Search system logs..."
-            className="text-gray-700 w-full md:w-1/3 pl-10 pr-4 py-2 border border-red-700 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+            className="text-gray-700  w-full md:w-1/3 pl-10 pr-4 py-2 border border-red-700 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -76,7 +76,7 @@ export default function SystemLogsPage() {
         </div>
 
         <div className="hidden md:flex justify-between items-center">
-          <div className="relative w-1/3">
+          <div className="relative w-1/3 bg-white">
             <Search className="absolute top-2.5 left-3 text-gray-700" size={18} />
             <input
               type="text"
@@ -96,7 +96,7 @@ export default function SystemLogsPage() {
         </div>
       </div>
 
-      <div className="overflow-x-auto rounded-md border border-red-700 text-gray-700">
+      <div className="bg-white overflow-x-auto rounded-md border border-red-700 text-gray-700">
         <table className="w-full text-left text-sm">
           <thead>
             <tr>
