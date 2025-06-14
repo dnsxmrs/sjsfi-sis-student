@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, SquareStack, List, Scale, Settings } from 'lucide-react';
+import { Menu, X, SquareStack, List, Scale } from 'lucide-react';
 import Image from 'next/image';
 
 interface AdminSidebarProps {
@@ -47,10 +47,10 @@ export default function AdminSidebar({ sidebarOpen, setSidebarOpen }: AdminSideb
                                 <Scale className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 flex-shrink-0" />
                                 <span>School Policies</span>
                             </Link>
-                            <Link href="/admin/settings" className={`flex items-center space-x-3 sm:space-x-4 lg:space-x-5 py-2 lg:py-3 rounded hover:bg-red-700 transition-colors ${pathname === '/admin/settings' ? 'text-yellow-400' : ''}`}>
+                            {/* <Link href="/admin/settings" className={`flex items-center space-x-3 sm:space-x-4 lg:space-x-5 py-2 lg:py-3 rounded hover:bg-red-700 transition-colors ${pathname === '/admin/settings' ? 'text-yellow-400' : ''}`}>
                                 <Settings className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 flex-shrink-0" />
                                 <span>System Config</span>
-                            </Link>
+                            </Link> */}
                         </nav>
                     </div>
                 </div>

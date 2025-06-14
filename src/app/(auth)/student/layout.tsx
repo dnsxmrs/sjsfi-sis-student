@@ -15,10 +15,11 @@ export const metadata = {
 
 export default async function StudentLayout({ children }: { children: ReactNode }) {
     // delay to test the loading screen
-    // await new Promise(resolve => setTimeout(resolve, 3000));
-
-    // get current user name and student number
-    const { name, studentNo } = await getCurrentUser();
+    // await new Promise(resolve => setTimeout(resolve, 3000));    // get current user name and student number
+    const currentUser = await getCurrentUser();
+    console.log('Student Layout - currentUser:', currentUser);
+    const { name, studentNo } = currentUser || { name: 'Guest User', studentNo: 'N/A' };
+    console.log('Student Layout - destructured values:', { name, studentNo });
 
     return (
         <div className="flex flex-col min-h-screen bg-gray-100">

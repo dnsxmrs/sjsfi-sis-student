@@ -138,6 +138,9 @@ const Header = () => {
                                     profileSection__danger: {
                                         display: "none",
                                     },
+                                    menuButtonEllipsis: {
+                                        display: "none",
+                                    }
                                 },
                             },
                         }}
@@ -171,6 +174,9 @@ const Header = () => {
                                         profileSection__danger: {
                                             display: "none",
                                         },
+                                        menuButtonEllipsis: {
+                                            display: "none",
+                                        }
                                     },
                                 },
                             }}
