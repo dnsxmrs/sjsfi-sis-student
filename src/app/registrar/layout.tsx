@@ -57,7 +57,7 @@ export default function AdminHomeLayout({ children }: { children: React.ReactNod
         return 'Student Information';
       case '/registrar/generate-reports':
         return 'Generate Reports';
-      case '/registrar/withdraw-request':
+      case '/registrar/withdraw-requests':
         return 'Withdraw Requests';
       default:
         return '';
@@ -85,23 +85,23 @@ export default function AdminHomeLayout({ children }: { children: React.ReactNod
               <span>SJSFI-SIS</span>
             </div>
             <nav className="space-y-4 text-sm px-6 pt-4 md:pt-0">
-              <Link href="/register/home" className={`flex items-center space-x-5 py-2 rounded hover:bg-red-700 ${pathname === '/admin/home' ? 'text-yellow-400' : ''}`}>
+              <Link href="/registrar/home" className={`flex items-center space-x-5 py-2 rounded hover:bg-red-700 ${pathname === '/registrar/home' ? 'text-yellow-400' : ''}`}>
                 <SquareStack className="w-8 h-8" />
                 <span>Dashboard</span>
               </Link>
-              <Link href="/register/register-student" className={`flex items-center space-x-5 py-2 rounded hover:bg-red-700 ${pathname === '/admin/system-logs' ? 'text-yellow-400' : ''}`}>
+              <Link href="/registrar/register-student" className={`flex items-center space-x-5 py-2 rounded hover:bg-red-700 ${pathname === '/registrar/register-student' ? 'text-yellow-400' : ''}`}>
                 <PencilLine className="w-8 h-8" />
-                <span>Register in Courses</span>
+                <span>Course Registration</span>
               </Link>
-              <Link href="/register/student-info" className={`flex items-center space-x-5 py-2 rounded hover:bg-red-700 ${pathname === '/admin/policies' ? 'text-yellow-400' : ''}`}>
+              <Link href="/registrar/student-info" className={`flex items-center space-x-5 py-2 rounded hover:bg-red-700 ${pathname === '/registrar/student-info' ? 'text-yellow-400' : ''}`}>
                 <BookMarked className="w-8 h-8" />
                 <span>Student Information</span>
               </Link>
-              <Link href="/register/generate-reports" className={`flex items-center space-x-5 py-2 rounded hover:bg-red-700 ${pathname === '/admin/settings' ? 'text-yellow-400' : ''}`}>
+              <Link href="/registrar/generate-reports" className={`flex items-center space-x-5 py-2 rounded hover:bg-red-700 ${pathname === '/registrar/generate-reports' ? 'text-yellow-400' : ''}`}>
                 <Newspaper className="w-8 h-8" />
                 <span>Generate Reports</span>
               </Link>
-              <Link href="/register/withdraw-requests" className={`flex items-center space-x-5 py-2 rounded hover:bg-red-700 ${pathname === '/admin/settings' ? 'text-yellow-400' : ''}`}>
+              <Link href="/registrar/withdraw-requests" className={`flex items-center space-x-5 py-2 rounded hover:bg-red-700 ${pathname === '/registrar/withdraw-requests' ? 'text-yellow-400' : ''}`}>
                 <ScrollText className="w-8 h-8" />
                 <span>Withdraw Requests</span>
               </Link>
