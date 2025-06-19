@@ -122,17 +122,146 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
-  clerk_id: 'clerk_id',
-  first_name: 'first_name',
-  last_name: 'last_name',
   email: 'email',
-  hashed_password: 'hashed_password',
-  status: 'status',
   role: 'role',
-  photo: 'photo',
-  created_at: 'created_at',
-  modified_at: 'modified_at',
-  deleted_at: 'deleted_at'
+  createdAt: 'createdAt',
+  deletedAt: 'deletedAt',
+  name: 'name',
+  passwordHashed: 'passwordHashed',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AttendanceScalarFieldEnum = {
+  id: 'id',
+  studentId: 'studentId',
+  date: 'date',
+  status: 'status',
+  remarks: 'remarks',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+};
+
+exports.Prisma.EnrollmentScalarFieldEnum = {
+  id: 'id',
+  studentId: 'studentId',
+  sectionId: 'sectionId',
+  schoolYear: 'schoolYear',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+};
+
+exports.Prisma.EvaluationScalarFieldEnum = {
+  id: 'id',
+  studentId: 'studentId',
+  subjectId: 'subjectId',
+  teacherId: 'teacherId',
+  rating: 'rating',
+  comments: 'comments',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+};
+
+exports.Prisma.GradeScalarFieldEnum = {
+  id: 'id',
+  subjectId: 'subjectId',
+  studentId: 'studentId',
+  quarter: 'quarter',
+  grade: 'grade',
+  remarks: 'remarks',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+};
+
+exports.Prisma.ParentScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  contactNumber: 'contactNumber',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+};
+
+exports.Prisma.PaymentScalarFieldEnum = {
+  id: 'id',
+  studentId: 'studentId',
+  enrollmentId: 'enrollmentId',
+  amount: 'amount',
+  paymentType: 'paymentType',
+  paymentMethod: 'paymentMethod',
+  referenceNumber: 'referenceNumber',
+  status: 'status',
+  paymentDate: 'paymentDate',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+};
+
+exports.Prisma.ReportCardScalarFieldEnum = {
+  id: 'id',
+  studentId: 'studentId',
+  schoolYear: 'schoolYear',
+  averageGrade: 'averageGrade',
+  rank: 'rank',
+  remarks: 'remarks',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+};
+
+exports.Prisma.SectionScalarFieldEnum = {
+  id: 'id',
+  teacherId: 'teacherId',
+  name: 'name',
+  gradeLevel: 'gradeLevel',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+};
+
+exports.Prisma.StudentScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  parentId: 'parentId',
+  studentNumber: 'studentNumber',
+  dateOfBirth: 'dateOfBirth',
+  gender: 'gender',
+  guardianName: 'guardianName',
+  guardianContact: 'guardianContact',
+  address: 'address',
+  gradeLevel: 'gradeLevel',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+};
+
+exports.Prisma.SubjectScalarFieldEnum = {
+  id: 'id',
+  enrollmentId: 'enrollmentId',
+  teacherId: 'teacherId',
+  name: 'name',
+  description: 'description',
+  gradeLevel: 'gradeLevel',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+};
+
+exports.Prisma.TeacherScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  employeeNumber: 'employeeNumber',
+  specialization: 'specialization',
+  contactNumber: 'contactNumber',
+  assignedSections: 'assignedSections',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -152,7 +281,18 @@ exports.Prisma.NullsOrder = {
 
 
 exports.Prisma.ModelName = {
-  User: 'User'
+  User: 'User',
+  Attendance: 'Attendance',
+  Enrollment: 'Enrollment',
+  Evaluation: 'Evaluation',
+  Grade: 'Grade',
+  Parent: 'Parent',
+  Payment: 'Payment',
+  ReportCard: 'ReportCard',
+  Section: 'Section',
+  Student: 'Student',
+  Subject: 'Subject',
+  Teacher: 'Teacher'
 };
 
 /**
