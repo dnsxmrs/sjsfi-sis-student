@@ -1,7 +1,13 @@
 // app/components/registrar/StatsCards.tsx
-export default function StatsCards() {
+import React from "react";
+
+type StatsCardsProps = {
+  activeStudentCount: number;
+};
+
+export default function StatsCards({ activeStudentCount }: StatsCardsProps) {
   const stats = [
-    { label: "Total Active Students", value: 320 },
+    { label: "Total Active Students", value: activeStudentCount },
     { label: "Pending Registrations", value: 12 },
     { label: "Withdrawal Requests", value: 31 },
     { label: "Active Courses", value: 21 },
