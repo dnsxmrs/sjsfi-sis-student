@@ -37,8 +37,7 @@ export default function SignOutHandler({
             try {
                 await signOut({ redirectUrl })
                 onSignOutComplete?.()
-            } catch (error) {
-                console.error('Sign out error:', error)
+            } catch {
                 setError('Failed to sign out. Redirecting...')
 
                 // Fallback: Force redirect after a short delay

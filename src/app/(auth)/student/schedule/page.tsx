@@ -25,7 +25,6 @@ export default function SchedulePage() {
                 setScheduleData(data)
             } catch {
                 toast.error('Failed to load schedule')
-                // console.error('Error fetching schedule:', error)
             } finally {
                 setIsLoading(false)
             }

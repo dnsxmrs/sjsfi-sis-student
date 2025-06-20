@@ -1,14 +1,18 @@
 "use client";
 
-import Link from "next/link";
 import InputField from "@/components/atoms/InputField";
 import LoginFooter from "@/components/atoms/LoginFooter";
 import ActionButton from "@/components/atoms/ActionButton";
 import { useState } from "react";
 import { useSignIn } from "@clerk/nextjs";
 import { studentEmailExists } from "../actions/handleStudentLogin";
-import { setUserRole, validateSetResult } from "@/app/_actions/setUserRole";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+
+interface SetRoleResult {
+    success: boolean;
+    error?: string;
+}
 
 export default function StudentLoginForm() {
     const [student_number, setStudentNumber] = useState("");
@@ -16,7 +20,6 @@ export default function StudentLoginForm() {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
-
     const { signIn, setActive, isLoaded } = useSignIn();
     const router = useRouter();
 
@@ -38,53 +41,66 @@ export default function StudentLoginForm() {
             // STEP 1: Start sign-in by identifying the user
             const signInAttempt = await signIn.create({
                 identifier: email_address, // just the email
-            });
-
-            // STEP 2: Check if the student exists
-            const studentCheck = await studentEmailExists(email_address, 'student');
+            });            // STEP 2: Check if the student exists AND validate student number
+            const studentCheck = await studentEmailExists(
+                email_address,
+                "student",
+                student_number // Pass the student number for validation
+            );
             if (!studentCheck.success) {
-                console.log('Student check failed:', studentCheck.error);
-                setError(studentCheck.error ? studentCheck.error : 'Invalid credentials.');
+                setError(
+                    studentCheck.error || "Invalid credentials."
+                );
                 return;
             }
 
             // STEP 3: Now try to complete with password
             const result = await signInAttempt.attemptFirstFactor({
-                strategy: 'password',
+                strategy: "password",
                 password,
             });
 
             // STEP 4: If complete, activate session
             if (signInAttempt.status === "complete") {
-                console.log('Sign-in completed successfully');
-
                 await setActive({ session: result.createdSessionId });
-                console.log('Session activated');
 
-                const rawResponse = await setUserRole('student', 'student');
-                const response = await validateSetResult(rawResponse);
-                console.log('🔍 setUserRole result:', response);
+                // Frontend call
+                const response = await fetch('/api/nr/set-role', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        role: 'student'
+                    })
+                });
 
-                if (!response.success) {
-                    console.log('Set user role failed:', response.error);
-                    setError(response.error ? response.error : 'Failed to set user role.');
+                let setRoleResult: SetRoleResult = { success: false };
+                try {
+                    setRoleResult = await response.json();
+                } catch {
+                    setError("Failed to parse server response. Please try again.");
+                    return;
+                }                if (!response.ok || !setRoleResult.success) {
+                    setError(setRoleResult.error || "Failed to set user role. Please try again.");
                     return;
                 }
-                console.log('User role set successfully');
 
-                console.log('SL Redirecting to /student/home');
-                router.push('/student/home');
+                // Wait a short moment to ensure Clerk metadata is updated before redirect
+                await new Promise((resolve) => setTimeout(resolve, 200));
+
+                toast.success("Successfully logged in as student!");
+                router.push(`/student/home`);
                 return;
             } else {
-                console.log('Unexpected sign-in state:', result);
-                setError('Invalid credentials.');
+                setError("Invalid credentials.");
             }
             // - } catch (err: unknown) { - use this for error catching
         } catch {
             // console.error(err); // for debugging purposes
 
             // use this instead for prod
-            setError('Invalid student number, email, or password');
+            setError("Invalid student number, email, or password");
 
             // use this if really needed
             // if (err && typeof err === 'object' && 'message' in err) {
@@ -161,12 +177,15 @@ export default function StudentLoginForm() {
                 />
             </div>
             <div className="flex items-center justify-center mb-4 w-full">
-                <Link
+                <p className="text-sm text-black text-center italic">
+                    <span className="text-[#800000]">Forgot your password?</span> Contact the system administrator for assistance.
+                </p>
+                {/* <Link
                     href="/student/forgot-password"
                     className="font-medium text-sm text-[#800000] hover:underline hover:text-[#800000]/80 transition duration-200 ease-in-out"
                 >
                     I forgot my password
-                </Link>
+                </Link> */}
             </div>
             <LoginFooter />
         </form>

@@ -1,8 +1,8 @@
 // app/(guest)/faculty/page.tsx
 import Image from 'next/image';
-import FacultyLoginForm from './FacultyLoginForm';
+import RegistrarLoginForm from './RegistrarLoginForm';
 
-export default function Faculty() {
+export default function Registrar() {
 
     return (
         <div className="flex h-screen w-screen bg-white min-w-[360px]">
@@ -26,9 +26,8 @@ export default function Faculty() {
                                     width={90}
                                     height={90}
                                     className="mb-2"
-                                />
-                                <h1 className="text-3xl text-center text-[#000] w-full mx-1">
-                                    <span className='font-bold text-[#800000]'>SJSFI-SIS</span> Faculty Module
+                                />                                <h1 className="text-3xl text-center text-[#000] w-full mx-1">
+                                    <span className='font-bold text-[#800000]'>SJSFI-SIS</span> Registrar Module
                                 </h1>
                             </div>
 
@@ -38,7 +37,7 @@ export default function Faculty() {
                                 </p>
 
                                 {/* FORM */}
-                                <FacultyLoginForm />
+                                <RegistrarLoginForm />
                             </div>
                         </div>
                     </div>

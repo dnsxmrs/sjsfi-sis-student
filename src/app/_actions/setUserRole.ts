@@ -11,6 +11,9 @@ export type SetResult = {
 
 export async function setUserRole(role: string, origin: string): Promise<SetResult> {
     try {
+        const allowedRoles = ['student', 'registrar'];
+        const normalizedRole = role.toLowerCase();
+
         // Check if required environment variables are present
         if (!process.env.CLERK_SECRET_KEY) {
             console.error('❌ Missing CLERK_SECRET_KEY environment variable');
@@ -27,7 +30,12 @@ export async function setUserRole(role: string, origin: string): Promise<SetResu
             return { success: false, error: 'Invalid role provided' };
         }
 
-        if (origin !== 'student' && origin !== 'faculty') {
+        if (!allowedRoles.includes(normalizedRole)) {
+            console.warn('❌ Invalid role attempted:', { role, normalizedRole, allowedRoles });
+            return { success: false, error: 'Invalid role: Role not allowed' };
+        }
+
+        if (!allowedRoles.includes(origin)) {
             console.warn(`❌ Invalid origin attempt: ${origin}`);
             return { success: false, error: 'Invalid origin attempt.' };
         }
@@ -41,19 +49,12 @@ export async function setUserRole(role: string, origin: string): Promise<SetResu
             return { success: false, error: 'Unauthorized: User not authenticated' };
         }
 
-        const allowedRoles = ['student', 'faculty', 'admin', 'cashier', 'registrar'];
-        const normalizedRole = role.toLowerCase();
         console.log('🔍 Role validation:', {
             originalRole: role,
             normalizedRole,
             allowedRoles,
             isAllowed: allowedRoles.includes(normalizedRole)
         });
-
-        if (!allowedRoles.includes(normalizedRole)) {
-            console.warn('❌ Invalid role attempted:', { role, normalizedRole, allowedRoles });
-            return { success: false, error: 'Invalid role: Role not allowed' };
-        }
 
         try {
             const client = await clerkClient();
@@ -62,6 +63,8 @@ export async function setUserRole(role: string, origin: string): Promise<SetResu
             await client.users.updateUserMetadata(userId, {
                 privateMetadata: {
                     role: normalizedRole,
+                    roleSetAt: new Date().toISOString(),
+                    // roleSetBy: adminUserId, // if applicable
                 },
             });
 

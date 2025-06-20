@@ -51,11 +51,10 @@ export default async function Home() {
                   </div>
                   <div className="mb-4 w-full">
                     <RoleButton
-                      label="Faculty"
+                      label="Registrar"
                       color="bg-[#ffd700]"
                       hoverClass="hover:bg-[#DAA520]"
-                      textColor="text-white"
-                      href="/auth/faculty"
+                      href="/auth/registrar"
                     />
                   </div>
                   <LoginFooter />

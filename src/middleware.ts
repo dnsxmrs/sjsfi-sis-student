@@ -11,9 +11,6 @@ function checkRoleForRoute(pathname: string, userRole: string): boolean {
     const role = userRole.toLowerCase();
 
     if (pathname.startsWith("/student/")) return role === "student";
-    if (pathname.startsWith("/faculty/")) return role === "faculty";
-    if (pathname.startsWith("/admin/")) return role === "admin";
-    if (pathname.startsWith("/cashier/")) return role === "cashier";
     if (pathname.startsWith("/registrar/")) return role === "registrar";
 
     return false;
@@ -26,12 +23,6 @@ function getRoleHomePage(userRole: string): string {
     switch (role) {
         case "student":
             return "/student/home";
-        case "faculty":
-            return "/faculty/home";
-        case "admin":
-            return "/admin/home";
-        case "cashier":
-            return "/cashier/home";
         case "registrar":
             return "/registrar/home";
         default:
@@ -57,8 +48,6 @@ const isProtectedRoute = createRouteMatcher([
     "/faculty/(.*)",
     "/admin/home",
     "/admin/(.*)",
-    "/cashier/home",
-    "/cashier/(.*)",
     "/registrar/home",
     "/registrar/(.*)"
 ]);
@@ -79,16 +68,26 @@ export default clerkMiddleware(
             return;
         }
 
+        // conditon if route is /api/, then execute this block
+        else if (isAuthenticated && url.pathname.startsWith("/api/")) {
+            console.log("✅ M Authenticated user accessing API route:", url.pathname);
+            return NextResponse.next();
+        }
+
         // Case 2: Authenticated user trying to access public routes (redirect to their dashboard)
         else if (isAuthenticated && isPublicRoute(req)) {
             // Allow access to terms and privacy pages even when authenticated
-            if (
-                url.pathname === "/terms-of-use" ||
-                url.pathname === "/privacy-statement" ||
-                url.pathname === "/workaround/sign-out"
-            ) {
+            if (url.pathname === "/workaround/sign-out") {
                 console.log(
                     "✅ M Authenticated user accessing terms or privacy page or sign-out"
+                );
+                return NextResponse.next();
+            }
+
+            // Allow authenticated users to stay on auth pages during login process
+            if (url.pathname.startsWith("/auth/")) {
+                console.log(
+                    "✅ M Allowing authenticated user to access auth page during login process"
                 );
                 return NextResponse.next();
             }
@@ -102,23 +101,12 @@ export default clerkMiddleware(
                 const user = await clerkClient.users.getUser(userId);
                 const userRole = user?.privateMetadata?.role as string;
                 console.log("M User Role from privateMetadata:", userRole);
-
-                let redirectUrl = "/student/home"; // Default fallback
-
+                let redirectUrl: string;
                 // Determine redirect based on role
                 if (userRole) {
                     switch (userRole) {
                         case "student":
                             redirectUrl = "/student/home";
-                            break;
-                        case "faculty":
-                            redirectUrl = "/faculty/home";
-                            break;
-                        case "admin":
-                            redirectUrl = "/admin/home";
-                            break;
-                        case "cashier":
-                            redirectUrl = "/cashier/home";
                             break;
                         case "registrar":
                             redirectUrl = "/registrar/home";
@@ -127,22 +115,21 @@ export default clerkMiddleware(
                             redirectUrl = "/workaround/sign-out";
                     }
                 } else {
-                    // call a signout function if no role is found
+                    // If no role is found but user is authenticated, allow them to stay
+                    // This handles the case during login where role isn't set yet
                     console.warn(
-                        "❌ M No role found for user, redirecting to default"
+                        "⚠️ M No role found for user, not allowing access to continue login process"
                     );
-                    return NextResponse.redirect(
-                        new URL("/workaround/sign-out", req.url)
-                    );
+                    return NextResponse.redirect(new URL("/workaround/sign-out", req.url));
                 }
 
                 console.log("🔄 M Redirecting to:", redirectUrl);
                 return NextResponse.redirect(new URL(redirectUrl, req.url));
             } catch (error) {
                 console.error("Error checking user role:", error);
-                // If we can't check the role, redirect to sign-in for security
+                // If we can't check the role, allow access to continue instead of forcing sign-out
                 console.log(
-                    "⚠️ M Error checking role, redirecting to sign-in for security..."
+                    "⚠️ M Error checking role, allowing request to continue..."
                 );
                 return NextResponse.redirect(new URL("/workaround/sign-out", req.url));
             }
@@ -163,9 +150,7 @@ export default clerkMiddleware(
                 console.log(
                     "M User Role from privateMetadata for protected route:",
                     userRole
-                );
-
-                if (!userRole) {
+                ); if (!userRole) {
                     // If no role is defined, redirect to sign-in
                     console.log(
                         "⚠️ M No role defined for user accessing protected route, redirecting to sign-in..."
@@ -207,9 +192,9 @@ export default clerkMiddleware(
                     "Error checking user role for protected route:",
                     error
                 );
-                // If we can't check the role, redirect to sign-in for security
+                // If we can't check the role, redirect to home page instead of forcing sign-out
                 console.log(
-                    "⚠️ M Error checking role, redirecting to sign-in for security..."
+                    "⚠️ M Error checking role, redirecting to home page..."
                 );
                 return NextResponse.redirect(new URL("/workaround/sign-out", req.url));
             }
@@ -231,59 +216,3 @@ export const config = {
         "/(api|trpc)(.*)",
     ],
 };
-
-// import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
-// import { NextResponse } from "next/server";
-// import { createClerkClient } from '@clerk/backend'
-
-// const clerkClient = createClerkClient({ secretKey: process.env.CLERK_SECRET_KEY })
-
-// const isPublicRoute = createRouteMatcher([
-//     "/",
-//     "/auth/(.*)",
-//     "/terms-of-use",
-//     "/privacy-statement",
-//     "/workaround/sign-out"
-// ]);
-
-// export default clerkMiddleware(async (auth, req) => {
-//     const { userId } = await auth();
-//     const isAuthenticated = !!userId;
-//     const url = new URL(req.url);
-
-//     if (!isPublicRoute(req) && !isAuthenticated) {
-//         await auth.protect();
-//     }
-
-//     if (isPublicRoute(req) && isAuthenticated) {
-//         if (url.pathname === '/terms-of-use' || url.pathname === '/privacy-statement') {
-//             return NextResponse.next();
-//         }
-
-//         // Check URL to determine if they're a faculty member
-//         if (url.pathname.startsWith('/faculty')) {
-//             const user = await clerkClient.users.getUser(userId);
-//             // console.log('User Role:', user?.publicMetadata?.role || 'No role defined');
-
-//             // If user is faculty, redirect to faculty home
-//             // You can adjust this logic based on how you store roles
-//             // if (user?.publicMetadata?.role === 'faculty') {
-//             //     redirectUrl = '/faculty/home';
-//             // }
-//         }
-
-//         // Redirect to appropriate home page
-//         // console.log('🔄 Redirecting to:', redirectUrl);
-//         // return NextResponse.redirect(new URL(redirectUrl, req.url));
-//         return NextResponse.next();
-//     }
-// }, { debug: false });// change before pushing to production
-
-// export const config = {
-//     matcher: [
-//         // Skip Next.js internals and all static files, unless found in search params
-//         '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
-//         // Always run for API routes
-//         '/(api|trpc)(.*)',
-//     ],
-// }

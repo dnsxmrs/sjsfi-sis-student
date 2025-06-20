@@ -22,8 +22,11 @@ export async function facultyEmailExists(
         if (!email || !origin) {
             console.warn("Validation error: Missing email or origin");
             return { success: false, error: "Missing email or origin" };
-        } // only allow requests from 'faculty' origin
-        if (origin !== "faculty") {
+        }
+
+        // Allow requests from 'faculty' and 'registrar' origins
+        const allowedOrigins = ["faculty", "registrar"];
+        if (!allowedOrigins.includes(origin)) {
             console.warn(`Invalid origin attempt: ${origin}`);
             return { success: false, error: "Invalid origin attempt." };
         }
@@ -49,7 +52,7 @@ export async function facultyEmailExists(
         }
 
         // Step 3: If user exists but is not faculty (or admin/cashier/registrar), return unauthorized error
-        const allowedRoles = ["Faculty", "Admin", "Cashier", "Registrar"];
+        const allowedRoles = ["Registrar"];
         if (
             !userAccessResult.role ||
             !allowedRoles.includes(userAccessResult.role)
@@ -71,7 +74,7 @@ export async function facultyEmailExists(
         // IMPORTANT: Return the role here!
         return {
             success: true,
-            role: normalizedRole  // Make sure this is included
+            role: normalizedRole, // Make sure this is included
         };
     } catch (error) {
         // Log the error for debugging
@@ -191,52 +194,3 @@ export async function lookupUserAccess(
         };
     }
 }
-
-// const { signIn, setActive, isLoaded } = useSignIn();
-// const [studentNumber, setStudentNumber] = useState('');
-// const [email_address, setEmail] = useState('');
-// const [password, setPassword] = useState('');
-// const [error, setError] = useState('');
-
-// const handleSubmit = async (e: React.FormEvent) => {
-//     e.preventDefault();
-//     setError('');
-
-//     // console log the student number, email, and password
-//     // console.log('Student Number:', studentNumber);
-//     // console.log('Email:', email_address);
-//     // console.log('Password:', password);
-
-//     if (!isLoaded) return;
-
-//     try {
-//         // STEP 1: Start sign-in by identifying the user
-//         const signInAttempt = await signIn.create({
-//             identifier: email_address, // just the email
-//         });
-//         // console.log('Sign In:', signIn);
-
-//         // STEP 2: Now try to complete with password
-//         const result = await signInAttempt.attemptFirstFactor({
-//             strategy: 'password',
-//             password,
-//         });
-//         // console.log('Sign In Attempt:', signInAttempt);
-
-//         // STEP 3: If complete, activate session
-//         if (result.status === 'complete') {
-//             await setActive({ session: result.createdSessionId });
-//             window.location.href = '/student/home';
-//         } else {
-//             // console.log('Unexpected sign-in state:', result);
-//             setError('Sign-in not complete. Additional steps required.');
-//         }
-//     } catch (err: unknown) {
-//         // console.error(err);
-//         if (err && typeof err === 'object' && 'message' in err) {
-//             setError((err as Error).message || 'Login failed');
-//         } else {
-//             setError('Login failed');
-//         }
-//     }
-// };

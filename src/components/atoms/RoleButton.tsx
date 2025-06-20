@@ -28,24 +28,19 @@ export default function RoleButton({
     href,
 }: RoleButtonProps) {
     const router = useRouter();
-    const [isLoading, setIsLoading] = useState(false);    const handleClick = async () => {
+    const [isLoading, setIsLoading] = useState(false);
+    const handleClick = async () => {
         setIsLoading(true);
-        try {
-            // await to test loading spinner
-            // await new Promise(resolve => setTimeout(resolve, 1000));
-            await router.push(href);
-        } finally {
-            // Reset loading state after navigation
-            // Note: This might not execute if navigation is successful
-            setIsLoading(false);
-        }
+
+        router.push(href);
     };
 
     return (
         <button
             type="button"
             onClick={handleClick}
-            disabled={isLoading}            className={clsx(
+            disabled={isLoading}
+            className={clsx(
                 color,
                 textColor,
                 "text-base font-medium rounded-sm px-4 py-3 w-full transition duration-200 ease-in-out flex items-center justify-center",

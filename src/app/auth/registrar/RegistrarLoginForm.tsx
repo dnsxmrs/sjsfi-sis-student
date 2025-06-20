@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import InputField from "@/components/atoms/InputField";
 import LoginFooter from "@/components/atoms/LoginFooter";
 import ActionButton from "@/components/atoms/ActionButton";
@@ -8,16 +7,19 @@ import { useState } from "react";
 import { useSignIn } from "@clerk/nextjs";
 import { facultyEmailExists } from "../actions/handleFacultyLogin";
 import { useRouter } from "next/navigation";
-import { setUserRole, validateSetResult } from "@/app/_actions/setUserRole";
+import { toast } from "react-hot-toast";
 
-export default function FacultyLoginForm() {
-    const [username, setUsername] = useState("");
+interface SetRoleResult {
+    success: boolean;
+    error?: string;
+}
+
+export default function RegistrarLoginForm() {
+    // const [username, setUsername] = useState("");
     const [email_address, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
-
-    const { signIn, setActive, isLoaded } = useSignIn();
+    const [isLoading, setIsLoading] = useState(false); const { signIn, setActive, isLoaded } = useSignIn();
     const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -30,7 +32,12 @@ export default function FacultyLoginForm() {
         if (!isLoaded) return;
 
         try {
-            if (!username || !email_address || !password) {
+            // if (!username || !email_address || !password) {
+            //     setError("Please fill in all fields");
+            //     return;
+            // }
+
+            if (!email_address || !password) {
                 setError("Please fill in all fields");
                 return;
             }
@@ -40,20 +47,13 @@ export default function FacultyLoginForm() {
                 identifier: email_address,
             });
 
-            // STEP 2: Check if the faculty exists
+            // STEP 2: Check if the user exists with registrar access
             const facultyCheck = await facultyEmailExists(
                 email_address,
-                "faculty"
+                "registrar" // Changed from "faculty" to "registrar" for registrar login
             );
 
-            console.log("Faculty check result:", {
-                success: facultyCheck.success,
-                error: facultyCheck.error,
-                role: facultyCheck.role,
-            });
-
             if (!facultyCheck.success) {
-                console.warn("Faculty check failed:", facultyCheck.error);
                 setError(
                     facultyCheck.error
                         ? facultyCheck.error
@@ -62,7 +62,7 @@ export default function FacultyLoginForm() {
                 return;
             }
 
-            const role = String(facultyCheck.role || "faculty");
+            const role = String(facultyCheck.role || "registrar");
 
             // STEP 3: Now try to complete with password
             const result = await signInAttempt.attemptFirstFactor({
@@ -70,78 +70,39 @@ export default function FacultyLoginForm() {
                 password,
             });
 
-            console.log("Role from faculty check:", role);
-            console.log("Role type:", typeof role);            // STEP 4: If complete, activate session
             if (signInAttempt.status === "complete") {
                 await setActive({ session: result.createdSessionId });
 
-                // Wait for session to be fully established with retry mechanism
-                const setRoleWithRetry = async (retries = 3) => {
-                    for (let i = 0; i < retries; i++) {
-                        try {
-                            const rawResult = await setUserRole(
-                                role,
-                                "faculty"
-                            );
-                            const isSetRole = await validateSetResult(rawResult);
+                // Frontend call to set role in Clerk metadata
+                const response = await fetch('/api/nr/set-role', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        role: role
+                    })
+                });
 
-                            if (isSetRole && isSetRole.success) {
-                                return isSetRole;
-                            }
-
-                            // If it failed due to "No user ID found", wait and retry
-                            if (
-                                isSetRole &&
-                                isSetRole.error &&
-                                isSetRole.error.includes("No user ID found") &&
-                                i < retries - 1
-                            ) {
-                                console.log(
-                                    `Retry ${i + 1
-                                    }: Waiting for session to establish...`
-                                );
-                                await new Promise((resolve) =>
-                                    setTimeout(resolve, 500)
-                                );
-                                continue;
-                            }
-
-                            return isSetRole;
-                        } catch (error) {
-                            console.error(`Retry ${i + 1} failed:`, error);
-                            if (i === retries - 1) throw error;
-                            await new Promise((resolve) =>
-                                setTimeout(resolve, 500)
-                            );
-                        }
-                    }
-
-                    // Fallback return in case all retries fail
-                    return {
-                        success: false,
-                        error: "Failed to set user role after retries",
-                    };
-                };
-
-                // With this (add await and proper handling):
-                const isSetRole = await setRoleWithRetry();
-                console.log("🔍 setUserRole result:", isSetRole);
-
-                if (!isSetRole || !isSetRole.success) {
-                    console.warn("Set user role failed:", isSetRole?.error);
-                    setError(isSetRole?.error || "Failed to set user role.");
+                let setRoleResult: SetRoleResult = { success: false };
+                try {
+                    setRoleResult = await response.json();
+                } catch {
+                    setError("Failed to parse server response. Please try again.");
                     return;
                 }
 
-                console.log('User role set successfully');
+                if (!response.ok || !setRoleResult.success) {
+                    setError(setRoleResult.error || "Failed to set user role. Please try again.");
+                    return;
+                }
+
+                toast.success("Successfully logged in as registrar!");
                 router.push(`/${role}/home`);
             } else {
-                console.log("Unexpected sign-in state:", result);
                 setError("Invalid credentials.");
             }
         } catch (err: unknown) {
-            console.error(err); // for debugging purposes
-
             if (err && typeof err === "object" && "message" in err) {
                 setError((err as Error).message || "Login failed");
             } else {
@@ -179,14 +140,14 @@ export default function FacultyLoginForm() {
                 </div>
             )}
             <div className="mb-4 w-full">
-                <InputField
+                {/* <InputField
                     name="username"
                     type="text"
                     placeholder="Username"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     disabled={isLoading}
-                />
+                /> */}
             </div>
             <div className="mb-4 w-full">
                 <InputField
@@ -216,12 +177,15 @@ export default function FacultyLoginForm() {
                 />
             </div>
             <div className="flex items-center justify-center mb-4 w-full">
-                <Link
-                    href="/faculty/forgot-password"
+                <p className="text-sm text-black text-center italic">
+                    <span className="text-[#800000]">Forgot your password?</span> Contact the system administrator for assistance.
+                </p>
+                {/* <Link
+                    href="/registrar/forgot-password"
                     className="font-medium text-sm text-[#800000] hover:underline hover:text-[#800000]/80 transition duration-200 ease-in-out"
                 >
                     I forgot my password
-                </Link>
+                </Link> */}
             </div>
             <LoginFooter />
         </form>
