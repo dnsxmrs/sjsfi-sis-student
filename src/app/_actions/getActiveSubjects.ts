@@ -18,11 +18,11 @@ export async function getActiveSubjects() {
             count: activeSubjectCount,
         };
     } catch (error) {
-        console.error("Error fetching active students:", error);
+        console.error("Error fetching active subjects:", error);
         return {
             success: false,
             count: 0,
-            error: "Failed to fetch active students",
+            error: "Failed to fetch active subjects",
         };
     }
 }
