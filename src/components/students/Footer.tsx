@@ -50,11 +50,11 @@ export default function Footer() {
                                     Grades
                                 </Link>
                             </li>
-                            <li>
+                            {/* <li>
                                 <Link href="/student/request" className="text-gray-600 hover:text-red-800 text-sm">
                                     Request
                                 </Link>
-                            </li>
+                            </li> */}
                             <li>
                                 <Link href="https://sjsfi.vercel.app/privacy-policy" target='_blank' className="text-gray-600 hover:text-red-800 text-sm">
                                     Privacy Policy
@@ -120,4 +120,4 @@ export default function Footer() {
             </div>
         </footer>
     )
-} 
+}

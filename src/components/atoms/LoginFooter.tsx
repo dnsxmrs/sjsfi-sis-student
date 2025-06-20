@@ -13,8 +13,7 @@ export default function LoginFooter() {
                     className="text-[#800000] hover:text-[#800000]/80 transition duration-200 ease-in-out underline"
                 >
                     Privacy Policy
-                </Link>
-,{' '}
+                </Link>,
                 <Link
                     href="https://sjsfi.vercel.app/terms-of-service"
                     target='_blank'
