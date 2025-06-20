@@ -49,6 +49,7 @@ export default function RegistrarLayout({
 }: {
     children: React.ReactNode;
 }) {
+
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [currentDateTime, setCurrentDateTime] = useState(new Date());
 
