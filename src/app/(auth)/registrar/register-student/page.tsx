@@ -1,6 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Eye, Trash } from 'lucide-react';
+import { getStudents } from '@/app/_actions/getStudents';
+import { sendMissingRequirementsNotification, getMissingRequirements } from '@/app/_actions/sendNotification';
 
 const RegisterCoursePage: React.FC = () => {
     const [studentID, setStudentID] = useState('');
@@ -8,11 +11,40 @@ const RegisterCoursePage: React.FC = () => {
     const [gradeLevel, setGradeLevel] = useState('');
     const [strand, setStrand] = useState('');
     const [email, setEmail] = useState('');
-    const [requirements, setRequirements] = useState({
+    const [students, setStudents] = useState<Array<{
+        id: string;
+        name: string;
+        gradeLevel: string;
+        strand: string;
+        status: string;
+        email: string;
+    }>>([]);
+    const [isLoading, setIsLoading] = useState(true);    const [requirements, setRequirements] = useState({
         birthCertificate: false,
         reportCard: false,
         certificateOfGoodMoral: false,
     });
+    const [isNotificationLoading, setIsNotificationLoading] = useState(false);
+
+    // Fetch students on component mount
+    useEffect(() => {
+        const fetchStudents = async () => {
+            try {
+                const result = await getStudents();
+                if (result.success) {
+                    setStudents(result.students);
+                } else {
+                    console.error('Failed to fetch students:', result.error);
+                }
+            } catch (error) {
+                console.error('Error fetching students:', error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchStudents();
+    }, []);
 
     const handleRequirementChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setRequirements({
@@ -24,29 +56,92 @@ const RegisterCoursePage: React.FC = () => {
     const handleRegister = () => {
         // Placeholder for register student logic
         alert('Register Student clicked');
+    };    const handleNotify = async () => {
+        // Check if a student is selected
+        if (!studentID || !fullName || !email) {
+            alert('Please select a student first by clicking the View button in the table');
+            return;
+        }
+
+        // Check if there are missing requirements
+        const missingReqs = await getMissingRequirements(requirements);
+        if (missingReqs.length === 0) {
+            alert('This student has submitted all requirements. No notification needed.');
+            return;
+        }
+
+        // Confirm sending notification
+        const confirmSend = confirm(
+            `Send missing requirements notification to ${fullName}?\n\n` +
+            `Missing requirements:\n${missingReqs.map(req => `• ${req}`).join('\n')}\n\n` +
+            `Email will be sent to: ${email}`
+        );
+
+        if (!confirmSend) {
+            return;
+        }
+
+        setIsNotificationLoading(true);
+
+        try {
+            const result = await sendMissingRequirementsNotification({
+                studentId: studentID,
+                studentName: fullName,
+                email: email,
+                missingRequirements: missingReqs,
+                notificationMethod: 'email' // For now, we'll just send email
+            });
+
+            if (result.success) {
+                alert(`✅ Email notification sent successfully to ${email}!\n\n${result.message}`);
+            } else {
+                alert(`❌ Failed to send notification:\n${result.error || result.message}\n\nPlease check your email configuration.`);
+            }
+        } catch (error) {
+            console.error('Error sending notification:', error);
+            alert('❌ An error occurred while sending the notification. Please try again or check the console for details.');
+        } finally {
+            setIsNotificationLoading(false);
+        }
     };
 
-    const handleNotify = () => {
-        // Placeholder for notify missing requirements logic
-        alert('Notify Missing Requirements clicked');
+    const handleViewStudent = (student: {
+        id: string;
+        name: string;
+        gradeLevel: string;
+        strand: string;
+        status: string;
+        email: string;
+    }) => {
+        // Populate form fields with student data
+        setStudentID(student.id);
+        setFullName(student.name);
+        setGradeLevel(student.gradeLevel);
+        setStrand(student.strand);
+        setEmail(student.email);
+
+        // For requirements, we'll set them to false as default since we don't have this data
+        // You can modify this logic based on your actual data structure
+        setRequirements({
+            birthCertificate: false,
+            reportCard: false,
+            certificateOfGoodMoral: false,
+        });
     };
 
-    const students = [
-        {
-            id: 'JHS2023-001',
-            name: 'Styvn Bertuso',
-            gradeLevel: 'Grade 7',
-            strand: '-',
-            status: 'Pending',
-        },
-        {
-            id: 'SHS2023-001',
-            name: 'Gerard Marical',
-            gradeLevel: 'Grade 11',
-            strand: 'STEM',
-            status: 'Complete',
-        },
-    ];
+    // const handleClearForm = () => {
+    //     // Clear all form fields
+    //     setStudentID('');
+    //     setFullName('');
+    //     setGradeLevel('');
+    //     setStrand('');
+    //     setEmail('');
+    //     setRequirements({
+    //         birthCertificate: false,
+    //         reportCard: false,
+    //         certificateOfGoodMoral: false,
+    //     });
+    // };
 
     return (
         <div className="min-h-screen bg-gray-100 p-6">
@@ -66,9 +161,60 @@ const RegisterCoursePage: React.FC = () => {
                 </aside>
                 {/* First Column: Add Student Form + All Students Table */}
                 <div className="flex-1 space-y-6 order-2 md:order-1">
-                    {/* Add Student Form */}
+                    {/* All Students Table */}
                     <div className="bg-white p-6 rounded-lg shadow">
-                        <h2 className="text-lg font-semibold mb-4 text-black">Add Student</h2>
+                        <h2 className="text-lg font-semibold mb-4 text-black">Pending Registration</h2>
+                        {isLoading ? (
+                            <div className="flex justify-center items-center py-8">
+                                <div className="text-gray-500">Loading students...</div>
+                            </div>
+                        ) : (
+                            <table className="w-full text-left text-sm"><thead>
+                                <tr className="border-b border-gray-300 text-black">
+                                    <th className="py-2 font-semibold">Application ID</th>
+                                    <th className="py-2 font-semibold">Name</th>
+                                    <th className="py-2 font-semibold">Actions</th>
+                                </tr>
+                            </thead>
+                                <tbody>
+                                    {students.length === 0 ? (
+                                        <tr>
+                                            <td colSpan={3} className="py-4 text-center text-gray-500">
+                                                No students found
+                                            </td>
+                                        </tr>
+                                    ) : (
+                                        students.map((student) => (
+                                            <tr key={student.id} className="border-b border-gray-200 text-black hover:bg-gray-50">
+                                                <td className="py-2">{student.id}</td>
+                                                <td className="py-2">{student.name}</td>
+                                                <td className="py-2 flex space-x-4">
+                                                    <button
+                                                        title="View"
+                                                        className="text-gray-700 hover:text-gray-900"
+                                                        onClick={() => handleViewStudent(student)}
+                                                    >
+                                                        <Eye className="h-5 w-5" />
+                                                    </button>
+                                                    <button
+                                                        title="Delete"
+                                                        className="text-red-600 hover:text-red-800"
+                                                        onClick={() => alert(`Delete student ${student.id}`)}
+                                                    >
+                                                        <Trash className="h-5 w-5" />
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    )}
+                                </tbody>
+                            </table>
+                        )}
+                    </div>                    {/* Add/Edit Student Form */}
+                    <div className="bg-white p-6 rounded-lg shadow">
+                        <h2 className="text-lg font-semibold mb-4 text-black">
+                            Student Details
+                        </h2>
                         <div className="grid grid-cols-2 gap-4 mb-4">
                             <div>
                                 <label className="block text-sm font-medium mb-1 text-black" htmlFor="studentID">
@@ -80,7 +226,8 @@ const RegisterCoursePage: React.FC = () => {
                                     placeholder="Enter student ID"
                                     value={studentID}
                                     onChange={(e) => setStudentID(e.target.value)}
-                                    className="w-full text-black border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                    readOnly
+                                    className="w-full text-black border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-100 cursor-not-allowed"
                                 />
                             </div>
                             <div>
@@ -93,7 +240,8 @@ const RegisterCoursePage: React.FC = () => {
                                     placeholder="Enter full name"
                                     value={fullName}
                                     onChange={(e) => setFullName(e.target.value)}
-                                    className="w-full text-black border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                    readOnly
+                                    className="w-full text-black border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-100 cursor-not-allowed"
                                 />
                             </div>
                         </div>
@@ -106,7 +254,8 @@ const RegisterCoursePage: React.FC = () => {
                                     id="gradeLevel"
                                     value={gradeLevel}
                                     onChange={(e) => setGradeLevel(e.target.value)}
-                                    className="w-full text-black border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 max-w-xs"
+                                    disabled
+                                    className="w-full text-black border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-100 cursor-not-allowed"
                                 >
                                     <option value="">Select grade level</option>
                                     <option value="Grade 7">Grade 7</option>
@@ -125,14 +274,13 @@ const RegisterCoursePage: React.FC = () => {
                                     id="strand"
                                     value={strand}
                                     onChange={(e) => setStrand(e.target.value)}
-                                    className="w-full text-black border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 max-w-xs"
+                                    disabled
+                                    className="w-full text-black border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-100 cursor-not-allowed"
                                 >
                                     <option value="">Select strand</option>
-                                    <option value="STEM">STEM</option>
-                                    <option value="ABM">ABM</option>
-                                    <option value="HUMSS">HUMSS</option>
-                                    <option value="GAS">GAS</option>
-                                    <option value="TVL">TVL</option>
+                                    <option value="Senior High">Senior High School</option>
+                                    <option value="Junior High">Junior High School</option>
+                                    <option value="Elementary">Elementary</option>
                                 </select>
                             </div>
                         </div>
@@ -146,7 +294,8 @@ const RegisterCoursePage: React.FC = () => {
                                 placeholder="Enter email address"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                className="w-full text-black border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                readOnly
+                                className="w-full text-black border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-100 cursor-not-allowed"
                             />
                         </div>
                         <div className="mb-4">
@@ -200,10 +349,35 @@ const RegisterCoursePage: React.FC = () => {
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"></path>
                                 </svg>
                                 <span>Register Student</span>
-                            </button>
-                            <button
+                            </button>                            <button
                                 onClick={handleNotify}
-                                className="bg-yellow-400 text-black px-4 py-2 rounded text-sm flex items-center space-x-2 hover:bg-yellow-500"
+                                disabled={isNotificationLoading}
+                                className="bg-yellow-400 text-black px-4 py-2 rounded text-sm flex items-center space-x-2 hover:bg-yellow-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                {isNotificationLoading ? (
+                                    <>
+                                        <div className="animate-spin h-4 w-4 border-2 border-black border-t-transparent rounded-full"></div>
+                                        <span>Sending...</span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <svg
+                                            className="w-4 h-4"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="2"
+                                            viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                                        </svg>
+                                        <span>Notify Missing Requirements</span>
+                                    </>
+                                )}
+                            </button>
+                            {/* <button
+                                onClick={handleClearForm}
+                                className="bg-gray-500 text-white px-4 py-2 rounded text-sm flex items-center space-x-2 hover:bg-gray-600"
                             >
                                 <svg
                                     className="w-4 h-4"
@@ -213,95 +387,10 @@ const RegisterCoursePage: React.FC = () => {
                                     viewBox="0 0 24 24"
                                     xmlns="http://www.w3.org/2000/svg"
                                 >
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                </svg>
-                                <span>Notify Missing Requirements</span>
-                            </button>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>                                <span>Clear Form</span>
+                            </button> */}
                         </div>
-                    </div>
-                    {/* All Students Table */}
-                    <div className="bg-white p-6 rounded-lg shadow">
-                        <h2 className="text-lg font-semibold mb-4 text-black">All Students</h2>
-                        <table className="w-full text-left text-sm">
-                            <thead>
-                                <tr className="border-b border-gray-300 text-black">
-                                    <th className="py-2 font-semibold">Student ID</th>
-                                    <th className="py-2 font-semibold">Name</th>
-                                    <th className="py-2 font-semibold">Grade Level</th>
-                                    <th className="py-2 font-semibold">Strand</th>
-                                    <th className="py-2 font-semibold">Status</th>
-                                    <th className="py-2 font-semibold">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {students.map((student) => (
-                                    <tr key={student.id} className="border-b border-gray-200 text-black">
-                                        <td className="py-2">{student.id}</td>
-                                        <td className="py-2">{student.name}</td>
-                                        <td className="py-2">{student.gradeLevel}</td>
-                                        <td className="py-2">{student.strand}</td>
-                                        <td className="py-2">
-                                            {student.status === 'Pending' ? (
-                                                <span className="inline-block bg-gray-200 text-gray-700 px-2 py-1 rounded-full text-xs">
-                                                    Pending
-                                                </span>
-                                            ) : (
-                                                <span className="inline-block bg-green-200 text-green-700 px-2 py-1 rounded-full text-xs">
-                                                    Complete
-                                                </span>
-                                            )}
-                                        </td>
-                                        <td className="py-2 flex space-x-4">
-                                            <button
-                                                title="View"
-                                                className="text-gray-700 hover:text-gray-900"
-                                                onClick={() => alert(`View student ${student.id}`)}
-                                            >
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    className="h-5 w-5"
-                                                    fill="none"
-                                                    viewBox="0 0 24 24"
-                                                    stroke="currentColor"
-                                                    strokeWidth="2"
-                                                >
-                                                    <path
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                                                    />
-                                                    <path
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                                                    />
-                                                </svg>
-                                            </button>
-                                            <button
-                                                title="Delete"
-                                                className="text-red-600 hover:text-red-800"
-                                                onClick={() => alert(`Delete student ${student.id}`)}
-                                            >
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    className="h-5 w-5"
-                                                    fill="none"
-                                                    viewBox="0 0 24 24"
-                                                    stroke="currentColor"
-                                                    strokeWidth="2"
-                                                >
-                                                    <path
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5-4h4m-4 0a1 1 0 00-1 1v1h6V4a1 1 0 00-1-1m-4 0h4"
-                                                    />
-                                                </svg>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
                     </div>
                 </div>
             </div>
