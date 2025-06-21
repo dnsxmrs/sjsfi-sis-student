@@ -61,7 +61,7 @@ export default function NotificationsTable() {
                     <div className="relative w-full sm:w-auto">
                         <input
                             type="text"
-                            placeholder="Filter by..."
+                            placeholder="Search..."
                             value={filter}
                             onChange={handleFilterChange}
                             className="w-full pl-8 pr-4 py-1 border rounded-md text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#DAA520] focus:border-transparent"
