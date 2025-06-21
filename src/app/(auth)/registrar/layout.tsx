@@ -12,6 +12,8 @@ import {
     BookMarked,
     Newspaper,
     ScrollText,
+    Scale,
+    Shield
 } from "lucide-react";
 import Image from "next/image";
 import { UserButton } from "@clerk/nextjs";
@@ -41,6 +43,16 @@ const NAVIGATION_ITEMS = [
         href: "/registrar/withdraw-requests",
         label: "Withdraw Requests",
         icon: ScrollText,
+    },
+    {
+        href: "/registrar/policies",
+        label: "Policies",
+        icon: Scale,
+    },
+    {
+        href: "/registrar/system-logs",
+        label: "System Logs",
+        icon: Shield,
     },
 ];
 
