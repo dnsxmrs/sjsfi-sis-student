@@ -1,0 +1,143 @@
+/* Grade Protection Styles */
+
+/* Disable text selection globally for grade pages */
+.grade-protection-active {
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+    -webkit-touch-callout: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+}
+
+.grade-protection-active * {
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+}
+
+/* Print protection */
+@media print {
+    .grade-protection-active,
+    .grade-protection-active * {
+        visibility: hidden !important;
+        display: none !important;
+    }
+    
+    body::before {
+        content: "⚠️ GRADES CANNOT BE PRINTED ⚠️\A\AFor official transcripts and documents, please visit the registrar's office.\A\AUnauthorized printing, copying, or distribution of grades is prohibited.\A\AContact: Registrar's Office\AOffice Hours: Monday-Friday, 8:00 AM - 5:00 PM" !important;
+        visibility: visible !important;
+        display: block !important;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        background: white !important;
+        color: #dc2626 !important;
+        font-size: 24px !important;
+        font-weight: bold !important;
+        text-align: center !important;
+        padding: 50px !important;
+        white-space: pre-line !important;
+        z-index: 999999 !important;
+        line-height: 1.6 !important;
+    }
+}
+
+/* Prevent drag and drop */
+.grade-protection-active img,
+.grade-protection-active table,
+.grade-protection-active div {
+    -webkit-user-drag: none !important;
+    -khtml-user-drag: none !important;
+    -moz-user-drag: none !important;
+    -o-user-drag: none !important;
+}
+
+/* Hide scrollbars to prevent screenshots with scrollbar indicators */
+.grade-protection-active::-webkit-scrollbar {
+    display: none;
+}
+
+.grade-protection-active {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Disable image saving */
+.grade-protection-active img {
+    pointer-events: none !important;
+}
+
+/* Additional protection against common screenshot tools */
+.grade-protection-active::selection {
+    background: transparent !important;
+}
+
+.grade-protection-active::-moz-selection {
+    background: transparent !important;
+}
+
+/* Watermark effect for additional protection */
+.grade-watermark {
+    position: relative;
+    overflow: hidden;
+}
+
+.grade-watermark::before {
+    content: 'CONFIDENTIAL - OFFICIAL USE ONLY - NOT FOR PRINTING';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.03);
+    font-weight: bold;
+    text-align: center;
+    line-height: 30px;
+    pointer-events: none;
+    transform: rotate(-45deg);
+    z-index: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    background-image: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 100px,
+        rgba(0, 0, 0, 0.02) 100px,
+        rgba(0, 0, 0, 0.02) 200px
+    );
+}
+
+/* Mobile-specific protections */
+@media (max-width: 768px) {
+    .grade-protection-active {
+        -webkit-touch-callout: none !important;
+        -webkit-user-select: none !important;
+        -khtml-user-select: none !important;
+        -moz-user-select: none !important;
+        -ms-user-select: none !important;
+        user-select: none !important;
+    }
+}
+
+/* Disable context menu styling */
+.grade-protection-active {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Additional security for high-resolution displays */
+@media (-webkit-min-device-pixel-ratio: 2) {
+    .grade-protection-active {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
+}

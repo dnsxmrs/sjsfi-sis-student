@@ -1,6 +1,7 @@
 'use client'
 
-import { Subject } from '../types';
+import { Subject } from './types';
+import { useEffect, useRef } from 'react';
 
 interface GradesTableProps {
     year: string;
@@ -9,12 +10,52 @@ interface GradesTableProps {
 }
 
 export function GradesTable({ year, grade, subjects }: GradesTableProps) {
+    const tableRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        // Add additional protection for the table
+        const preventCopy = (e: ClipboardEvent) => {
+            e.preventDefault();
+            e.clipboardData?.setData('text/plain', 'Copying grades is not allowed. Please visit the registrar for official documents.');
+            return false;
+        };
+
+        // Protect against image capture attempts
+        const preventCapture = () => {
+            if (tableRef.current) {
+                // Temporarily blur content
+                tableRef.current.style.filter = 'blur(5px)';
+                setTimeout(() => {
+                    if (tableRef.current) {
+                        tableRef.current.style.filter = 'none';
+                    }
+                }, 1000);
+            }
+        };
+
+        document.addEventListener('copy', preventCopy);
+        document.addEventListener('keyup', (e) => {
+            if (e.key === 'PrintScreen') {
+                preventCapture();
+            }
+        });
+
+        return () => {
+            document.removeEventListener('copy', preventCopy);
+        };
+    }, []);
+
     return (
-        <div className="mb-8">
+        <div className="mb-8" ref={tableRef}>
             <div className="bg-[#800000] text-white px-4 py-2 rounded-t-md font-medium text-lg">
                 School Year {year} | {grade}
             </div>
-            <div className="bg-white p-4">
+            <div className="bg-white p-4 relative">
+                {/* Anti-screenshot overlay */}
+                <div className="absolute inset-0 pointer-events-none opacity-0 hover:opacity-5 transition-opacity duration-300">
+                    <div className="w-full h-full bg-gradient-to-r from-red-500 to-blue-500 mix-blend-difference"></div>
+                </div>
+                
                 <div className="overflow-x-auto border rounded-b-md">
                     <table className="min-w-[900px] w-full text-base text-left">
                         <thead className="bg-gray-100 sticky top-0 z-10">
