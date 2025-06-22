@@ -11,7 +11,6 @@ export async function getCurrentUser() {
             !clerkUser.emailAddresses ||
             clerkUser.emailAddresses.length === 0
         ) {
-            console.log("No Clerk user or email found");
             return {
                 name: "Guest User",
                 studentNo: "N/A",
@@ -22,7 +21,6 @@ export async function getCurrentUser() {
         }
 
         const email = clerkUser.emailAddresses[0].emailAddress;
-        console.log("Fetching user with email:", email);
 
         // Fetch user data from Prisma database using email
         const user = await prisma.user.findUnique({
@@ -41,69 +39,61 @@ export async function getCurrentUser() {
                             },
                             take: 1,
                         },
+                        grades: {
+                            include: {
+                                subject: {
+                                    include: {
+                                        enrollment: true,
+                                    },
+                                },
+                            },
+                            orderBy: {
+                                createdAt: "desc",
+                            },
+                            take: 1,
+                        },
                     },
                 },
-                teacher: true,
             },
         });
 
         if (!user) {
-            console.log("User not found in database for email:", email);
             // Return default values if user not found in database
             return {
-                name:
+                firstName:
                     clerkUser.firstName + " " + clerkUser.lastName ||
-                    "Unknown User",
+                    "Unknown",
+                lastName: clerkUser.lastName || "User",
                 studentNo: "Not registered",
                 schoolYear: "N/A",
                 email: email,
                 role: "unregistered",
             };
         }
-        console.log("User found:", user.name, user.role);
-        console.log("User student data:", user.student);
-        console.log("User teacher data:", user.teacher);
-        console.log(
-            'DEBUG - user.role === "student":',
-            user.role === "student"
-        );
-        console.log(
-            'DEBUG - user.role.toLowerCase() === "student":',
-            user.role.toLowerCase() === "student"
-        );
-        console.log("DEBUG - !!user.student:", !!user.student);
-        console.log(
-            "DEBUG - user.student exists and has studentNumber:",
-            user.student?.studentNumber
-        );
 
         // Format the response based on user role (case-insensitive)
         if (user.role.toLowerCase() === "student") {
-            console.log("✅ Entered student role condition");
             if (user.student) {
-                console.log("✅ User has student data");
-                console.log(
-                    "Processing student user - studentNumber:",
-                    user.student.studentNumber
-                );
+                // Get school year from grades first, then fall back to enrollment
+                const schoolYearFromGrades = user.student.grades[0]?.subject?.enrollment?.schoolYear;
+                const schoolYearFromEnrollment = user.student.enrollments[0]?.schoolYear;
+                const schoolYear = schoolYearFromGrades || schoolYearFromEnrollment || "N/A";
+
                 const result = {
-                    name: user.name,
+                    firstName: user.firstName,
+                    lastName: user.lastName,
                     studentNo: user.student.studentNumber,
-                    schoolYear:
-                        user.student.enrollments[0]?.schoolYear ||
-                        "Not enrolled",
+                    schoolYear: schoolYear,
                     email: user.email,
                     role: user.role,
                     gradeLevel: user.student.gradeLevel,
                 };
-                console.log("Returning student result:", result);
+                console.log("Current user:", result);
                 return result;
             } else {
-                console.log(
-                    "❌ User has student role but no student data found"
-                );
                 return {
-                    name: user.name,
+                    firstName: user.firstName,
+                    lastName: user.lastName,
                     studentNo: "Student data not found",
                     schoolYear: "N/A",
                     email: user.email,
@@ -111,36 +101,12 @@ export async function getCurrentUser() {
                     gradeLevel: "N/A",
                 };
             }
-        } else if (user.role.toLowerCase() === "teacher" && user.teacher) {
-            console.log(
-                "✅ Processing teacher user - employeeNumber:",
-                user.teacher.employeeNumber
-            );
-            return {
-                name: user.name,
-                employeeNo: user.teacher.employeeNumber,
-                studentNo: "N/A", // Add studentNo for compatibility
-                email: user.email,
-                role: user.role,
-                specialization: user.teacher.specialization,
-            };
-        } else {
-            console.log("❌ Processing other user role:", user.role);
-            console.log("Student data exists?", !!user.student);
-            console.log("Teacher data exists?", !!user.teacher);
-            // For admin or other roles
-            return {
-                name: user.name,
-                studentNo: "N/A", // Add studentNo for compatibility
-                email: user.email,
-                role: user.role,
-            };
         }
-    } catch (error) {
-        console.error("Error fetching current user:", error);
+    } catch {
         // Return fallback values instead of null
         return {
-            name: "Error Loading User",
+            firstName: "Error Loading User",
+            lastName: "N/A",
             studentNo: "N/A",
             schoolYear: "N/A",
             email: "",

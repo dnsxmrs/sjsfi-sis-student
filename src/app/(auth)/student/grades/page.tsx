@@ -1,12 +1,7 @@
-'use client'
-
 import { GradesTable } from './GradesTable';
-import { GradeProtection } from './GradeProtection';
-import { gradesData } from './data';
 
 export default function GradesPage() {
     return (
-        <GradeProtection>
             <div className="space-y-6">
                 {/* Header with warning */}
                 <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
@@ -22,23 +17,14 @@ export default function GradesPage() {
                             </h3>
                             <div className="mt-2 text-sm text-yellow-700">
                                 <p>
-                                    This grade report is for viewing purposes only. Printing, copying, or capturing screenshots is prohibited. 
+                                    This grade report is for viewing purposes only. Printing, copying, or capturing screenshots is prohibited.
                                     For official transcripts and certificates, please visit the registrar&apos;s office and complete the necessary payment and request procedures.
                                 </p>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                {gradesData.map((g) => (
-                    <GradesTable
-                        key={g.schoolYear}
-                        year={g.schoolYear}
-                        grade={g.gradeLevel}
-                        subjects={g.subjects}
-                    />
-                ))}
+                <GradesTable />
             </div>
-        </GradeProtection>
     );
 }

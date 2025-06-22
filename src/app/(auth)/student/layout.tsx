@@ -17,7 +17,7 @@ export default async function StudentLayout({ children }: { children: ReactNode 
     // delay to test the loading screen
     // await new Promise(resolve => setTimeout(resolve, 3000));
     const currentUser = await getCurrentUser();
-    const { name, studentNo } = currentUser || { name: 'Guest User', studentNo: 'N/A' };
+    const { firstName, lastName, studentNo } = currentUser || { firstName: 'Guest', lastName: 'User', studentNo: 'N/A' };
 
     return (
         <div className="flex flex-col min-h-screen bg-gray-100">
@@ -30,7 +30,7 @@ export default async function StudentLayout({ children }: { children: ReactNode 
                     <div className="bg-white rounded-lg shadow-sm mb-4 sm:mb-6">
                         <div className="p-3 sm:p-4">
                             <h2 className="text-base sm:text-lg font-medium text-red-800">
-                                {name} <span className="text-gray-700">({studentNo})</span>
+                                {firstName} {lastName} <span className="text-gray-700">({studentNo})</span>
                             </h2>
                         </div>
                     </div>
