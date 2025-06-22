@@ -199,7 +199,7 @@ export async function POST(request: NextRequest) {
             where: { email: email },
             select: {
                 id: true,
-                name: true,
+                firstName: true,
                 email: true,
                 role: true,
                 student: {
@@ -242,7 +242,8 @@ export async function POST(request: NextRequest) {
         // Transform the response to flatten student data
         const transformedUser = {
             id: user.id,
-            name: user.name,
+            firstName: user.firstName,
+            lastName: user.firstName, // Assuming firstName is used for both
             email: user.email,
             role: user.role,
             // Student-specific fields (if user is a student)
