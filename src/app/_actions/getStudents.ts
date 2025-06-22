@@ -14,7 +14,8 @@ export async function getStudents() {
             include: {
                 user: {
                     select: {
-                        name: true,
+                        firstName: true,
+                        lastName: true,
                         email: true,
                     },
                 },
@@ -27,7 +28,8 @@ export async function getStudents() {
         console.log("Students fetched successfully:", students.length); // Transform the data to match the expected format
         const formattedStudents = students.map((student) => ({
             id: student.studentNumber,
-            name: student.user.name,
+            firstName: student.user.firstName,
+            lastName: student.user.lastName,
             gradeLevel: student.gradeLevel,
             strand:
                 student.gradeLevel.includes("11") ||

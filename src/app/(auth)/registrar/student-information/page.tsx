@@ -6,7 +6,8 @@ import { getStudents } from '@/app/_actions/getStudents';
 
 interface Student {
     id: string;
-    name: string;
+    firstName: string;
+    lastName: string;
     gradeLevel: string;
     strand: string;
     status: string;
@@ -55,10 +56,13 @@ export default function StudentInformationPage() {
 
     // Filter students based on search term
     const filteredStudents = students.filter(student =>
-        student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        student.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        student.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
         student.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
         (student.studentNumber && student.studentNumber.toLowerCase().includes(searchTerm.toLowerCase()))
-    ); const handleStudentSelect = (student: Student) => {
+    );
+
+    const handleStudentSelect = (student: Student) => {
         setSelectedStudent(student);
         // setSearchTerm(student.name);
     };
@@ -82,7 +86,7 @@ export default function StudentInformationPage() {
                                 Full Name
                             </label>
                             <div className="p-3 bg-gray-50 border border-gray-200 rounded-md">
-                                <p className="text-gray-900">{selectedStudent.name}</p>
+                                <p className="text-gray-900">{selectedStudent.firstName} {selectedStudent.lastName}</p>
                             </div>
                         </div>
 
@@ -264,7 +268,7 @@ export default function StudentInformationPage() {
                                                 }`}
                                         >
                                             <div className="text-sm font-medium text-gray-900">
-                                                {student.name}
+                                                {student.firstName} {student.lastName}
                                             </div>
                                             <div className="text-xs text-gray-500 mt-1">
                                                 {student.gradeLevel} • {student.studentNumber || student.id}

@@ -13,13 +13,15 @@ const RegisterCoursePage: React.FC = () => {
     const [email, setEmail] = useState('');
     const [students, setStudents] = useState<Array<{
         id: string;
-        name: string;
+        firstName: string;
+        lastName: string;
         gradeLevel: string;
         strand: string;
         status: string;
         email: string;
     }>>([]);
-    const [isLoading, setIsLoading] = useState(true);    const [requirements, setRequirements] = useState({
+    const [isLoading, setIsLoading] = useState(true);
+    const [requirements, setRequirements] = useState({
         birthCertificate: false,
         reportCard: false,
         certificateOfGoodMoral: false,
@@ -107,7 +109,8 @@ const RegisterCoursePage: React.FC = () => {
 
     const handleViewStudent = (student: {
         id: string;
-        name: string;
+        firstName: string;
+        lastName: string;
         gradeLevel: string;
         strand: string;
         status: string;
@@ -115,7 +118,7 @@ const RegisterCoursePage: React.FC = () => {
     }) => {
         // Populate form fields with student data
         setStudentID(student.id);
-        setFullName(student.name);
+        setFullName(student.firstName + ' ' + student.lastName);
         setGradeLevel(student.gradeLevel);
         setStrand(student.strand);
         setEmail(student.email);
@@ -172,7 +175,8 @@ const RegisterCoursePage: React.FC = () => {
                             <table className="w-full text-left text-sm"><thead>
                                 <tr className="border-b border-gray-300 text-black">
                                     <th className="py-2 font-semibold">Application ID</th>
-                                    <th className="py-2 font-semibold">Name</th>
+                                    <th className="py-2 font-semibold">First Name</th>
+                                    <th className="py-2 font-semibold">Last Name</th>
                                     <th className="py-2 font-semibold">Actions</th>
                                 </tr>
                             </thead>
@@ -187,7 +191,8 @@ const RegisterCoursePage: React.FC = () => {
                                         students.map((student) => (
                                             <tr key={student.id} className="border-b border-gray-200 text-black hover:bg-gray-50">
                                                 <td className="py-2">{student.id}</td>
-                                                <td className="py-2">{student.name}</td>
+                                                <td className="py-2">{student.firstName}</td>
+                                                <td className="py-2">{student.lastName}</td>
                                                 <td className="py-2 flex space-x-4">
                                                     <button
                                                         title="View"
