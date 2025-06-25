@@ -46,11 +46,11 @@ export async function studentEmailExists(
         // Step 2: If user does not exist, return error
         if (!user) {
             console.error('User not found');
-            return { success: false, error: 'Student not found in our records' };
+            return { success: false, error: 'Invalid credentials.' };
         }
 
         // Step 3: If user exists but is not a student, return unauthorized error
-        if (user.role !== 'Student') {
+        if (user.role !== 'student') {
             console.error(`Unauthorized login attempt for email: ${email}`);
             return { success: false, error: 'Access denied for this role' };
         }

@@ -8,6 +8,7 @@ import { useSignIn } from "@clerk/nextjs";
 import { facultyEmailExists } from "../actions/handleFacultyLogin";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
+import Link from "next/link";
 
 interface SetRoleResult {
     success: boolean;
@@ -177,15 +178,15 @@ export default function RegistrarLoginForm() {
                 />
             </div>
             <div className="flex items-center justify-center mb-4 w-full">
-                <p className="text-sm text-black text-center italic">
+                {/* <p className="text-sm text-black text-center italic">
                     <span className="text-[#800000]">Forgot your password?</span> Contact the system administrator for assistance.
-                </p>
-                {/* <Link
-                    href="/registrar/forgot-password"
+                </p> */}
+                <Link
+                    href="/auth/registrar/forgot-password"
                     className="font-medium text-sm text-[#800000] hover:underline hover:text-[#800000]/80 transition duration-200 ease-in-out"
                 >
                     I forgot my password
-                </Link> */}
+                </Link>
             </div>
             <LoginFooter />
         </form>

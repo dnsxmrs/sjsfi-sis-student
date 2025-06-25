@@ -8,6 +8,7 @@ import { useSignIn } from "@clerk/nextjs";
 import { studentEmailExists } from "../actions/handleStudentLogin";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import Link from "next/link";
 
 interface SetRoleResult {
     success: boolean;
@@ -41,12 +42,15 @@ export default function StudentLoginForm() {
             // STEP 1: Start sign-in by identifying the user
             const signInAttempt = await signIn.create({
                 identifier: email_address, // just the email
-            });            // STEP 2: Check if the student exists AND validate student number
+            });
+
+            // STEP 2: Check if the student exists AND validate student number
             const studentCheck = await studentEmailExists(
                 email_address,
                 "student",
                 student_number // Pass the student number for validation
             );
+            
             if (!studentCheck.success) {
                 setError(
                     studentCheck.error || "Invalid credentials."
@@ -81,7 +85,7 @@ export default function StudentLoginForm() {
                 } catch {
                     setError("Failed to parse server response. Please try again.");
                     return;
-                }                if (!response.ok || !setRoleResult.success) {
+                } if (!response.ok || !setRoleResult.success) {
                     setError(setRoleResult.error || "Failed to set user role. Please try again.");
                     return;
                 }
@@ -177,15 +181,15 @@ export default function StudentLoginForm() {
                 />
             </div>
             <div className="flex items-center justify-center mb-4 w-full">
-                <p className="text-sm text-black text-center italic">
+                {/* <p className="text-sm text-black text-center italic">
                     <span className="text-[#800000]">Forgot your password?</span> Contact the system administrator for assistance.
-                </p>
-                {/* <Link
-                    href="/student/forgot-password"
+                </p> */}
+                <Link
+                    href="/auth/student/forgot-password"
                     className="font-medium text-sm text-[#800000] hover:underline hover:text-[#800000]/80 transition duration-200 ease-in-out"
                 >
                     I forgot my password
-                </Link> */}
+                </Link>
             </div>
             <LoginFooter />
         </form>
