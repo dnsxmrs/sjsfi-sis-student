@@ -183,6 +183,9 @@ export async function getStudentGrades(): Promise<GradesSummary | null> {
             overallAverage,
         };
 
+        // console the result
+        console.log("Grades fetched successfully:", result);
+
         return result;
 
     } catch (error) {

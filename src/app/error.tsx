@@ -1,15 +1,10 @@
 'use client';
 
-import { useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 export default function Error({ error, reset }: { error: Error; reset: () => void }) {
     const router = useRouter();
-
-    useEffect(() => {
-        // console.error('Error caught by error.tsx:', error);
-    }, [error]);
 
     return (
         <div className="flex flex-col items-center justify-center h-screen w-screen bg-white text-center px-4">

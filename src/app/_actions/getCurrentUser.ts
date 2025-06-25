@@ -88,7 +88,6 @@ export async function getCurrentUser() {
                     role: user.role,
                     gradeLevel: user.student.gradeLevel,
                 };
-                console.log("Current user:", result);
                 return result;
             } else {
                 return {

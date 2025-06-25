@@ -5,7 +5,7 @@ import LoginFooter from "@/components/atoms/LoginFooter";
 import ActionButton from "@/components/atoms/ActionButton";
 import { useState } from "react";
 import { useSignIn } from "@clerk/nextjs";
-import { studentEmailExists } from "../actions/handleStudentLogin";
+import { studentEmailExists } from "@/app/_actions/handleStudentLogin";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import Link from "next/link";
@@ -16,13 +16,56 @@ interface SetRoleResult {
 }
 
 export default function StudentLoginForm() {
-    const [student_number, setStudentNumber] = useState("");
+    const [birthMonth, setBirthMonth] = useState("");
+    const [birthDay, setBirthDay] = useState("");
+    const [birthYear, setBirthYear] = useState("");
     const [email_address, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const { signIn, setActive, isLoaded } = useSignIn();
+
     const router = useRouter();
+    const startYear = new Date().getFullYear() - 9; // Adjust this as needed for your application
+
+    // Function to get the number of days in a month
+    const getDaysInMonth = (month: string, year: string) => {
+        if (!month) return 31; // Default to 31 if no month selected
+
+        const monthNum = parseInt(month);
+        const yearNum = year ? parseInt(year) : new Date().getFullYear(); // Use current year as default
+
+        // Days in each month
+        const daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+        // Check for leap year for February
+        if (monthNum === 2) {
+            const isLeapYear = (yearNum % 4 === 0 && yearNum % 100 !== 0) || (yearNum % 400 === 0);
+            return isLeapYear ? 29 : 28;
+        }
+
+        return daysInMonth[monthNum - 1];
+    };
+
+    // Reset day if it's invalid for the selected month
+    const handleMonthChange = (selectedMonth: string) => {
+        setBirthMonth(selectedMonth);
+        const maxDays = getDaysInMonth(selectedMonth, birthYear);
+        if (birthDay && parseInt(birthDay) > maxDays) {
+            setBirthDay(""); // Reset day if it's invalid for the new month
+        }
+    };
+
+    // Reset day if it's invalid for the selected year (for leap year)
+    const handleYearChange = (selectedYear: string) => {
+        setBirthYear(selectedYear);
+        if (birthMonth === "2" && birthDay) { // Only check February
+            const maxDays = getDaysInMonth(birthMonth, selectedYear);
+            if (parseInt(birthDay) > maxDays) {
+                setBirthDay(""); // Reset day if it's invalid for the new year
+            }
+        }
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         // Prevent default form submission behavior
@@ -34,7 +77,7 @@ export default function StudentLoginForm() {
         if (!isLoaded) return;
 
         try {
-            if (!student_number || !email_address || !password) {
+            if (!email_address || !password || !birthMonth || !birthDay || !birthYear) {
                 setError("Please fill in all fields");
                 return;
             }
@@ -44,13 +87,14 @@ export default function StudentLoginForm() {
                 identifier: email_address, // just the email
             });
 
-            // STEP 2: Check if the student exists AND validate student number
+            // STEP 2: Check if the student exists AND validate birthdate
+            const birthdate = `${birthYear}-${birthMonth.padStart(2, '0')}-${birthDay.padStart(2, '0')}`;
             const studentCheck = await studentEmailExists(
                 email_address,
                 "student",
-                student_number // Pass the student number for validation
+                birthdate // Pass the birthdate for validation instead of student number
             );
-            
+
             if (!studentCheck.success) {
                 setError(
                     studentCheck.error || "Invalid credentials."
@@ -101,10 +145,8 @@ export default function StudentLoginForm() {
             }
             // - } catch (err: unknown) { - use this for error catching
         } catch {
-            // console.error(err); // for debugging purposes
-
-            // use this instead for prod
-            setError("Invalid student number, email, or password");
+            // console.error(err); // for debugging purposes            // use this instead for prod
+            setError("Invalid email, birthdate, or password");
 
             // use this if really needed
             // if (err && typeof err === 'object' && 'message' in err) {
@@ -145,16 +187,6 @@ export default function StudentLoginForm() {
             )}
             <div className="mb-4 w-full">
                 <InputField
-                    name="student_number"
-                    type="text"
-                    placeholder="Student Number"
-                    value={student_number}
-                    onChange={(e) => setStudentNumber(e.target.value)}
-                    disabled={isLoading}
-                />
-            </div>
-            <div className="mb-4 w-full">
-                <InputField
                     name="email"
                     type="email"
                     placeholder="Email Address"
@@ -163,6 +195,75 @@ export default function StudentLoginForm() {
                     disabled={isLoading}
                 />
             </div>
+            {/* <div className="mb-4 w-full">
+                <InputField
+                    name="student_number"
+                    type="text"
+                    placeholder="Student Number"
+                    value={student_number}
+                    onChange={(e) => setStudentNumber(e.target.value)}
+                    disabled={isLoading}
+                />
+            </div> */}            {/* make a drop down for birthdate below */}
+            <div className="mb-4 w-full">
+                <div className="grid grid-cols-3 gap-2">
+                    {/* Month Dropdown */}
+                    <select
+                        name="birthMonth"
+                        value={birthMonth}
+                        onChange={(e) => handleMonthChange(e.target.value)}
+                        disabled={isLoading}
+                        className="bg-white border text-black text-sm border-gray-300 rounded-sm px-4 py-2 w-full focus:outline-0 focus:ring-1 focus:ring-[#800000] focus:border-transparent pr-10 disabled:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-60"
+                    >
+                        <option value="">Month</option>
+                        <option value="1">January</option>
+                        <option value="2">February</option>
+                        <option value="3">March</option>
+                        <option value="4">April</option>
+                        <option value="5">May</option>
+                        <option value="6">June</option>
+                        <option value="7">July</option>
+                        <option value="8">August</option>
+                        <option value="9">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                    </select>
+
+                    {/* Day Dropdown */}
+                    <select
+                        name="birthDay"
+                        value={birthDay}
+                        onChange={(e) => setBirthDay(e.target.value)}
+                        disabled={isLoading}
+                        className="bg-white border text-black text-sm border-gray-300 rounded-sm px-4 py-2 w-full focus:outline-0 focus:ring-1 focus:ring-[#800000] focus:border-transparent pr-10 disabled:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-60"
+                    >
+                        <option value="">Day</option>
+                        {Array.from({ length: getDaysInMonth(birthMonth, birthYear) }, (_, i) => i + 1).map((day) => (
+                            <option key={day} value={day.toString()}>
+                                {day}
+                            </option>
+                        ))}
+                    </select>
+
+                    {/* Year Dropdown */}
+                    <select
+                        name="birthYear"
+                        value={birthYear}
+                        onChange={(e) => handleYearChange(e.target.value)}
+                        disabled={isLoading}
+                        className="bg-white border text-black text-sm border-gray-300 rounded-sm px-4 py-2 w-full focus:outline-0 focus:ring-1 focus:ring-[#800000] focus:border-transparent pr-10 disabled:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-60"
+                    >
+                        <option value="">Year</option>
+                        {Array.from({ length: 27 }, (_, i) => startYear - i).map((year) => (
+                            <option key={year} value={year.toString()}>
+                                {year}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+            </div>
+
             <div className="mb-4 w-full">
                 <InputField
                     name="password"

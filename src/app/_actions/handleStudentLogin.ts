@@ -7,13 +7,13 @@ export type StudentResult = {
     error?: string;
     redirectUrl?: string;
     role?: string;
-    studentNumber?: string;
+    birthDate?: string;
 }
 
 export async function studentEmailExists(
     email: string,
     origin: string,
-    studentNumber?: string // Add optional student number parameter
+    birthDate?: string // Add optional birth date parameter
 ): Promise<StudentResult> {
     try {
         // only allow requests with email and origin
@@ -28,7 +28,7 @@ export async function studentEmailExists(
             return { success: false, error: 'Invalid origin attempt.' };
         }
 
-        console.log(`🔍 Checking if student exists: ${email} with role: ${origin}${studentNumber ? ` and student number: ${studentNumber}` : ''}`);        // Step 1: Check if the user exists in the database
+        console.log(`🔍 Checking if student exists: ${email} with role: ${origin}${birthDate ? ` and birth date: ${birthDate}` : ''}`);        // Step 1: Check if the user exists in the database
         const user = await prisma.user.findUnique({
             where: { email },
             select: {
@@ -37,7 +37,7 @@ export async function studentEmailExists(
                 role: true,
                 student: {
                     select: {
-                        studentNumber: true
+                        dateOfBirth: true
                     }
                 }
             }
@@ -55,37 +55,38 @@ export async function studentEmailExists(
             return { success: false, error: 'Access denied for this role' };
         }
 
-        // Step 4: If student number is provided, validate it
-        if (studentNumber) {
-            if (!user.student || !user.student.studentNumber) {
-                console.error('Student number not found in database');
+        // Step 4: If birth date is provided, validate it
+        if (birthDate) {
+            if (!user.student || !user.student.dateOfBirth) {
+                console.error('Birth date not found in database');
                 return {
                     success: false,
-                    error: 'Student number not found in our records'
+                    error: 'Birth date not found in our records'
                 };
             }
 
-            // Compare student numbers (convert both to strings and trim whitespace)
-            const providedNumber = String(studentNumber).trim();
-            const databaseNumber = String(user.student.studentNumber).trim();
+            // Convert database date to YYYY-MM-DD format for comparison
+            const databaseDate = new Date(user.student.dateOfBirth);
+            const databaseDateString = databaseDate.toISOString().split('T')[0]; // Gets YYYY-MM-DD format
+            const providedDate = String(birthDate).trim();
 
-            if (providedNumber !== databaseNumber) {
-                console.error(`Student number mismatch: provided ${providedNumber}, database ${databaseNumber}`);
+            if (providedDate !== databaseDateString) {
+                console.error(`Birth date mismatch: provided ${providedDate}, database ${databaseDateString}`);
                 return {
                     success: false,
-                    error: 'Student number and email do not match our records'
+                    error: 'Birth date and email do not match our records'
                 };
             }
 
-            console.log(`✅ Student number validated: ${providedNumber}`);
+            console.log(`✅ Birth date validated: ${providedDate}`);
         }
 
         // Step 5: If user exists and is a student, return success
-        console.log(`✅ Student user found: ${user.email} with role: ${user.role}${studentNumber ? ` and student number: ${studentNumber}` : ''}`);
+        console.log(`✅ Student user found: ${user.email} with role: ${user.role}${birthDate ? ` and birth date: ${birthDate}` : ''}`);
         return {
             success: true,
             role: user.role.toLowerCase(),
-            studentNumber: studentNumber
+            birthDate: birthDate
         }
     } catch (error) {
         // Log the error for debugging
