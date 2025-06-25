@@ -2,9 +2,10 @@ import React from "react";
 
 interface StudentPersonalDataPageProps {
   onBack?: () => void;
+  onNext?: () => void;
 }
 
-export default function StudentPersonalDataPage({ onBack }: StudentPersonalDataPageProps) {
+export default function StudentPersonalDataPage({ onBack, onNext }: StudentPersonalDataPageProps) {
   return (
     <div className="w-full min-h-screen bg-[#f7f7f7] flex flex-col items-center py-8">
       {/* Header */}
@@ -36,6 +37,11 @@ export default function StudentPersonalDataPage({ onBack }: StudentPersonalDataP
 
       {/* Card */}
       <div className="w-full max-w-6xl bg-white rounded-lg shadow p-8 border border-gray-200 flex flex-col gap-6">
+        
+        {/* Section Title */}
+        <div className="w-full flex justify-center">
+          <div className="font-bold text-lg tracking-wide py-2 text-white bg-[#a10000] rounded w-full text-center">PERSONAL DATA</div>
+        </div>
         {/* Academic Year and Grade */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
@@ -48,10 +54,7 @@ export default function StudentPersonalDataPage({ onBack }: StudentPersonalDataP
           </div>
         </div>
 
-        {/* Section Title */}
-        <div className="w-full flex justify-center">
-          <div className="font-bold text-lg tracking-wide py-2">PERSONAL DATA</div>
-        </div>
+        
 
         {/* Name Fields */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -221,7 +224,12 @@ export default function StudentPersonalDataPage({ onBack }: StudentPersonalDataP
 
       {/* Next Page Button */}
       <div className="w-full max-w-6xl flex justify-end mt-8">
-        <button className="bg-[#a10000] text-white px-10 py-2 rounded-md font-semibold text-lg shadow hover:bg-[#7a0000] transition">Next Page</button>
+        <button
+          className="bg-[#a10000] text-white px-10 py-2 rounded-md font-semibold text-lg shadow hover:bg-[#7a0000] transition"
+          onClick={onNext}
+        >
+          Next Page
+        </button>
       </div>
     </div>
   );

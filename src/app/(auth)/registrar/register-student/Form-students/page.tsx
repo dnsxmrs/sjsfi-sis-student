@@ -2,12 +2,22 @@
 
 import React, { useState } from "react";
 import StudentPersonalDataPage from "./personaldata";
+import StudentHealthHistoryPage from "./healthhistory";
+import FatherBackgroundPage from "./fatherbackground";
 
 export default function StudentApplicationPagedForm() {
   const [page, setPage] = useState(0);
 
+  if (page === 3) {
+    return <FatherBackgroundPage onBack={() => setPage(2)} />;
+  }
+
+  if (page === 2) {
+    return <StudentHealthHistoryPage onBack={() => setPage(1)} onNext={() => setPage(3)} />;
+  }
+
   if (page === 1) {
-    return <StudentPersonalDataPage onBack={() => setPage(0)} />;
+    return <StudentPersonalDataPage onBack={() => setPage(0)} onNext={() => setPage(2)} />;
   }
 
   return (
@@ -37,7 +47,7 @@ export default function StudentApplicationPagedForm() {
       {/* Card */}
       <div className="w-full max-w-6xl bg-white rounded-lg shadow p-10 border border-gray-200 flex flex-col gap-8">
         <div>
-          <p className="font-semibold text-lg md:text-xl mb-6">
+          <p className="font-semibold text-lg md:text-xl mb-6 text-black">
             Before continuing with the student application, please ensure you have the following:
           </p>
           <ol className="list-decimal list-inside text-base md:text-lg text-black pl-4 space-y-2">
