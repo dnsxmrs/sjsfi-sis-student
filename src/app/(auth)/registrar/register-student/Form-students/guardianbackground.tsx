@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 
-interface FatherBackgroundPageProps {
+interface GuardianBackgroundPageProps {
   onBack?: () => void;
-  onNext?: () => void;
 }
 
-export default function FatherBackgroundPage({ onBack, onNext }: FatherBackgroundPageProps) {
+export default function GuardianBackgroundPage({ onBack }: GuardianBackgroundPageProps) {
   const [status, setStatus] = useState("");
   const [otherStatus, setOtherStatus] = useState("");
 
@@ -42,7 +41,7 @@ export default function FatherBackgroundPage({ onBack, onNext }: FatherBackgroun
       <div className="w-full max-w-6xl bg-white rounded-lg shadow p-8 border border-gray-200 flex flex-col gap-6">
         {/* Section Title */}
         <div className="w-full flex justify-center">
-          <div className="font-bold text-lg tracking-wide py-2 text-white bg-[#a10000] rounded w-full text-center">FAMILY BACKGROUND: FATHER</div>
+          <div className="font-bold text-lg tracking-wide py-2 text-white bg-[#a10000] rounded w-full text-center">FAMILY BACKGROUND: GUARDIAN (If not living with parents)</div>
         </div>
 
         {/* Father Background Fields */}
@@ -229,12 +228,7 @@ export default function FatherBackgroundPage({ onBack, onNext }: FatherBackgroun
 
       {/* Next Page Button */}
       <div className="w-full max-w-6xl flex justify-end mt-8">
-        <button
-          className="bg-[#a10000] text-white px-10 py-2 rounded-md font-semibold text-lg shadow hover:bg-[#7a0000] transition"
-          onClick={onNext}
-        >
-          Next Page
-        </button>
+        <button className="bg-[#a10000] text-white px-10 py-2 rounded-md font-semibold text-lg shadow hover:bg-[#7a0000] transition">Next Page</button>
       </div>
     </div>
   );

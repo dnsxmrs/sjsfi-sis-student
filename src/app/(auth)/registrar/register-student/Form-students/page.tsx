@@ -4,12 +4,22 @@ import React, { useState } from "react";
 import StudentPersonalDataPage from "./personaldata";
 import StudentHealthHistoryPage from "./healthhistory";
 import FatherBackgroundPage from "./fatherbackground";
+import MotherBackgroundPage from "./motherbackground";
+import GuardianBackgroundPage from "./guardianbackground";
 
 export default function StudentApplicationPagedForm() {
   const [page, setPage] = useState(0);
 
+  if (page === 5) {
+    return <GuardianBackgroundPage onBack={() => setPage(4)} />;
+  }
+
+  if (page === 4) {
+    return <MotherBackgroundPage onBack={() => setPage(3)} onNext={() => setPage(5)} />;
+  }
+
   if (page === 3) {
-    return <FatherBackgroundPage onBack={() => setPage(2)} />;
+    return <FatherBackgroundPage onBack={() => setPage(2)} onNext={() => setPage(4)} />;
   }
 
   if (page === 2) {

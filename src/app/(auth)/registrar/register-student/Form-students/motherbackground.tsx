@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 
-interface FatherBackgroundPageProps {
+interface MotherBackgroundPageProps {
   onBack?: () => void;
   onNext?: () => void;
 }
 
-export default function FatherBackgroundPage({ onBack, onNext }: FatherBackgroundPageProps) {
+export default function MotherBackgroundPage({ onBack, onNext }: MotherBackgroundPageProps) {
   const [status, setStatus] = useState("");
   const [otherStatus, setOtherStatus] = useState("");
 
@@ -42,7 +42,7 @@ export default function FatherBackgroundPage({ onBack, onNext }: FatherBackgroun
       <div className="w-full max-w-6xl bg-white rounded-lg shadow p-8 border border-gray-200 flex flex-col gap-6">
         {/* Section Title */}
         <div className="w-full flex justify-center">
-          <div className="font-bold text-lg tracking-wide py-2 text-white bg-[#a10000] rounded w-full text-center">FAMILY BACKGROUND: FATHER</div>
+          <div className="font-bold text-lg tracking-wide py-2 text-white bg-[#a10000] rounded w-full text-center">FAMILY BACKGROUND: MOTHER</div>
         </div>
 
         {/* Father Background Fields */}
