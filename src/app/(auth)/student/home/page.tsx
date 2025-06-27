@@ -8,6 +8,9 @@ import PolicySkeleton from '@/components/skeleton/PolicySkeleton'
 import { GeneralPolicy } from '@/models/GeneralPolicy'
 import QuillDisplay from '@/components/QuillDisplay'
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic'
+
 export default function HomePage() {
     const [policy, setPolicy] = useState<GeneralPolicy | null>(null)
     const [isLoading, setIsLoading] = useState(true)
