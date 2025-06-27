@@ -6,6 +6,7 @@ import NotificationsTable from '@/components/students/NotificationsTable'
 import { getGeneralPolicy } from '@/app/_actions/getGeneralPolicy'
 import PolicySkeleton from '@/components/skeleton/PolicySkeleton'
 import { GeneralPolicy } from '@/models/GeneralPolicy'
+import QuillDisplay from '@/components/QuillDisplay'
 
 export default function HomePage() {
     const [policy, setPolicy] = useState<GeneralPolicy | null>(null)
@@ -17,7 +18,7 @@ export default function HomePage() {
                 const data = await getGeneralPolicy()
                 setPolicy(data)
             } catch {
-
+                setPolicy(null)
             } finally {
                 setIsLoading(false)
             }
@@ -39,9 +40,10 @@ export default function HomePage() {
                     </div>
                     <div className="p-3 sm:p-4 text-[#000]">
                         <p className="text-xs sm:text-sm text-gray-500 text-justify mb-2">Last updated: {policy.lastUpdated}</p>
-                        <p className="text-sm sm:text-base text-black text-justify whitespace-pre-line">
-                            {policy.description}
-                        </p>
+                        <QuillDisplay
+                            content={policy.description}
+                            className="text-sm sm:text-base text-black text-justify"
+                        />
                     </div>
                 </div>
             ) : null}
