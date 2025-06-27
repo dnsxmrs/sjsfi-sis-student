@@ -25,7 +25,7 @@ async function main() {
             data: {
                 email: 'maria.juarez@example.com',
                 firstName: 'Maria',
-                lastName: 'Juarez',
+                familyName: 'Juarez',
                 role: 'parent',
                 parent: {
                     create: {
@@ -39,7 +39,7 @@ async function main() {
             data: {
                 email: 'carlos.santos@example.com',
                 firstName: 'Carlos',
-                lastName: 'Santos',
+                familyName: 'Santos',
                 role: 'parent',
                 parent: {
                     create: {
@@ -54,7 +54,7 @@ async function main() {
                 email: 'ana.dela.cruz@example.com',
                 firstName: 'Ana',
                 middleName: 'Dela',
-                lastName: 'Cruz',
+                familyName: 'Cruz',
                 role: 'parent',
                 parent: {
                     create: {
@@ -73,7 +73,7 @@ async function main() {
             data: {
                 email: 'prof.rivera@sjsfi.edu.ph',
                 firstName: 'Carmen',
-                lastName: 'Rivera',
+                familyName: 'Rivera',
                 role: 'teacher',
                 teacher: {
                     create: {
@@ -90,7 +90,7 @@ async function main() {
             data: {
                 email: 'prof.garcia@sjsfi.edu.ph',
                 firstName: 'Roberto',
-                lastName: 'Garcia',
+                familyName: 'Garcia',
                 role: 'teacher',
                 teacher: {
                     create: {
@@ -107,7 +107,7 @@ async function main() {
             data: {
                 email: 'prof.mendoza@sjsfi.edu.ph',
                 firstName: 'Elena',
-                lastName: 'Mendoza',
+                familyName: 'Mendoza',
                 role: 'teacher',
                 teacher: {
                     create: {
@@ -124,7 +124,7 @@ async function main() {
             data: {
                 email: 'prof.torres@sjsfi.edu.ph',
                 firstName: 'Michael',
-                lastName: 'Torres',
+                familyName: 'Torres',
                 role: 'teacher',
                 teacher: {
                     create: {
@@ -173,7 +173,7 @@ async function main() {
                 email: 'jose.reyes@student.sjsfi.edu.ph',
                 firstName: 'Jose',
                 middleName: 'Miguel',
-                lastName: 'Reyes',
+                familyName: 'Reyes',
                 role: 'student',
                 student: {
                     create: {
@@ -195,7 +195,7 @@ async function main() {
             data: {
                 email: 'angelica.tan@student.sjsfi.edu.ph',
                 firstName: 'Angelica',
-                lastName: 'Tan',
+                familyName: 'Tan',
                 role: 'student',
                 student: {
                     create: {
@@ -217,7 +217,7 @@ async function main() {
             data: {
                 email: 'daniel.santos@student.sjsfi.edu.ph',
                 firstName: 'Daniel',
-                lastName: 'Santos',
+                familyName: 'Santos',
                 role: 'student',
                 student: {
                     create: {
@@ -239,7 +239,7 @@ async function main() {
             data: {
                 email: 'sophia.cruz@student.sjsfi.edu.ph',
                 firstName: 'Sophia',
-                lastName: 'Cruz',
+                familyName: 'Cruz',
                 role: 'student',
                 student: {
                     create: {
@@ -261,7 +261,7 @@ async function main() {
             data: {
                 email: 'marco.perez@student.sjsfi.edu.ph',
                 firstName: 'Marco',
-                lastName: 'Perez',
+                familyName: 'Perez',
                 role: 'student',
                 student: {
                     create: {
