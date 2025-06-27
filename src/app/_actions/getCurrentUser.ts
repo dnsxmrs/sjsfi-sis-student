@@ -58,7 +58,6 @@ export async function getCurrentUser() {
         });
 
         if (!user) {
-            // Return default values if user not found in database
             return {
                 firstName:
                     clerkUser.firstName + " " + clerkUser.lastName ||
@@ -81,7 +80,7 @@ export async function getCurrentUser() {
 
                 const result = {
                     firstName: user.firstName,
-                    lastName: user.lastName,
+                    lastName: user.familyName,
                     studentNo: user.student.studentNumber,
                     schoolYear: schoolYear,
                     email: user.email,
@@ -92,7 +91,7 @@ export async function getCurrentUser() {
             } else {
                 return {
                     firstName: user.firstName,
-                    lastName: user.lastName,
+                    lastName: user.familyName,
                     studentNo: "Student data not found",
                     schoolYear: "N/A",
                     email: user.email,
@@ -101,7 +100,8 @@ export async function getCurrentUser() {
                 };
             }
         }
-    } catch {
+    } catch (error) {
+        console.error("Error in getCurrentUser:", error);
         // Return fallback values instead of null
         return {
             firstName: "Error Loading User",

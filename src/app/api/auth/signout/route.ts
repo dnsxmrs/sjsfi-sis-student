@@ -13,8 +13,8 @@ export async function POST() {
         // For example, clearing database sessions, logging, etc.
 
         return NextResponse.json({ success: true });
-    } catch (error) {
-        console.error("Sign out API error:", error);
+    } catch {
+        // console.error("Sign out API error:", error);
         return NextResponse.json({ error: "Internal server error" }, { status: 500 });
     }
 }

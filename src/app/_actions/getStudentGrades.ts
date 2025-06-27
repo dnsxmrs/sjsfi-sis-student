@@ -101,7 +101,7 @@ export async function getStudentGrades(): Promise<GradesSummary | null> {
                                 user: {
                                     select: {
                                         firstName: true,
-                                        lastName: true,
+                                        familyName: true,
                                     },
                                 },
                             },
@@ -155,7 +155,7 @@ export async function getStudentGrades(): Promise<GradesSummary | null> {
         const result: GradesSummary = {
             studentInfo: {
                 firstName: user.firstName,
-                lastName: user.lastName,
+                lastName: user.familyName,
                 studentNumber: user.student.studentNumber,
                 gradeLevel: user.student.gradeLevel,
                 schoolYear: grades.length > 0 ? grades[0].subject.enrollment.schoolYear : "N/A",
@@ -168,7 +168,13 @@ export async function getStudentGrades(): Promise<GradesSummary | null> {
                     description: grade.subject.description,
                     gradeLevel: grade.subject.gradeLevel,
                     schoolYear: grade.subject.enrollment.schoolYear,
-                    teacher: grade.subject.teacher,
+                    teacher: {
+                        id: grade.subject.teacher.id,
+                        user: {
+                            firstName: grade.subject.teacher.user.firstName,
+                            lastName: grade.subject.teacher.user.familyName,
+                        },
+                    },
                 },
                 firstGrading: grade.firstGrading,
                 secondGrading: grade.secondGrading,

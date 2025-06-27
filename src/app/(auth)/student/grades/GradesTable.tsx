@@ -24,9 +24,8 @@ export function GradesTable() {
                     setGradesData(null);
                     setError('No grades data found');
                 }
-            } catch (err) {
+            } catch {
                 setError('Failed to load grades');
-                console.error('Error fetching grades:', err);
             } finally {
                 setLoading(false);
             }
@@ -329,7 +328,7 @@ export function GradesTable() {
                 ) : (
                     <>
                         <div className="bg-[#800000] text-white px-4 py-2 rounded-t-md font-medium text-lg">
-                            {gradesData ? `Grade ${gradesData.studentInfo.gradeLevel} | ${gradesData.studentInfo.schoolYear !== 'N/A' ? gradesData.studentInfo.schoolYear : 'Current School Year'}` : 'No grade level | No school year'}
+                            {gradesData ? `${gradesData.studentInfo.gradeLevel} | ${gradesData.studentInfo.schoolYear !== 'N/A' ? gradesData.studentInfo.schoolYear : 'Current School Year'}` : 'No grade level | No school year'}
                         </div>
                         <div className="bg-white p-4 relative">
                             {/* Anti-screenshot overlay */}
