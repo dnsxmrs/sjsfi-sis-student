@@ -15,7 +15,7 @@ export async function getStudents() {
                 user: {
                     select: {
                         firstName: true,
-                        lastName: true,
+                        familyName: true,
                         email: true,
                     },
                 },
@@ -29,7 +29,7 @@ export async function getStudents() {
         const formattedStudents = students.map((student) => ({
             id: student.studentNumber,
             firstName: student.user.firstName,
-            lastName: student.user.lastName,
+            lastName: student.user.familyName,
             gradeLevel: student.gradeLevel,
             strand:
                 student.gradeLevel.includes("11") ||
