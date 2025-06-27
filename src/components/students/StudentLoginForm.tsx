@@ -144,8 +144,8 @@ export default function StudentLoginForm() {
                 setError("Invalid credentials.");
             }
             // - } catch (err: unknown) { - use this for error catching
-        } catch {
-            // console.error(err); // for debugging purposes            // use this instead for prod
+        } catch (err) {
+            console.error(err); // for debugging purposes            // use this instead for prod
             setError("Invalid email, birthdate, or password");
 
             // use this if really needed

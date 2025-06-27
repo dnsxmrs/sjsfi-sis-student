@@ -28,18 +28,13 @@ export async function studentEmailExists(
             return { success: false, error: 'Invalid origin attempt.' };
         }
 
-        console.log(`🔍 Checking if student exists: ${email} with role: ${origin}${birthDate ? ` and birth date: ${birthDate}` : ''}`);        // Step 1: Check if the user exists in the database
+        console.log(`🔍 Checking if student exists: ${email} with role: ${origin}${birthDate ? ` and birth date: ${birthDate}` : ''}`);
+
+        // Step 1: Check if the user exists in the database
         const user = await prisma.user.findUnique({
             where: { email },
-            select: {
-                id: true,
-                email: true,
-                role: true,
-                student: {
-                    select: {
-                        dateOfBirth: true
-                    }
-                }
+            include: {
+                student: true
             }
         });
 
@@ -50,15 +45,23 @@ export async function studentEmailExists(
         }
 
         // Step 3: If user exists but is not a student, return unauthorized error
-        if (user.role !== 'student') {
+        if (user.role.toLowerCase() !== 'student') {
             console.error(`Unauthorized login attempt for email: ${email}`);
             return { success: false, error: 'Access denied for this role' };
         }
 
         // Step 4: If birth date is provided, validate it
         if (birthDate) {
-            if (!user.student || !user.student.dateOfBirth) {
-                console.error('Birth date not found in database');
+            if (!user.student) {
+                console.error('Student data not found in database');
+                return {
+                    success: false,
+                    error: 'Student data not found in our records'
+                };
+            }
+
+            if (!user.student.birthdate) {
+                console.error('Birth date not found in student records');
                 return {
                     success: false,
                     error: 'Birth date not found in our records'
@@ -66,7 +69,7 @@ export async function studentEmailExists(
             }
 
             // Convert database date to YYYY-MM-DD format for comparison
-            const databaseDate = new Date(user.student.dateOfBirth);
+            const databaseDate = new Date(user.student.birthdate);
             const databaseDateString = databaseDate.toISOString().split('T')[0]; // Gets YYYY-MM-DD format
             const providedDate = String(birthDate).trim();
 

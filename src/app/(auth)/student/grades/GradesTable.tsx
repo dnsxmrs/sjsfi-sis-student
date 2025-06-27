@@ -330,6 +330,31 @@ export function GradesTable() {
                         <div className="bg-[#800000] text-white px-4 py-2 rounded-t-md font-medium text-lg">
                             {gradesData ? `${gradesData.studentInfo.gradeLevel} | ${gradesData.studentInfo.schoolYear !== 'N/A' ? gradesData.studentInfo.schoolYear : 'Current School Year'}` : 'No grade level | No school year'}
                         </div>
+
+                        {/* Academic Excellence Award Section */}
+                        {gradesData && (
+                            <div className="bg-gradient-to-r from-yellow-50 to-yellow-100 border-l-4 border-yellow-400 px-4 py-3">
+                                <div className="flex items-center justify-between">
+                                    <div>
+                                        <h3 className="text-sm font-semibold text-gray-800">Academic Excellence Award</h3>
+                                        <p className="text-xs text-gray-600">Based on Overall Average: {gradesData.academicExcellenceAward} ({gradesData.overallAverage}%) </p>
+                                    </div>
+                                    <div className="text-right">
+                                        <span className={`px-3 py-1 rounded-full text-sm font-bold ${gradesData.academicExcellenceAward === 'With Highest Honors'
+                                                ? 'bg-purple-100 text-purple-800 border border-purple-300'
+                                                : gradesData.academicExcellenceAward === 'With High Honors'
+                                                    ? 'bg-blue-100 text-blue-800 border border-blue-300'
+                                                    : gradesData.academicExcellenceAward === 'With Honors'
+                                                        ? 'bg-green-100 text-green-800 border border-green-300'
+                                                        : 'bg-gray-100 text-gray-800 border border-gray-300'
+                                            }`}>
+                                            {gradesData.academicExcellenceAward}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
                         <div className="bg-white p-4 relative">
                             {/* Anti-screenshot overlay */}
                             <div className="absolute inset-0 pointer-events-none opacity-0 hover:opacity-5 transition-opacity duration-300">
