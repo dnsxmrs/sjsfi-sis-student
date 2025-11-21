@@ -65,8 +65,8 @@ export async function getCurrentUser() {
                         deletedAt: null,
                     },
                     include: {
-                        AcademicTerm: true,
-                        YearLevel: true,
+                        schoolYear: true,
+                        yearLevel: true,
                     },
                     orderBy: {
                         createdAt: "desc",
@@ -79,10 +79,10 @@ export async function getCurrentUser() {
                     firstName: user.firstName,
                     lastName: user.familyName,
                     studentNo: user.student.studentNumber,
-                    schoolYear: registration?.AcademicTerm?.year || "N/A",
+                    schoolYear: registration?.schoolYear?.year || "N/A",
                     email: user.email,
                     role: user.role,
-                    gradeLevel: registration?.YearLevel?.name || "N/A",
+                    gradeLevel: registration?.yearLevel?.name || "N/A",
                 };
                 // console.log("Returning student result:", result);
                 return result;
