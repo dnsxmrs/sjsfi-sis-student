@@ -1,15 +1,15 @@
 'use client';
 
 import InputField from '@/components/atoms/InputField';
-import LoginFooter from '@/components/atoms/LoginFooter';
-import Image from 'next/image';
+import LoginFooter from '@/components/auth/LoginFooter';
 import Link from 'next/link';
+import Image from 'next/image';
 import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react';
 import { useAuth, useSignIn } from '@clerk/nextjs'
-import { useRouter } from 'next/navigation'
-import { studentEmailExists } from '../../../_actions/handleStudentLogin';
 import type { SignInResource } from '@clerk/types'
+import { studentEmailExists } from '../_actions/handleStudentLogin';
 
 interface SetRoleResult {
     success: boolean;
@@ -281,20 +281,20 @@ export default function StudentForgotPassword() {
                                         </>
                                     )}
 
-                                    <div className="mb-4 w-full">
+                                    <div className="flex items-center justify-center mb-4 w-full">
                                         <Link href="/" className="w-full inline-block">
                                             <span
-                                                className={`bg-[#fff] text-[#800000] text-sm rounded-sm px-4 py-2 w-full block text-center transition duration-200 ease-in-out ${isLoading
-                                                        ? 'opacity-50 cursor-not-allowed'
-                                                        : 'hover:bg-[#fff]/80'
+                                                className={`text-[#800000] text-sm rounded-sm w-full block text-center transition duration-200 ease-in-out ${isLoading
+                                                    ? 'opacity-50 cursor-not-allowed'
+                                                    : ''
                                                     }`}
                                             >
                                                 Back to Login
                                             </span>
                                         </Link>
                                     </div>
-                                    <LoginFooter />
                                 </form>
+                                <LoginFooter />
                             </div>
                         </div>
                     </div>

@@ -13,20 +13,6 @@ import { UserButton } from "@clerk/nextjs";
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const pathname = usePathname();
-    // const { signOut } = useClerk()
-
-    // const handleNavClick = (item: string) => {
-    //     toast.success(`Navigated to ${item}`)
-    // }
-
-    // const handleSignOut = async () => {
-    //     try {
-    //         await signOut()
-    //         toast.success('Signed out successfully')
-    //     } catch (error) {
-    //         toast.error('Failed to sign out: ' + error)
-    //     }
-    // }
 
     const handleNavClick = () => {
         setIsMenuOpen(false);
@@ -44,40 +30,8 @@ const Header = () => {
         return pathname === href;
     };
 
-    // const userButtonRef = useRef<HTMLDivElement>(null)
-
-    // const handleManageAccountClick = () => {
-    //     setIsMenuOpen(false)
-    //     setTimeout(() => {
-    //         const button = userButtonRef.current?.querySelector('button')
-    //         if (button) button.click()
-    //         else toast.error('User profile button not ready')
-    //     }, 100) // Increased to 100ms for more stability
-    // }
-
     return (
         <header className="bg-white shadow-sm">
-            {/* <div ref={userButtonRef} className="hidden">
-                <UserButton
-                    appearance={{
-                        elements: {
-                            userButtonPopoverFooter: { display: 'none' },
-                        },
-                    }}
-                    userProfileProps={{
-                        appearance: {
-                            elements: {
-                                profileSection__emailAddresses: { display: 'none' },
-                                profileSection__name: { display: 'none' },
-                                profileSection__phoneNumbers: { display: 'none' },
-                                profileSection__connectedAccounts: { display: 'none' },
-                                profileSection__password: { display: 'none' },
-                                profileSection__username: { display: 'none' },
-                            },
-                        },
-                    }}
-                />
-            </div> */}
             <div className="container mx-auto flex justify-between items-center px-4 py-2 max-w-5xl">
                 {/* Logo Section */}
                 <div className="flex items-center space-x-3">
@@ -101,7 +55,7 @@ const Header = () => {
                                 <Link
                                     href={href}
                                     className={`py-4 px-1 transition-colors ${isActivePath(href)
-                                        ? "text-red-800 border-b-2 border-red-800"
+                                        ? "text-red-800 font-semibold border-b-2 border-red-800"
                                         : "text-gray-600 hover:text-red-800"
                                         }`}
                                 >
@@ -116,6 +70,43 @@ const Header = () => {
                 {/* add ref={userButtonRef} for future */}
                 <div className="hidden md:block">
                     <UserButton
+                        // showName={false}
+                        appearance={{
+                            elements: {
+                                // userPreview: {  // Hide user preview
+                                //   display: "none",
+                                // },
+                                userButtonPopoverFooter: {  // Hide footer
+                                    display: "none",
+                                },
+                                userPreviewAvatarBox: {
+                                    display: "none",
+                                },
+                            },
+                        }}
+                        userProfileProps={{
+                            appearance: {
+                                elements: {
+                                    profileSectionPrimaryButton__profile: {  // Hide profile picture update
+                                        display: "none",
+                                    },
+                                    profileSection__connectedAccounts: {
+                                        display: "none",
+                                    },
+                                    profileSectionPrimaryButton__emailAddresses: {
+                                        display: "none",
+                                    },
+                                    profileSection__danger: {
+                                        display: "none",
+                                    },
+                                    menuButtonEllipsis: {
+                                        display: "none",
+                                    }
+                                },
+                            },
+                        }}
+                    />
+                    {/* <UserButton
                         appearance={{
                             elements: {
                                 userPreview: {
@@ -144,7 +135,7 @@ const Header = () => {
                                 },
                             },
                         }}
-                    />
+                    /> */}
                 </div>
 
                 {/* make the div flex */}
@@ -152,6 +143,43 @@ const Header = () => {
                     {/* Mobile Menu Button */}
                     <div className="py-3 px-4 flex justify-end md:hidden">
                         <UserButton
+                            // showName={false}
+                            appearance={{
+                                elements: {
+                                    // userPreview: {  // Hide user preview
+                                    //   display: "none",
+                                    // },
+                                    userButtonPopoverFooter: {  // Hide footer
+                                        display: "none",
+                                    },
+                                    userPreviewAvatarBox: {
+                                        display: "none",
+                                    },
+                                },
+                            }}
+                            userProfileProps={{
+                                appearance: {
+                                    elements: {
+                                        profileSectionPrimaryButton__profile: {  // Hide profile picture update
+                                            display: "none",
+                                        },
+                                        profileSection__connectedAccounts: {
+                                            display: "none",
+                                        },
+                                        profileSectionPrimaryButton__emailAddresses: {
+                                            display: "none",
+                                        },
+                                        profileSection__danger: {
+                                            display: "none",
+                                        },
+                                        menuButtonEllipsis: {
+                                            display: "none",
+                                        }
+                                    },
+                                },
+                            }}
+                        />
+                        {/* <UserButton
                             appearance={{
                                 elements: {
                                     userPreview: {
@@ -180,7 +208,7 @@ const Header = () => {
                                     },
                                 },
                             }}
-                        />
+                        /> */}
                     </div>
                     <button
                         // if button is clicked, it will turn to #800000

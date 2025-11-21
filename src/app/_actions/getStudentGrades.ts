@@ -285,6 +285,7 @@ const mockGradesData: GradesSummary = {
 export async function getStudentGrades(): Promise<GradesSummary | null> {
     try {
         // Return mock data for development/testing
+        // TODO: IMPLEMENT ACTUAL GRADES FETCHING
         console.log("Returning mock grades data");
         return mockGradesData;
 

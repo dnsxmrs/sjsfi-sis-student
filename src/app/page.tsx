@@ -1,8 +1,48 @@
-// app/(guest)/student/page.tsx
+import LoginFooter from '@/components/auth/LoginFooter';
+import StudentLoginForm from '@/components/auth/StudentLoginForm';
 import Image from 'next/image';
-import StudentLoginForm from '@/components/students/StudentLoginForm';
+import type { Metadata } from 'next';
 
-export default function Student() {
+export const metadata: Metadata = {
+  title: 'Student Login | SJSFI SIS',
+  description: 'Sign in to your SJSFI Student Information System account. Access your grades, class schedules, notifications, and academic records securely.',
+  keywords: [
+    'SJSFI student login',
+    'student portal access',
+    'SIS login',
+    'student information system',
+    'academic portal',
+    'grade access',
+    'student dashboard login'
+  ],
+  openGraph: {
+    title: 'SJSFI Student Login - Access Your Academic Portal',
+    description: 'Sign in to your SJSFI Student Information System account. Access your grades, class schedules, notifications, and academic records securely.',
+    type: 'website',
+    images: [
+      {
+        url: '/assets/sjsfi_logo.svg',
+        width: 200,
+        height: 200,
+        alt: 'SJSFI Logo',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary',
+    title: 'SJSFI Student Login - Access Your Academic Portal',
+    description: 'Sign in to your SJSFI Student Information System account. Access your grades, class schedules, and academic records.',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  alternates: {
+    canonical: '/',
+  },
+};
+
+export default function Home() {
   return (
     <div className="flex h-screen w-screen bg-white min-w-[360px]">
       <div className="container">
@@ -38,6 +78,7 @@ export default function Student() {
                 </p>
                 {/* FORM */}
                 <StudentLoginForm />
+                <LoginFooter />
               </div>
             </div>
           </div>

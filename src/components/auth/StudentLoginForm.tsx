@@ -1,14 +1,14 @@
 "use client";
 
 import InputField from "@/components/atoms/InputField";
-import LoginFooter from "@/components/atoms/LoginFooter";
+import SelectField from "@/components/atoms/SelectField";
 import ActionButton from "@/components/atoms/ActionButton";
+import Link from "next/link";
+import toast from "react-hot-toast";
 import { useState } from "react";
 import { useSignIn } from "@clerk/nextjs";
-import { studentEmailExists } from "@/app/_actions/handleStudentLogin";
 import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
-import Link from "next/link";
+import { studentEmailExists } from "@/app/_actions/handleStudentLogin";
 
 interface SetRoleResult {
     success: boolean;
@@ -143,17 +143,9 @@ export default function StudentLoginForm() {
             } else {
                 setError("Invalid credentials.");
             }
-            // - } catch (err: unknown) { - use this for error catching
         } catch (err) {
-            console.error(err); // for debugging purposes            // use this instead for prod
+            console.error('Login error:', err);
             setError("Invalid email, birthdate, or password");
-
-            // use this if really needed
-            // if (err && typeof err === 'object' && 'message' in err) {
-            // setError((err as Error).message || 'Login failed');
-            // } else {
-            //     setError('Login failed');
-            // }
         } finally {
             setIsLoading(false);
         }
@@ -165,6 +157,7 @@ export default function StudentLoginForm() {
             autoComplete="off"
             onSubmit={handleSubmit}
         >
+            {/* Error Display */}
             {error && (
                 <div className="mb-4 w-full bg-amber-50 border border-amber-200 rounded-md p-3 sm:p-4">
                     <div className="flex items-center justify-center gap-2 sm:gap-3">
@@ -195,72 +188,81 @@ export default function StudentLoginForm() {
                     disabled={isLoading}
                 />
             </div>
-            {/* <div className="mb-4 w-full">
-                <InputField
-                    name="student_number"
-                    type="text"
-                    placeholder="Student Number"
-                    value={student_number}
-                    onChange={(e) => setStudentNumber(e.target.value)}
-                    disabled={isLoading}
-                />
-            </div> */}            {/* make a drop down for birthdate below */}
+            {/* Birthdate selection */}
             <div className="mb-4 w-full">
                 <div className="grid grid-cols-3 gap-2">
                     {/* Month Dropdown */}
-                    <select
-                        name="birthMonth"
-                        value={birthMonth}
-                        onChange={(e) => handleMonthChange(e.target.value)}
-                        disabled={isLoading}
-                        className="bg-white border text-black text-sm border-gray-300 rounded-sm px-4 py-2 w-full focus:outline-0 focus:ring-1 focus:ring-[#800000] focus:border-transparent pr-10 disabled:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-60"
-                    >
-                        <option value="">Month</option>
-                        <option value="1">January</option>
-                        <option value="2">February</option>
-                        <option value="3">March</option>
-                        <option value="4">April</option>
-                        <option value="5">May</option>
-                        <option value="6">June</option>
-                        <option value="7">July</option>
-                        <option value="8">August</option>
-                        <option value="9">September</option>
-                        <option value="10">October</option>
-                        <option value="11">November</option>
-                        <option value="12">December</option>
-                    </select>
+                    <div>
+                        <label htmlFor="birthMonth" className="sr-only">
+                            Birth Month
+                        </label>
+                        <SelectField
+                            id="birthMonth"
+                            name="birthMonth"
+                            value={birthMonth}
+                            onChange={(e) => handleMonthChange(e.target.value)}
+                            disabled={isLoading}
+                            aria-label="Birth Month"
+                        >
+                            <option value="">Month</option>
+                            <option value="1">January</option>
+                            <option value="2">February</option>
+                            <option value="3">March</option>
+                            <option value="4">April</option>
+                            <option value="5">May</option>
+                            <option value="6">June</option>
+                            <option value="7">July</option>
+                            <option value="8">August</option>
+                            <option value="9">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
+                        </SelectField>
+                    </div>
 
                     {/* Day Dropdown */}
-                    <select
-                        name="birthDay"
-                        value={birthDay}
-                        onChange={(e) => setBirthDay(e.target.value)}
-                        disabled={isLoading}
-                        className="bg-white border text-black text-sm border-gray-300 rounded-sm px-4 py-2 w-full focus:outline-0 focus:ring-1 focus:ring-[#800000] focus:border-transparent pr-10 disabled:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-60"
-                    >
-                        <option value="">Day</option>
-                        {Array.from({ length: getDaysInMonth(birthMonth, birthYear) }, (_, i) => i + 1).map((day) => (
-                            <option key={day} value={day.toString()}>
-                                {day}
-                            </option>
-                        ))}
-                    </select>
+                    <div>
+                        <label htmlFor="birthDay" className="sr-only">
+                            Birth Day
+                        </label>
+                        <SelectField
+                            id="birthDay"
+                            name="birthDay"
+                            value={birthDay}
+                            onChange={(e) => setBirthDay(e.target.value)}
+                            disabled={isLoading}
+                            aria-label="Birth Day"
+                        >
+                            <option value="">Day</option>
+                            {Array.from({ length: getDaysInMonth(birthMonth, birthYear) }, (_, i) => i + 1).map((day) => (
+                                <option key={day} value={day.toString()}>
+                                    {day}
+                                </option>
+                            ))}
+                        </SelectField>
+                    </div>
 
                     {/* Year Dropdown */}
-                    <select
-                        name="birthYear"
-                        value={birthYear}
-                        onChange={(e) => handleYearChange(e.target.value)}
-                        disabled={isLoading}
-                        className="bg-white border text-black text-sm border-gray-300 rounded-sm px-4 py-2 w-full focus:outline-0 focus:ring-1 focus:ring-[#800000] focus:border-transparent pr-10 disabled:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-60"
-                    >
-                        <option value="">Year</option>
-                        {Array.from({ length: 27 }, (_, i) => startYear - i).map((year) => (
-                            <option key={year} value={year.toString()}>
-                                {year}
-                            </option>
-                        ))}
-                    </select>
+                    <div>
+                        <label htmlFor="birthYear" className="sr-only">
+                            Birth Year
+                        </label>
+                        <SelectField
+                            id="birthYear"
+                            name="birthYear"
+                            value={birthYear}
+                            onChange={(e) => handleYearChange(e.target.value)}
+                            disabled={isLoading}
+                            aria-label="Birth Year"
+                        >
+                            <option value="">Year</option>
+                            {Array.from({ length: 27 }, (_, i) => startYear - i).map((year) => (
+                                <option key={year} value={year.toString()}>
+                                    {year}
+                                </option>
+                            ))}
+                        </SelectField>
+                    </div>
                 </div>
             </div>
 
@@ -286,13 +288,12 @@ export default function StudentLoginForm() {
                     <span className="text-[#800000]">Forgot your password?</span> Contact the system administrator for assistance.
                 </p> */}
                 <Link
-                    href="/auth/student/forgot-password"
-                    className="font-medium text-sm text-[#800000] hover:underline hover:text-[#800000]/80 transition duration-200 ease-in-out"
+                    href="/forgot-password"
+                    className="text-sm text-[#800000] hover:underline hover:text-[#800000]/80 transition duration-200 ease-in-out"
                 >
                     I forgot my password
                 </Link>
             </div>
-            <LoginFooter />
         </form>
     );
 }

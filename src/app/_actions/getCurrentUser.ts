@@ -5,14 +5,14 @@ export async function getCurrentUser() {
     try {
         // Get the current user from Clerk
         const clerkUser = await currentUser();
-        console.log("Clerk User:", clerkUser);
+        // console.log("Clerk User:", clerkUser);
 
         if (
             !clerkUser ||
             !clerkUser.emailAddresses ||
             clerkUser.emailAddresses.length === 0
         ) {
-            console.log("No Clerk user or email found");
+            // console.log("No Clerk user or email found");
             return {
                 firstName: "Guest User",
                 lastName: "N/A",
@@ -25,7 +25,7 @@ export async function getCurrentUser() {
         }
 
         const email = clerkUser.emailAddresses[0].emailAddress;
-        console.log("User email:", email);
+        // console.log("User email:", email);
 
         // Fetch user data from Prisma database using email
         const user = await prisma.user.findUnique({
@@ -37,10 +37,10 @@ export async function getCurrentUser() {
             },
         });
 
-        console.log("Fetched user from database:", JSON.stringify(user, null, 2));
+        // console.log("Fetched user from database:", JSON.stringify(user, null, 2));
 
         if (!user) {
-            console.log("User not found in database");
+            // console.log("User not found in database");
             return {
                 firstName: clerkUser.firstName || "Unknown",
                 lastName: clerkUser.lastName || "User",
@@ -54,9 +54,9 @@ export async function getCurrentUser() {
 
         // Format the response based on user role (case-insensitive)
         if (user.role.toLowerCase() === "student") {
-            console.log("User is a student");
+            // console.log("User is a student");
             if (user.student) {
-                console.log("Student data:", JSON.stringify(user.student, null, 2));
+                // console.log("Student data:", JSON.stringify(user.student, null, 2));
 
                 // Try to find registration data for this student
                 const registration = await prisma.registration.findFirst({
@@ -65,29 +65,29 @@ export async function getCurrentUser() {
                         deletedAt: null,
                     },
                     include: {
-                        schoolYear: true,
-                        yearLevel: true,
+                        AcademicTerm: true,
+                        YearLevel: true,
                     },
                     orderBy: {
                         createdAt: "desc",
                     },
                 });
 
-                console.log("Registration data:", JSON.stringify(registration, null, 2));
+                // console.log("Registration data:", JSON.stringify(registration, null, 2));
 
                 const result = {
                     firstName: user.firstName,
                     lastName: user.familyName,
                     studentNo: user.student.studentNumber,
-                    schoolYear: registration?.schoolYear?.year || "N/A",
+                    schoolYear: registration?.AcademicTerm?.year || "N/A",
                     email: user.email,
                     role: user.role,
-                    gradeLevel: registration?.yearLevel?.name || "N/A",
+                    gradeLevel: registration?.YearLevel?.name || "N/A",
                 };
-                console.log("Returning student result:", result);
+                // console.log("Returning student result:", result);
                 return result;
             } else {
-                console.log("Student role but no student data found");
+                // console.log("Student role but no student data found");
                 return {
                     firstName: user.firstName,
                     lastName: user.familyName,
@@ -100,7 +100,7 @@ export async function getCurrentUser() {
             }
         } else {
             // Handle other roles (registrar, admin, etc.)
-            console.log("User has role:", user.role);
+            // console.log("User has role:", user.role);
             return {
                 firstName: user.firstName,
                 lastName: user.familyName,
