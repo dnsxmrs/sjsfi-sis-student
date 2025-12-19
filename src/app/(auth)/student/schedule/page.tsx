@@ -1,11 +1,11 @@
 'use client'
 
+import { getSchedule } from '@/app/_actions/schedule'
+import ScheduleSkeleton from '@/components/skeleton/ScheduleSkeleton'
+import { ScheduleItem, DayOfWeek } from '@/app/_actions/models/ScheduleItem'
+import { toast } from 'react-hot-toast'
 import { useState, useEffect } from 'react'
 import { Clock, MapPin } from 'lucide-react'
-import { getSchedule } from '@/app/_actions/getSchedule'
-import { toast } from 'react-hot-toast'
-import { ScheduleItem, DayOfWeek } from '@/models/ScheduleItem'
-import ScheduleSkeleton from '@/components/skeleton/ScheduleSkeleton'
 
 export default function SchedulePage() {
     const [scheduleData, setScheduleData] = useState<ScheduleItem[]>([])
@@ -329,7 +329,7 @@ export default function SchedulePage() {
             </div>
 
             {/* Summary Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="bg-white rounded-lg shadow-sm p-4">
                     <h3 className="font-semibold text-gray-900 mb-2">Today&apos;s Classes</h3>
                     <div className="text-2xl font-bold text-red-600">
@@ -362,7 +362,7 @@ export default function SchedulePage() {
                         )
                     })()}
                 </div>
-            </div>
+            </div> */}
         </div>
     )
 }

@@ -1,8 +1,8 @@
 "use client";
 
-import InputField from "@/components/atoms/InputField";
-import SelectField from "@/components/atoms/SelectField";
-import ActionButton from "@/components/atoms/ActionButton";
+import InputField from "@/components/auth/InputField";
+import SelectField from "@/components/auth/SelectField";
+import ActionButton from "@/components/auth/ActionButton";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import { useState } from "react";

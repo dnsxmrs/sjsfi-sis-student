@@ -1,10 +1,10 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { getGeneralPolicy } from '@/app/_actions/getGeneralPolicy'
-import PolicySkeleton from '@/components/skeleton/PolicySkeleton'
-import { GeneralPolicy } from '@/models/GeneralPolicy'
+import { getGeneralPolicy } from '@/app/_actions/policy'
 import QuillDisplay from '@/components/students/QuillDisplay'
+import PolicySkeleton from '@/components/skeleton/PolicySkeleton'
+import { GeneralPolicy } from '@/app/_actions/models/GeneralPolicy'
+import { useState, useEffect } from 'react'
 
 export default function PolicySection() {
     const [policy, setPolicy] = useState<GeneralPolicy | null>(null)

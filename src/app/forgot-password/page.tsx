@@ -1,7 +1,8 @@
 'use client';
 
-import InputField from '@/components/atoms/InputField';
+import InputField from '@/components/auth/InputField';
 import LoginFooter from '@/components/auth/LoginFooter';
+import { studentEmailExists } from '../_actions/handleStudentLogin';
 import Link from 'next/link';
 import Image from 'next/image';
 import toast from 'react-hot-toast';
@@ -9,7 +10,6 @@ import { useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react';
 import { useAuth, useSignIn } from '@clerk/nextjs'
 import type { SignInResource } from '@clerk/types'
-import { studentEmailExists } from '../_actions/handleStudentLogin';
 
 interface SetRoleResult {
     success: boolean;

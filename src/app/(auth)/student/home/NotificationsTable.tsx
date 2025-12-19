@@ -1,11 +1,11 @@
 'use client'
 
+import { getNotifications } from '@/app/_actions/notification'
+import { Notification } from '@/app/_actions/models/Notification'
+import NotificationSkeleton from '@/components/skeleton/NotificationSkeleton'
+import { toast } from 'react-hot-toast'
 import { useState, useEffect, useRef } from 'react'
 import { BellIcon, FilterIcon, X, SearchX } from 'lucide-react'
-import { toast } from 'react-hot-toast'
-import { getNotifications } from '@/app/_actions/getNotifications'
-import NotificationSkeleton from '@/components/skeleton/NotificationSkeleton'
-import { Notification } from '@/models/Notification'
 
 export default function NotificationsTable() {
     const [filter, setFilter] = useState('')
@@ -128,7 +128,7 @@ export default function NotificationsTable() {
                     <div className="relative w-full sm:w-auto">
                         <input
                             type="text"
-                            placeholder="Search..."
+                            placeholder="Search for notifications..."
                             value={filter}
                             onChange={handleFilterChange}
                             className="w-full pl-8 pr-4 py-1 border rounded-md text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#DAA520] focus:border-transparent"
@@ -170,7 +170,7 @@ export default function NotificationsTable() {
                 {/* Pagination */}
                 {totalPages > 1 && (
                     <div className="flex items-center justify-between px-2 sm:px-4 py-3 border-t bg-black/5">
-                        <div className="flex items-center text-xs sm:text-sm text-black">
+                        <div className="flex items-center text-xs sm:text-sm text-gray-600">
                             <span>
                                 Showing {startIndex + 1} to {Math.min(endIndex, totalItems)} of {totalItems} notifications
                             </span>

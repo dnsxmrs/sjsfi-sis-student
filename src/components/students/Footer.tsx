@@ -6,7 +6,7 @@ import { Mail, Phone, MessageCircleMore, X } from 'lucide-react'
 import { siFacebook } from 'simple-icons'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
-import { addFeedback } from '@/app/_actions/addFeedback'
+import { addFeedback } from '@/app/_actions/feedback'
 
 export default function Footer() {
     const currentYear = new Date().getFullYear()
@@ -203,7 +203,7 @@ export default function Footer() {
                                     required
                                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
                                 >
-                                    <option value="">Select feedback type</option>
+                                    <option value="" disabled>Select feedback type</option>
                                     <option value="bug-report">Bug Report</option>
                                     <option value="feature-request">Feature Request</option>
                                     <option value="comments">Comments</option>

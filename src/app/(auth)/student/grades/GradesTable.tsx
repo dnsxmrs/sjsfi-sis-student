@@ -1,8 +1,8 @@
 'use client'
 
+import { GradesSummary, getStudentGrades } from '@/app/_actions/grade';
+import { GradesTableSkeleton } from '@/components/skeleton/GradesTableSkeleton';
 import { useEffect, useState } from 'react';
-import { GradesSummary, getStudentGrades } from '@/app/_actions/getStudentGrades';
-// import toast from 'react-hot-toast';
 
 export function GradesTable() {
     const [gradesData, setGradesData] = useState<GradesSummary | null>(null);
@@ -231,6 +231,11 @@ export function GradesTable() {
     //         document.removeEventListener('contextmenu', handleContextMenu);
     //     };
     // }, []);
+
+    // Show skeleton while loading
+    if (loading) {
+        return <GradesTableSkeleton />;
+    }
 
     return (
         <>

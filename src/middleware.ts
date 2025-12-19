@@ -21,14 +21,14 @@ function getRoleHomePage(userRole: string): string {
         case "student":
             return "/student/home";
         default:
-            return "/workaround/sign-out";
+            return "/sign-out";
     }
 }
 
 const isPublicRoute = createRouteMatcher([
     "/",
     "/forgot-password",
-    "/workaround/sign-out",
+    "/sign-out",
     // '/test/setUserRole'
 ]);
 
@@ -64,7 +64,7 @@ export default clerkMiddleware(
         // Case 2: Authenticated user trying to access public routes (redirect to their dashboard)
         else if (isAuthenticated && isPublicRoute(req)) {
             // Allow access to terms and privacy pages even when authenticated
-            if (url.pathname === "/workaround/sign-out") {
+            if (url.pathname === "/sign-out") {
                 console.log(
                     "✅ M Authenticated user accessing terms or privacy page or sign-out"
                 );
@@ -99,7 +99,7 @@ export default clerkMiddleware(
                         //     redirectUrl = "/registrar/home";
                             break;
                         default:
-                            redirectUrl = "/workaround/sign-out";
+                            redirectUrl = "/sign-out";
                     }
                 } else {
                     // If no role is found but user is authenticated, allow them to stay
@@ -107,7 +107,7 @@ export default clerkMiddleware(
                     console.warn(
                         "⚠️ M No role found for user, not allowing access to continue login process"
                     );
-                    return NextResponse.redirect(new URL("/workaround/sign-out", req.url));
+                    return NextResponse.redirect(new URL("/sign-out", req.url));
                 }
 
                 console.log("🔄 M Redirecting to:", redirectUrl);
@@ -118,7 +118,7 @@ export default clerkMiddleware(
                 console.log(
                     "⚠️ M Error checking role, allowing request to continue..."
                 );
-                return NextResponse.redirect(new URL("/workaround/sign-out", req.url));
+                return NextResponse.redirect(new URL("/sign-out", req.url));
             }
         }
 
@@ -143,7 +143,7 @@ export default clerkMiddleware(
                         "⚠️ M No role defined for user accessing protected route, redirecting to sign-in..."
                     );
                     return NextResponse.redirect(
-                        new URL("/workaround/sign-out", req.url)
+                        new URL("/sign-out", req.url)
                     );
                 }
 
@@ -183,7 +183,7 @@ export default clerkMiddleware(
                 console.log(
                     "⚠️ M Error checking role, redirecting to home page..."
                 );
-                return NextResponse.redirect(new URL("/workaround/sign-out", req.url));
+                return NextResponse.redirect(new URL("/sign-out", req.url));
             }
         }
 

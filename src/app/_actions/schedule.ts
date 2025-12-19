@@ -1,6 +1,6 @@
 'use server'
 
-import { ScheduleItem } from '@/models/ScheduleItem'
+import { ScheduleItem } from '@/app/_actions/models/ScheduleItem'
 
 export async function getSchedule(): Promise<ScheduleItem[]> {
     // TODO: IMPLEMENT ACTUAL SCHEDULE FETCHING

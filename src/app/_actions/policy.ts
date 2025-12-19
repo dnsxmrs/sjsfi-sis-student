@@ -1,6 +1,6 @@
 'use server'
 
-import { GeneralPolicy } from '@/models/GeneralPolicy'
+import { GeneralPolicy } from '@/app/_actions/models/GeneralPolicy'
 import { prisma } from '@/lib/prisma'
 
 export async function getGeneralPolicy(): Promise<GeneralPolicy | null> {

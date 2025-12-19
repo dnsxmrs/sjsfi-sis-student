@@ -1,6 +1,6 @@
 'use server'
 
-import { Notification } from '@/models/Notification'
+import { Notification } from '@/app/_actions/models/Notification'
 
 export async function getNotifications(): Promise<Notification[]> {
     // TODO: IMPLEMENT ACTUAL NOTIFICATION FETCHING

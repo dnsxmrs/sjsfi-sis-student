@@ -1,4 +1,3 @@
-// app/student/home/page.tsx
 import NotificationsTable from '@/app/(auth)/student/home/NotificationsTable'
 import PolicySection from '@/app/(auth)/student/home/PolicySection'
 import type { Metadata } from 'next'
