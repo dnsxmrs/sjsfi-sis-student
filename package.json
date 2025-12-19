@@ -9,7 +9,7 @@
     "lint": "next lint",
     "prisma": "prisma",
     "postinstall": "prisma generate",
-    "vercel-build": "prisma db pull && prisma generate && next build"
+    "vercel-build": "prisma generate && next build"
   },
   "dependencies": {
     "@clerk/backend": "^2.0.0",
