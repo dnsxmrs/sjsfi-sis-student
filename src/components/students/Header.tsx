@@ -39,7 +39,7 @@ const Header = () => {
         <header className="bg-white shadow-sm">
             <div className="container mx-auto flex justify-between items-center px-4 py-2 max-w-5xl">
                 {/* Logo */}
-                <div className="flex items-center space-x-3">
+                <Link href="https://sjsfi.vercel.app/" className="flex items-center space-x-3" title="Go to SJSFI Website">
                     <Image
                         src="/assets/sjsfi_logo.svg"
                         alt="SJSFI-SIS Logo"
@@ -48,7 +48,7 @@ const Header = () => {
                         className="h-10 w-10"
                     />
                     <h1 className="text-xl font-bold text-red-800">SJSFI-SIS</h1>
-                </div>
+                </Link>
 
                 {/* Desktop Navigation */}
                 <nav className="hidden md:flex">
