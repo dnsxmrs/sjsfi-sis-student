@@ -3,12 +3,26 @@
  * @interface Notification
  */
 export interface Notification {
+    /** Unique identifier */
+    id: number
     /** Date when the notification was created */
     date: string
     /** Title of the notification */
     title: string
     /** Detailed description of the notification */
     description: string
+    /** Type of notification */
+    type: string
+    /** Scope of notification */
+    scope: string
+    /** Created at timestamp */
+    createdAt: Date
+    /** Sender type */
+    senderType: string
+    /** Read status */
+    isRead: boolean | null
+    /** Read at timestamp */
+    readAt: Date | null
 }
 
 /**

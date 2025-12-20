@@ -22,9 +22,24 @@ export default function NotificationsTable() {
         const fetchNotifications = async () => {
             try {
                 const data = await getNotifications()
-                setNotifications(data)
+                if (data.success) {
+                    // Transform notifications to include formatted date
+                    const transformedNotifications = data.notifications.map(notif => ({
+                        ...notif,
+                        date: new Date(notif.createdAt).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                        })
+                    }))
+                    setNotifications(transformedNotifications)
+                } else {
+                    toast.error(data.message || 'Failed to load notifications')
+                    setNotifications([])
+                }
             } catch {
                 toast.error('Failed to load notifications')
+                setNotifications([])
                 // console.error('Error fetching notifications:', error)
             } finally {
                 setIsLoading(false)
@@ -122,8 +137,8 @@ export default function NotificationsTable() {
             <div className="bg-white rounded-lg shadow-sm mb-6">
                 <div className="flex flex-col sm:flex-row items-center justify-between p-2 sm:p-4 border-b gap-2">
                     <div className="flex items-center space-x-2">
-                        <BellIcon className="h-4 w-4 sm:h-5 sm:w-5 text-[#000]" />
-                        <span className="font-medium text-lg sm:text-xl text-[#000]">Notifications</span>
+                        <BellIcon className="h-4 w-4 sm:h-5 sm:w-5 text-black" />
+                        <span className="font-medium text-lg sm:text-xl text-black">Notifications</span>
                     </div>
                     <div className="relative w-full sm:w-auto">
                         <input
