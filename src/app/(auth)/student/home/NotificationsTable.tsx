@@ -5,7 +5,7 @@ import { Notification } from '@/app/_actions/models/Notification'
 import NotificationSkeleton from '@/components/skeleton/NotificationSkeleton'
 import { toast } from 'react-hot-toast'
 import { useState, useEffect, useRef } from 'react'
-import { BellIcon, FilterIcon, X, SearchX } from 'lucide-react'
+import { BellIcon, SearchIcon, X, SearchX } from 'lucide-react'
 
 export default function NotificationsTable() {
     const [filter, setFilter] = useState('')
@@ -128,17 +128,13 @@ export default function NotificationsTable() {
         setCurrentPage(prev => Math.min(prev + 1, totalPages))
     }
 
-    if (isLoading) {
-        return <NotificationSkeleton />
-    }
-
     return (
         <>
             <div className="bg-white rounded-lg shadow-sm mb-6">
                 <div className="flex flex-col sm:flex-row items-center justify-between p-2 sm:p-4 border-b gap-2">
                     <div className="flex items-center space-x-2">
-                        <BellIcon className="h-4 w-4 sm:h-5 sm:w-5 text-black" />
-                        <span className="font-medium text-lg sm:text-xl text-black">Notifications</span>
+                        <BellIcon className="h-4 w-4 sm:h-5 sm:w-5 text-[#800000]" />
+                        <span className="font-medium text-lg sm:text-xl text-[#800000]">Notifications</span>
                     </div>
                     <div className="relative w-full sm:w-auto">
                         <input
@@ -146,14 +142,16 @@ export default function NotificationsTable() {
                             placeholder="Search for notifications..."
                             value={filter}
                             onChange={handleFilterChange}
-                            className="w-full pl-8 pr-4 py-1 border rounded-md text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#DAA520] focus:border-transparent"
+                            className="w-full pl-8 pr-4 py-1 border rounded-md text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#800000] focus:border-transparent"
                             aria-label="Filter notifications"
                         />
-                        <FilterIcon className="absolute left-2 top-2 h-4 w-4 text-gray-400" />
+                        <SearchIcon className="absolute left-2 top-2 h-4 w-4 text-gray-400" />
                     </div>
                 </div>
                 <div className="overflow-x-auto">
-                    {paginatedNotifications.length > 0 ? (
+                    {isLoading ? (
+                        <NotificationSkeleton />
+                    ) : paginatedNotifications.length > 0 ? (
                         <table className="min-w-full">
                             <tbody>
                                 {paginatedNotifications.map((notification, index) => (
@@ -218,8 +216,8 @@ export default function NotificationsTable() {
                                             key={pageNumber}
                                             onClick={() => goToPage(pageNumber)}
                                             className={`px-2 sm:px-3 py-1 text-xs sm:text-sm border rounded-md transition-colors ${currentPage === pageNumber
-                                                    ? 'bg-[#800000] text-white border-[#800000]'
-                                                    : 'hover:bg-black/10 border-black/20 text-black'
+                                                ? 'bg-[#800000] text-white border-[#800000]'
+                                                : 'hover:bg-black/10 border-black/20 text-black'
                                                 }`}
                                         >
                                             {pageNumber}

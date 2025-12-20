@@ -190,7 +190,7 @@ export default function StudentLoginForm() {
             </div>
             {/* Birthdate selection */}
             <div className="mb-4 w-full">
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-3 gap-3">
                     {/* Month Dropdown */}
                     <div>
                         <label htmlFor="birthMonth" className="sr-only">
@@ -203,8 +203,9 @@ export default function StudentLoginForm() {
                             onChange={(e) => handleMonthChange(e.target.value)}
                             disabled={isLoading}
                             aria-label="Birth Month"
+                            className="text-black font-light"
                         >
-                            <option value="">Month</option>
+                            <option value="">Birth Month</option>
                             <option value="1">January</option>
                             <option value="2">February</option>
                             <option value="3">March</option>
@@ -232,8 +233,9 @@ export default function StudentLoginForm() {
                             onChange={(e) => setBirthDay(e.target.value)}
                             disabled={isLoading}
                             aria-label="Birth Day"
+                            className="text-black font-light"
                         >
-                            <option value="">Day</option>
+                            <option value="">Birth Day</option>
                             {Array.from({ length: getDaysInMonth(birthMonth, birthYear) }, (_, i) => i + 1).map((day) => (
                                 <option key={day} value={day.toString()}>
                                     {day}
@@ -254,8 +256,9 @@ export default function StudentLoginForm() {
                             onChange={(e) => handleYearChange(e.target.value)}
                             disabled={isLoading}
                             aria-label="Birth Year"
+                            className="text-black font-light"
                         >
-                            <option value="">Year</option>
+                            <option value="">Birth Year</option>
                             {Array.from({ length: 27 }, (_, i) => startYear - i).map((year) => (
                                 <option key={year} value={year.toString()}>
                                     {year}

@@ -212,7 +212,7 @@ export default function SchedulePage() {
                                 return (
                                     <div
                                         key={`${item.id}-${day}`}
-                                        className={`absolute ${colors.bg} border-l-4 ${colors.border} rounded-r-md p-2 m-1 hover:opacity-80 transition-all cursor-pointer shadow-sm z-10`}
+                                        className={`absolute ${colors.bg} border-l-4 ${colors.border} rounded-r-md p-2 m-1 hover:opacity-80 transition-all shadow-sm z-10`}
                                         style={{
                                             top: `${top}px`,
                                             height: `${Math.max(height - 8, 60)}px`, // Subtract margin, minimum height
