@@ -182,7 +182,7 @@ export default function Footer() {
                 <div className="fixed inset-0 bg-black/50 text-black bg-opacity-10 flex items-center justify-center p-4 z-50 ">
                     <div className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
                         <div className="flex items-center justify-between p-6 border-b">
-                            <h2 className="text-xl font-semibold text-gray-900">Submit Feedback</h2>
+                            <h2 className="text-xl font-semibold text-black">Submit Feedback</h2>
                             <button
                                 onClick={() => setShowFeedbackModal(false)}
                                 className="text-gray-400 hover:text-gray-600"
@@ -194,7 +194,7 @@ export default function Footer() {
                         <form onSubmit={handleSubmitFeedback} className="p-6 space-y-4">
                             {/* Feedback Type */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                <label className="block text-sm font-medium text-black mb-2">
                                     Feedback Type <span className='text-red-500'>*</span>
                                 </label>
                                 <select
@@ -212,7 +212,7 @@ export default function Footer() {
 
                             {/* Feedback Text */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                <label className="block text-sm font-medium text-black mb-2">
                                     Your Feedback <span className='text-red-500'>*</span>
                                 </label>
                                 <textarea
@@ -227,7 +227,7 @@ export default function Footer() {
 
                             {/* Suggestion */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                <label className="block text-sm font-medium text-black mb-2">
                                     Suggestion (Optional)
                                 </label>
                                 <textarea
@@ -244,7 +244,7 @@ export default function Footer() {
                                 <button
                                     type="button"
                                     onClick={() => setShowFeedbackModal(false)}
-                                    className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                                    className="px-4 py-2 text-sm font-medium text-black bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
                                 >
                                     Cancel
                                 </button>

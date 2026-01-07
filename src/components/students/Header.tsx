@@ -1,7 +1,11 @@
 "use client";
 
 import React from "react";
-import { Home, Calendar, GraduationCap } from "lucide-react";
+import {
+    Home,
+    // Calendar,
+    // GraduationCap
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -9,8 +13,10 @@ import { UserButton } from "@clerk/nextjs";
 
 const NAV_ITEMS = [
     { label: "Home", href: "/student/home", icon: Home },
-    { label: "Schedule", href: "/student/schedule", icon: Calendar },
-    { label: "Grades", href: "/student/grades", icon: GraduationCap },
+    { label: "Request", href: "/student/request", icon: Home },
+    { label: "Clearance", href: "/student/clearance", icon: Home },
+    // { label: "Schedule", href: "/student/schedule", icon: Calendar },
+    // { label: "Grades", href: "/student/grades", icon: GraduationCap },
 ] as const;
 
 const USER_BUTTON_APPEARANCE = {
@@ -57,11 +63,10 @@ const Header = () => {
                             <li key={href}>
                                 <Link
                                     href={href}
-                                    className={`py-4 px-1 transition-colors ${
-                                        isActivePath(href)
+                                    className={`py-4 px-1 transition-colors ${isActivePath(href)
                                             ? "text-red-800 font-semibold border-b-2 border-red-800"
                                             : "text-gray-600 hover:text-red-800"
-                                    }`}
+                                        }`}
                                 >
                                     {label}
                                 </Link>
@@ -84,11 +89,10 @@ const Header = () => {
                         <li key={href} className="flex-1">
                             <Link
                                 href={href}
-                                className={`flex flex-col items-center justify-center py-2 transition-colors duration-200 ${
-                                    isActivePath(href) ? "text-red-800" : "text-gray-600 hover:text-red-800"
-                                }`}
+                                className={`flex flex-col items-center justify-center py-2 transition-colors duration-200 ${isActivePath(href) ? "text-red-800" : "text-gray-600 hover:text-red-800"
+                                    }`}
                             >
-                                <Icon className={`w-6 h-6 mb-1 ${isActivePath(href) ? "stroke-[2.5]" : "stroke-[2]"}`} />
+                                <Icon className={`w-6 h-6 mb-1 ${isActivePath(href) ? "stroke-[2.5]" : "stroke-2"}`} />
                                 <span className={`text-xs ${isActivePath(href) ? "font-semibold" : "font-normal"}`}>
                                     {label}
                                 </span>

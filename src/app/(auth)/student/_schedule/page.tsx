@@ -227,11 +227,11 @@ export default function SchedulePage() {
                                         </div>
                                         <div className={`text-xs ${colors.textLight} space-y-1`}>
                                             <div className="flex items-center gap-1">
-                                                <Clock className="h-3 w-3 flex-shrink-0" />
+                                                <Clock className="h-3 w-3 shrink-0" />
                                                 <span className="truncate">{item.time}</span>
                                             </div>
                                             <div className="flex items-center gap-1">
-                                                <MapPin className="h-3 w-3 flex-shrink-0" />
+                                                <MapPin className="h-3 w-3 shrink-0" />
                                                 <span className="truncate">{item.room}</span>
                                             </div>
                                             <div className="text-xs truncate">
@@ -252,7 +252,7 @@ export default function SchedulePage() {
                         {days.map(day => (
                             <button
                                 key={day}
-                                className={`flex-shrink-0 px-4 py-3 text-sm font-medium whitespace-nowrap border-b-2 ${day === currentDay
+                                className={`shrink-0 px-4 py-3 text-sm font-medium whitespace-nowrap border-b-2 ${day === currentDay
                                         ? 'border-red-500 text-red-800 bg-red-50'
                                         : 'border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300'
                                     }`}
@@ -301,11 +301,11 @@ export default function SchedulePage() {
                                                         </div>
                                                         <div className={`text-sm ${colors.textLight} space-y-2`}>
                                                             <div className="flex items-center gap-2">
-                                                                <Clock className="h-4 w-4 flex-shrink-0" />
+                                                                <Clock className="h-4 w-4 shrink-0" />
                                                                 <span>{item.time}</span>
                                                             </div>
                                                             <div className="flex items-center gap-2">
-                                                                <MapPin className="h-4 w-4 flex-shrink-0" />
+                                                                <MapPin className="h-4 w-4 shrink-0" />
                                                                 <span>{item.room}</span>
                                                             </div>
                                                             <div className="text-sm font-medium">
