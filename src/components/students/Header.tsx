@@ -13,8 +13,8 @@ import { UserButton } from "@clerk/nextjs";
 
 const NAV_ITEMS = [
     { label: "Home", href: "/student/home", icon: Home },
-    { label: "Request", href: "/student/request", icon: Home },
-    { label: "Clearance", href: "/student/clearance", icon: Home },
+    // { label: "Request", href: "/student/request", icon: Home },
+    // { label: "Clearance", href: "/student/clearance", icon: Home },
     // { label: "Schedule", href: "/student/schedule", icon: Calendar },
     // { label: "Grades", href: "/student/grades", icon: GraduationCap },
 ] as const;
