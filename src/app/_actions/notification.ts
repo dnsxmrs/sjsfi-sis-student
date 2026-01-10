@@ -37,6 +37,7 @@ export async function getNotifications() {
             where: {
                 OR: [
                     { scope: 'GENERAL' },
+                    { scope: 'STUDENT' },
                     {
                         recipients: {
                             some: {
