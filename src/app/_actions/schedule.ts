@@ -1,82 +1,91 @@
 'use server'
 
-import { ScheduleItem } from '@/app/_actions/models/ScheduleItem'
+import { ScheduleItem, DayOfWeek } from '@/app/_actions/models/ScheduleItem'
+import { prisma } from '@/lib/prisma'
+import { currentUser } from '@clerk/nextjs/server'
+
+// Type guard to check if a string is a valid DayOfWeek
+function isValidDayOfWeek(day: string): day is DayOfWeek {
+    const validDays: DayOfWeek[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    return validDays.includes(day as DayOfWeek);
+}
 
 export async function getSchedule(): Promise<ScheduleItem[]> {
-    // TODO: IMPLEMENT ACTUAL SCHEDULE FETCHING
+    try {
+        // Get user's email from Clerk using currentUser() helper
+        const user = await currentUser();
 
-    return [
-        {
-            id: '1',
-            subject: 'Web Development',
-            time: '8:00 AM - 11:00 AM',
-            room: 'Room 101',
-            instructor: 'Prof. Smith',
-            day: 'Monday'
-        },
-        {
-            id: '2',
-            subject: 'Database Management',
-            time: '11:00 AM - 2:00 PM',
-            room: 'Room 202',
-            instructor: 'Prof. Johnson',
-            day: 'Monday'
-        },
-        {
-            id: '3',
-            subject: 'Network Security',
-            time: '1:00 PM - 4:00 PM',
-            room: 'Room 303',
-            instructor: 'Prof. Williams',
-            day: 'Wednesday'
-        },
-        {
-            id: '4',
-            subject: 'Mobile App Development',
-            time: '8:00 AM - 11:00 AM',
-            room: 'Room 404',
-            instructor: 'Prof. Brown',
-            day: 'Tuesday'
-        },
-        {
-            id: '5',
-            subject: 'Cloud Computing',
-            time: '2:00 PM - 5:00 PM',
-            room: 'Room 505',
-            instructor: 'Prof. Davis',
-            day: 'Monday'
-        },
-        {
-            id: '6',
-            subject: 'Artificial Intelligence',
-            time: '8:00 AM - 11:00 AM',
-            room: 'Room 606',
-            instructor: 'Prof. Wilson',
-            day: 'Thursday'
-        },
-        {
-            id: '7',
-            subject: 'Software Engineering',
-            time: '1:00 PM - 4:00 PM',
-            room: 'Room 707',
-            instructor: 'Prof. Taylor',
-            day: 'Thursday'
-        },
-        {
-            id: '8',
-            subject: 'Data Structures',
-            time: '8:00 AM - 11:00 AM',
-            room: 'Room 808',
-            instructor: 'Prof. Anderson',
-            day: 'Friday'
-        },
-        {
-            id: '9',
-            subject: 'Operating Systems',
-            time: '1:00 PM - 4:00 PM',
-            room: 'Room 909',
-            instructor: 'Prof. Martinez',
-            day: 'Friday'
+        if (!user?.emailAddresses?.[0]?.emailAddress) {
+            console.error('User email not found');
+            return [];
         }
-    ]
+
+        const email = user.emailAddresses[0].emailAddress;
+
+        // Fetch user from database using email
+        const dbUser = await prisma.user.findUnique({
+            where: { email },
+            select: { id: true },
+        });
+
+        if (!dbUser) {
+            console.error('User not found in database');
+            return [];
+        }
+
+        // Fetch the student's application using the email
+        const studentApplication = await prisma.studentApplication.findFirst({
+            where: {
+                emailAddress: email,
+                status: 'APPROVED', // Only get approved applications
+                deletedAt: null,
+            },
+            select: {
+                sectionId: true,
+                academicYearId: true,
+                yearLevelId: true,
+            },
+        });
+
+        if (!studentApplication || !studentApplication.sectionId) {
+            console.error('Student application or section not found');
+            return [];
+        }
+
+        // Fetch schedules for the student's section
+        const schedules = await prisma.schedule.findMany({
+            where: {
+                sectionId: studentApplication.sectionId,
+                deletedAt: null,
+            },
+            include: {
+                termSubject: {
+                    include: {
+                        subject: true,
+                    },
+                },
+            },
+            orderBy: [
+                { day: 'asc' },
+                { startTime: 'asc' },
+            ],
+        });
+
+        // Format schedules to match ScheduleItem interface
+        const formattedSchedules: ScheduleItem[] = schedules
+            .filter(schedule => isValidDayOfWeek(schedule.day)) // Filter out invalid days
+            .map((schedule) => ({
+                id: schedule.id.toString(),
+                subject: schedule.termSubject.subject.name,
+                time: `${schedule.startTime} - ${schedule.endTime}`,
+                room: schedule.room,
+                instructor: schedule.teacherName || 'TBA',
+                day: schedule.day as DayOfWeek,
+            }));
+
+        return formattedSchedules;
+    } catch (error) {
+        console.error('Error fetching schedule:', error);
+        return [];
+    }
 }

@@ -3,7 +3,7 @@
 import React from "react";
 import {
     Home,
-    // Calendar,
+    Calendar,
     // GraduationCap
 } from "lucide-react";
 import Image from "next/image";
@@ -15,7 +15,7 @@ const NAV_ITEMS = [
     { label: "Home", href: "/student/home", icon: Home },
     // { label: "Request", href: "/student/request", icon: Home },
     // { label: "Clearance", href: "/student/clearance", icon: Home },
-    // { label: "Schedule", href: "/student/schedule", icon: Calendar },
+    { label: "Schedule", href: "/student/schedule", icon: Calendar },
     // { label: "Grades", href: "/student/grades", icon: GraduationCap },
 ] as const;
 

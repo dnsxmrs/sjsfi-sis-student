@@ -12,7 +12,7 @@ export default function SchedulePage() {
     const [isLoading, setIsLoading] = useState(true)
     const days: DayOfWeek[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
     const timeSlots = [
-        '7:00 AM', '8:00 AM', '9:00 AM', '10:00 AM', '11:00 AM',
+        '6:00 AM', '7:00 AM', '8:00 AM', '9:00 AM', '10:00 AM', '11:00 AM',
         '12:00 PM', '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM', '6:00 PM'
     ]
 
@@ -62,8 +62,8 @@ export default function SchedulePage() {
     // Helper function to calculate position and height for calendar events
     const calculateEventPosition = (timeString: string) => {
         const timeRange = parseTimeRange(timeString)
-        const startHour = 7 // 7:00 AM is our first slot
-        const slotHeight = 80 // Height of each hour slot in pixels
+        const startHour = 6 // 6:00 AM is our first slot
+        const slotHeight = 100 // Height of each hour slot in pixels
 
         // Calculate top position (distance from start of day)
         const hoursFromStart = timeRange.start - startHour
@@ -74,6 +74,45 @@ export default function SchedulePage() {
         const height = durationHours * slotHeight
 
         return { top, height }
+    }
+
+    // Helper function to detect if two schedule items overlap
+    const doSchedulesOverlap = (schedule1: ScheduleItem, schedule2: ScheduleItem): boolean => {
+        if (schedule1.day !== schedule2.day) return false
+
+        const time1 = parseTimeRange(schedule1.time)
+        const time2 = parseTimeRange(schedule2.time)
+
+        return (
+            (time1.startMinutes < time2.endMinutes) &&
+            (time1.endMinutes > time2.startMinutes)
+        )
+    }
+
+    // Helper function to calculate overlap columns for schedules on the same day
+    const calculateOverlapColumns = (daySchedule: ScheduleItem[]) => {
+        const columns: Map<string, { column: number; totalColumns: number }> = new Map()
+
+        daySchedule.forEach((schedule, index) => {
+            const overlapping = daySchedule.filter((other, otherIndex) =>
+                otherIndex !== index && doSchedulesOverlap(schedule, other)
+            )
+
+            if (overlapping.length === 0) {
+                columns.set(schedule.id, { column: 0, totalColumns: 1 })
+            } else {
+                const allOverlapping = [schedule, ...overlapping].sort((a, b) => {
+                    const timeA = parseTimeRange(a.time)
+                    const timeB = parseTimeRange(b.time)
+                    return timeA.startMinutes - timeB.startMinutes
+                })
+
+                const column = allOverlapping.findIndex(s => s.id === schedule.id)
+                columns.set(schedule.id, { column, totalColumns: allOverlapping.length })
+            }
+        })
+
+        return columns
     }
 
     // Get current date info
@@ -180,7 +219,7 @@ export default function SchedulePage() {
                     <div className="relative">
                         {/* Time grid background */}
                         {timeSlots.map((timeSlot) => (
-                            <div key={timeSlot} className="grid grid-cols-6 border-b border-gray-100 h-20">
+                            <div key={timeSlot} className="grid grid-cols-6 border-b border-gray-100 h-[100px]">
                                 {/* Time Column */}
                                 <div className="p-4 bg-gray-50 border-r border-gray-200 text-sm font-medium text-gray-600 flex items-start">
                                     {timeSlot}
@@ -200,41 +239,47 @@ export default function SchedulePage() {
                         {/* Absolutely positioned schedule events - Desktop */}
                         {days.map((day, dayIndex) => {
                             const daySchedule = scheduleByDay[day] || []
+                            const overlapColumns = calculateOverlapColumns(daySchedule)
 
                             return daySchedule.map(item => {
                                 const colors = getSubjectColor(item.subject)
                                 const { top, height } = calculateEventPosition(item.time)
+                                const overlapInfo = overlapColumns.get(item.id) || { column: 0, totalColumns: 1 }
 
-                                // Calculate left position based on day column
-                                const dayColumnWidth = `${100 / 6}%` // 6 columns total (time + 5 days)
-                                const leftOffset = `${((dayIndex + 1) * 100) / 6}%` // +1 to skip time column
+                                // Calculate left position based on day column and overlap
+                                const dayColumnWidth = 100 / 6 // 6 columns total (time + 5 days)
+                                const baseLeftOffset = (dayIndex + 1) * dayColumnWidth // +1 to skip time column
+
+                                // Calculate width and offset for overlapping events
+                                const eventWidth = dayColumnWidth / overlapInfo.totalColumns
+                                const leftOffset = baseLeftOffset + (overlapInfo.column * eventWidth)
 
                                 return (
                                     <div
                                         key={`${item.id}-${day}`}
-                                        className={`absolute ${colors.bg} border-l-4 ${colors.border} rounded-r-md p-2 m-1 hover:opacity-80 transition-all shadow-sm z-10`}
+                                        className={`absolute ${colors.bg} border-l-4 ${colors.border} rounded-r-md p-3 hover:opacity-80 transition-all shadow-sm z-10 overflow-hidden`}
                                         style={{
                                             top: `${top}px`,
-                                            height: `${Math.max(height - 8, 60)}px`, // Subtract margin, minimum height
-                                            left: leftOffset,
-                                            width: `calc(${dayColumnWidth} - 8px)`, // Subtract margin
+                                            height: `${Math.max(height - 8, 100)}px`, // Subtract margin, minimum height increased
+                                            left: `${leftOffset}%`,
+                                            width: `calc(${eventWidth}% - 8px)`, // Adjust for margins
                                             marginLeft: '4px',
                                             marginRight: '4px'
                                         }}
                                     >
-                                        <div className={`text-sm font-semibold ${colors.text} mb-1 truncate`}>
+                                        <div className={`text-sm font-semibold ${colors.text} mb-2 line-clamp-2`}>
                                             {item.subject}
                                         </div>
-                                        <div className={`text-xs ${colors.textLight} space-y-1`}>
-                                            <div className="flex items-center gap-1">
+                                        <div className={`text-xs ${colors.textLight} space-y-1.5`}>
+                                            <div className="flex items-center gap-1.5">
                                                 <Clock className="h-3 w-3 shrink-0" />
-                                                <span className="truncate">{item.time}</span>
+                                                <span className="line-clamp-1">{item.time}</span>
                                             </div>
-                                            <div className="flex items-center gap-1">
+                                            <div className="flex items-center gap-1.5">
                                                 <MapPin className="h-3 w-3 shrink-0" />
-                                                <span className="truncate">{item.room}</span>
+                                                <span className="line-clamp-1">{item.room}</span>
                                             </div>
-                                            <div className="text-xs truncate">
+                                            <div className="text-xs line-clamp-1">
                                                 {item.instructor}
                                             </div>
                                         </div>
@@ -253,8 +298,8 @@ export default function SchedulePage() {
                             <button
                                 key={day}
                                 className={`shrink-0 px-4 py-3 text-sm font-medium whitespace-nowrap border-b-2 ${day === currentDay
-                                        ? 'border-red-500 text-red-800 bg-red-50'
-                                        : 'border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300'
+                                    ? 'border-red-500 text-red-800 bg-red-50'
+                                    : 'border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300'
                                     }`}
                                 onClick={() => {
                                     // Scroll to day section
