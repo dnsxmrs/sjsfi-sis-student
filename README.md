@@ -1,58 +1,76 @@
-# Getting Started
 
-Pre-requisite (make sure that you have the following installed in your device)
+# SJSFI Student Information System
 
-- node.js
+Saint Joseph School of Fairview Inc. (SJSFI) is a private educational institution located in Quezon City. This project is an enrollment and student information system designed to streamline and manage the school's enrollment process and student records.
 
-First, isntall the dependencies:
+## Tech Stack
 
-```bash
-npm install
-```
+- **Next.js** (React framework)
+- **TypeScript**
+- **Prisma ORM**
+- **Clerk** (Authentication Service)
+- **Supabase** (Database & Auth)
+- **Node.js**
+- **PostgreSQL**
+- **Tailwind CSS**
 
-Second, ask for the copy of .env to developers
+## Features
 
-Third, the following in the terminal:
+- Student application and enrollment management
+- User authentication and authorization
+- Role-based access (admin, registrar, etc.)
+- Notification system
+- Schedule management
+- System logging and audit trails
+- Section and adviser assignment
+- Archiving and soft deletion of records
+- Performance indexes and reporting
+- API documentation (OpenAPI)
 
-```bash
-npx prisma generate
-```
+## Getting Started
 
-Lastly, run the development server
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Node.js (latest LTS recommended)
+- Access to the `.env` file (ask a developer)
 
-Before commiting a branch, be sure to run:
+### Setup Instructions
 
-```bash
-npm run lint
-```
+1. **Install dependencies:**
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+   ```bash
+   npm install
+   ```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+2. **Configure environment:**
+   - Obtain a copy of the `.env` file from the developers and place it in the project root.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. **Generate Prisma client:**
 
-## Learn More
+   ```bash
+   npx prisma generate
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+4. **Run the development server:**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   # or
+   pnpm dev
+   # or
+   bun dev
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+5. **Lint before committing:**
 
-## Deploy on Vercel
+   ```bash
+   npm run lint
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Visit [http://localhost:3000](http://localhost:3000) to view the application.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Licensing
+
+This project is licensed for use by Saint Joseph School of Fairview Inc. (SJSFI). For more information, please contact the project maintainers or SJSFI administration.
