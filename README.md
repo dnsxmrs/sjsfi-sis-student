@@ -16,16 +16,13 @@ Saint Joseph School of Fairview Inc. (SJSFI) is a private educational institutio
 
 ## Features
 
-- Student application and enrollment management
-- User authentication and authorization
-- Role-based access (admin, registrar, etc.)
-- Notification system
-- Schedule management
-- System logging and audit trails
-- Section and adviser assignment
-- Archiving and soft deletion of records
-- Performance indexes and reporting
-- API documentation (OpenAPI)
+This system is focused on the student side. Key features include:
+
+- Student login
+- Viewing class schedules
+- Accessing school notifications and announcements
+- Viewing school policies
+- Secure authentication and session management
 
 ## Getting Started
 
