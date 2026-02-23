@@ -4,7 +4,6 @@ import {
 } from '@clerk/nextjs'
 import { Poppins } from 'next/font/google'
 import { Toaster } from 'react-hot-toast'
-import { SpeedInsights } from "@vercel/speed-insights/next"
 import './globals.css'
 
 const poppins = Poppins({
@@ -111,7 +110,6 @@ export default function RootLayout({
             {children}
           </main>
           <Toaster position="top-right" />
-          <SpeedInsights/>
         </body>
       </html>
     </ClerkProvider>
