@@ -12,7 +12,7 @@
     "vercel-build": "prisma generate && next build"
   },
   "dependencies": {
-    "@clerk/backend": "^2.0.0",
+    "@clerk/backend": "^2.33.3",
     "@clerk/nextjs": "^6.39.2",
     "@prisma/adapter-pg": "^7.2.0",
     "@prisma/client": "^7.2.0",
